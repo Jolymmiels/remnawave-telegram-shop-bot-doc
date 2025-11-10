@@ -1,0 +1,123 @@
+---
+title: CryptoPay Setup
+description: Configure CryptoPay for cryptocurrency payments
+---
+
+import { Steps } from '@astrojs/starlight/components';
+
+CryptoPay enables cryptocurrency payments (Bitcoin, Ethereum, USDT, and more) directly through Telegram.
+
+## Supported Cryptocurrencies
+
+- Bitcoin (BTC)
+- Ethereum (ETH)
+- TON Coin (TON)
+- USDT (Tether)
+- Plus 10+ other altcoins
+
+## Requirements
+
+- Telegram account
+- CryptoPay merchant account
+- Generated API token
+
+## Setup Instructions
+
+<Steps>
+
+1. **Create CryptoPay Account**
+   - Open [@CryptoBot](https://t.me/CryptoBot) on Telegram
+   - Start the bot
+   - Go to "Merchant" section
+   - Accept terms
+
+2. **Generate API Token**
+   - In CryptoPay merchant panel
+   - Navigate to "API Settings"
+   - Create new API token
+   - Copy the token
+
+3. **Configure Environment**
+   ```env
+   CRYPTO_PAY_ENABLED=true
+   CRYPTO_PAY_TOKEN=your_token_here
+   CRYPTO_PAY_URL=https://pay.crypt.bot
+   ```
+
+4. **Restart Bot**
+   ```bash
+   docker compose down && docker compose up -d
+   ```
+
+5. **Test Payment**
+   - Send `/start` to bot
+   - Select subscription
+   - Choose CryptoPay
+   - Complete test transaction
+
+</Steps>
+
+## Configuration Variables
+
+| Variable | Description |
+|----------|-------------|
+| `CRYPTO_PAY_ENABLED` | Enable/disable CryptoPay |
+| `CRYPTO_PAY_TOKEN` | Your API token |
+| `CRYPTO_PAY_URL` | API endpoint |
+
+## Advantages
+
+✅ **Global Coverage**: Worldwide payments  
+✅ **Low Fees**: Competitive rates  
+✅ **Fast Settlement**: Instant in many cases  
+✅ **No Chargebacks**: Blockchain finality  
+✅ **Transparent**: All fees visible upfront  
+
+## Limitations
+
+❌ Requires user cryptocurrency knowledge  
+❌ Price volatility  
+❌ Smaller user base than cards  
+❌ Regulatory uncertainty in some regions
+
+## Pricing Strategy
+
+Consider:
+- **Crypto Volatility**: Build in price buffer
+- **Network Fees**: Account for blockchain costs
+- **Conversion Rates**: Update prices regularly
+- **Profit Margin**: Balance between competitive and sustainable
+
+## Troubleshooting
+
+### Invalid Token
+- Regenerate token in CryptoPay dashboard
+- Verify token is copied correctly
+- Check for whitespace issues
+
+### Payment Pending
+- Check blockchain confirmation
+- Verify minimum payment amount
+- Monitor transaction in CryptoPay dashboard
+
+### API Connection Issues
+- Verify CryptoPay is accessible
+- Check bot has internet connectivity
+- Review logs for errors
+
+## Security Best Practices
+
+✅ Secure your API token  
+✅ Use IP whitelist in CryptoPay  
+✅ Monitor transactions regularly  
+✅ Keep bot updated  
+✅ Verify webhook signatures  
+
+❌ Never share tokens publicly  
+❌ Don't commit tokens to version control
+
+## Support
+
+- **CryptoPay Help**: [@CryptoBot](https://t.me/CryptoBot)
+- **API Documentation**: Available in merchant panel
+- **Community**: Telegram crypto communities

@@ -1,0 +1,147 @@
+/* Custom styles for Remnawave Telegram Shop documentation */
+
+:root {
+  --sl-color-accent: #6366f1;
+  --sl-color-accent-low: rgba(99, 102, 241, 0.2);
+  --sl-color-accent-high: rgba(99, 102, 241, 0.8);
+}
+
+/* Hero Section */
+.hero {
+  text-align: center;
+  padding-bottom: 2rem;
+}
+
+/* Cards */
+.card {
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Code blocks */
+code {
+  font-size: 0.9em;
+  padding: 0.2em 0.4em;
+  border-radius: 0.3em;
+  background-color: var(--sl-color-accent-low);
+  color: var(--sl-color-accent);
+}
+
+pre {
+  background-color: #1a1a2e;
+  color: #e0e0e0;
+  border-left: 4px solid var(--sl-color-accent);
+  padding-left: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+}
+
+thead {
+  background-color: var(--sl-color-accent-low);
+}
+
+th, td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--sl-color-accent-low);
+}
+
+tr:hover {
+  background-color: rgba(99, 102, 241, 0.05);
+}
+
+/* Links */
+a {
+  color: var(--sl-color-accent);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  color: #fff;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+h2 {
+  border-bottom: 2px solid var(--sl-color-accent-low);
+  padding-bottom: 0.5rem;
+}
+
+/* Lists */
+ul, ol {
+  line-height: 1.8;
+}
+
+li {
+  margin-bottom: 0.5rem;
+}
+
+/* Callouts */
+.callout, .note, .warning, .tip {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border-left: 4px solid var(--sl-color-accent);
+  margin: 1rem 0;
+  background-color: var(--sl-color-accent-low);
+}
+
+.warning {
+  border-left-color: #ff6b6b;
+  background-color: rgba(255, 107, 107, 0.1);
+}
+
+.tip {
+  border-left-color: #51cf66;
+  background-color: rgba(81, 207, 102, 0.1);
+}
+
+/* Navigation */
+.sl-markdown-content > :first-child {
+  margin-top: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  table {
+    font-size: 0.9em;
+  }
+
+  th, td {
+    padding: 0.5rem;
+  }
+
+  code {
+    font-size: 0.8em;
+  }
+}
+
+/* Dark mode (default) adjustments */
+[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  code {
+    background-color: #f5f5f5;
+    color: #333;
+  }
+}

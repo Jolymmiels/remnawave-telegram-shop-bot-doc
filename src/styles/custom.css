@@ -43,43 +43,23 @@ html, body {
   background: #17181c;
 }
 
-/* Theme Toggle - Show and Style */
+/* Theme Toggle */
 theme-toggle {
-  --animation-duration: 0.4s;
-  --fb-theme-btn-color-text: var(--sl-color-accent-high);
-  --color-text-highlight: var(--sl-color-accent);
-  --outline-offset: 2px;
-  --duration-400: 0.4s;
   display: grid !important;
   place-items: center;
 }
 
 theme-toggle button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2rem;
-  height: 2rem;
   padding: 0;
   background: transparent;
-  border: 1px solid var(--sl-color-accent-high);
-  border-radius: 0.5rem;
+  border: none;
   cursor: pointer;
-  color: var(--fb-theme-btn-color-text);
-  transition: all 0.3s ease;
+  color: var(--sl-color-accent-high);
+  transition: color 0.2s ease;
 }
 
-theme-toggle button:hover,
-theme-toggle button:focus-visible {
-  color: var(--color-text-highlight);
-  border-color: var(--color-text-highlight);
-  background: rgba(var(--sl-color-accent), 0.1);
-}
-
-theme-toggle button:focus-visible {
-  outline: 2px solid var(--sl-color-accent);
-  outline-offset: 2px;
-  box-shadow: inset 0 0 0 2px var(--color-text-highlight);
+theme-toggle button:hover {
+  color: var(--sl-color-accent);
 }
 
 theme-toggle svg {
@@ -94,26 +74,12 @@ theme-toggle svg > * {
 
 theme-toggle svg .sun,
 theme-toggle svg .moon {
-  fill: var(--fb-theme-btn-color-text);
-  transition: transform var(--animation-duration) cubic-bezier(0.4, 0, 0.2, 1), fill 0.2s ease;
-}
-
-theme-toggle button:hover .sun,
-theme-toggle button:hover .moon,
-theme-toggle button:focus-visible .sun,
-theme-toggle button:focus-visible .moon {
-  fill: var(--color-text-highlight);
+  fill: currentColor;
 }
 
 theme-toggle svg .sun-beams {
-  stroke: var(--fb-theme-btn-color-text);
-  stroke-width: 2px;
-  transition: transform var(--animation-duration) cubic-bezier(0.4, 0, 0.2, 1), stroke 0.2s ease;
-}
-
-theme-toggle button:hover .sun-beams,
-theme-toggle button:focus-visible .sun-beams {
-  stroke: var(--color-text-highlight);
+  stroke: currentColor;
+  stroke-width: 1.5px;
 }
 
 html[data-theme=dark] theme-toggle svg .sun {
@@ -122,7 +88,6 @@ html[data-theme=dark] theme-toggle svg .sun {
 
 html[data-theme=dark] theme-toggle svg .sun-beams {
   opacity: 0;
-  transform: rotate(-25deg);
 }
 
 html[data-theme=dark] theme-toggle svg .moon > circle {
@@ -135,45 +100,10 @@ html[data-theme=light] theme-toggle svg .sun {
 
 html[data-theme=light] theme-toggle svg .sun-beams {
   opacity: 1;
-  transform: rotate(0deg);
 }
 
 html[data-theme=light] theme-toggle svg .moon > circle {
   transform: translate(0);
-}
-
-/* Light Theme - Theme Toggle */
-:root[data-theme=light] theme-toggle button {
-  border-color: var(--sl-color-accent);
-  color: var(--sl-color-accent);
-}
-
-:root[data-theme=light] theme-toggle button:hover,
-:root[data-theme=light] theme-toggle button:focus-visible {
-  color: var(--sl-color-accent-high);
-  border-color: var(--sl-color-accent-high);
-  background: rgba(var(--sl-color-accent), 0.15);
-}
-
-:root[data-theme=light] theme-toggle svg .sun,
-:root[data-theme=light] theme-toggle svg .moon {
-  fill: var(--sl-color-accent);
-}
-
-:root[data-theme=light] theme-toggle button:hover .sun,
-:root[data-theme=light] theme-toggle button:hover .moon,
-:root[data-theme=light] theme-toggle button:focus-visible .sun,
-:root[data-theme=light] theme-toggle button:focus-visible .moon {
-  fill: var(--sl-color-accent-high);
-}
-
-:root[data-theme=light] theme-toggle svg .sun-beams {
-  stroke: var(--sl-color-accent);
-}
-
-:root[data-theme=light] theme-toggle button:hover .sun-beams,
-:root[data-theme=light] theme-toggle button:focus-visible .sun-beams {
-  stroke: var(--sl-color-accent-high);
 }
 
 /* Headings with gradient - Dark Theme */

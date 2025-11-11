@@ -212,25 +212,74 @@ starlight-toc ul:where(.astro-g2bywc46) {
 starlight-toc a:where(.astro-g2bywc46) {
   --pad-inline: 0.5rem;
   display: block;
-  border-radius: 0.25rem;
+  border-radius: 0;
+  border-inline-start: 1px solid var(--sl-color-hairline-light);
   padding-block: 0.25rem;
-  padding-inline: calc(1rem * var(--depth) + var(--pad-inline)) var(--pad-inline);
+  padding-inline: calc(1rem * var(--depth) + var(--pad-inline) + 0.35rem) var(--pad-inline);
   line-height: 1.25;
   color: var(--sl-color-gray-3);
   text-decoration: none;
-  transition: all 0.2s ease;
-  font-size: var(--sl-text-xs);
+  transition: all 0.3s ease;
+  font-size: 0.8125rem;
+  position: relative;
+  margin-inline-start: 0.35rem;
+}
+
+starlight-toc a:where(.astro-g2bywc46):before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 0 solid transparent;
+  border-bottom: 0 solid transparent;
+  border-left: 0 solid var(--sl-color-accent-high);
+  transition: border-width 0.3s ease-in-out;
 }
 
 starlight-toc a:where(.astro-g2bywc46)[aria-current="true"] {
-  color: var(--sl-color-text-accent);
-  background-color: var(--sl-color-gray-7);
-  border-radius: 0.25rem;
+  color: var(--sl-color-accent-high);
+  background-color: transparent;
+  border-color: var(--sl-color-accent-high);
+  font-weight: 700;
+  width: fit-content;
+  display: block;
 }
 
-starlight-toc a:where(.astro-g2bywc46):hover {
-  color: var(--sl-color-white);
-  background-color: var(--sl-color-gray-7);
+starlight-toc a:where(.astro-g2bywc46)[aria-current="true"]:before {
+  border-top-width: 12px;
+  border-bottom-width: 12px;
+  border-left-width: 9px;
+}
+
+starlight-toc a:where(.astro-g2bywc46)[aria-current="true"]:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--sl-color-accent) 15%, transparent) 0%, transparent 100%);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--sl-color-accent) 30%, transparent);
+  border-radius: 0.45rem;
+  z-index: -1;
+}
+
+starlight-toc a:where(.astro-g2bywc46):not([aria-current="true"]):is(:hover, :focus-visible) {
+  border-color: transparent;
+  font-weight: 600;
+  color: var(--sl-color-accent-high);
+}
+
+starlight-toc a:where(.astro-g2bywc46):not([aria-current="true"]):is(:hover, :focus-visible):after {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  height: 100%;
+  background-color: var(--sl-color-accent-high);
+  border-radius: 0 0.5rem 0.5rem 0;
 }
 
 starlight-toc li:where(.astro-g2bywc46) {

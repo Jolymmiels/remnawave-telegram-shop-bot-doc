@@ -39,7 +39,7 @@ export default defineConfig({
 					autogenerate: { directory: 'configuration' },
 				},
 				{
-					label: 'Функции',
+					label: 'Возможности',
 					translations: { en: 'Features' },
 					autogenerate: { directory: 'features' },
 				},

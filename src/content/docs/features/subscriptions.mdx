@@ -1,38 +1,38 @@
 ---
-title: Подписки и пробные периоды
-description: Управление подписками и система пробных периодов
+title: Subscriptions & Trials
+description: Subscription management and trial system
 ---
 
-## Жизненный цикл подписки
+## Subscription Lifecycle
 
-### Покупка
-1. Пользователь отправляет команду `/start`
-2. Просмотреть варианты подписок
-3. Выбрать план и способ оплаты
-4. Завершить платёж
-5. Получить конфигурацию VPN
+### Purchase
+1. User sends `/start` command
+2. Views subscription options
+3. Selects plan and payment method
+4. Completes payment
+5. Receives VPN configuration
 
-### Активная
-- Пользователь подключен к VPN
-- Использование полосы пропускания контролируется
-- Может купить продление в любое время
-- Получает напоминание перед истечением
+### Active
+- User connected to VPN
+- Bandwidth usage monitored
+- Can purchase renewal anytime
+- Receives reminder before expiration
 
-### Уведомление об истечении
-- Отправлено за 3 дня до истечения
-- Ежедневно в 16:00 UTC
-- На предпочитаемом языке пользователя
-- Включает кнопку продления
+### Expiration Notification
+- Sent 3 days before expiration
+- At 16:00 UTC daily
+- In user's preferred language
+- Includes renewal button
 
-### Продление
-- Пользователь нажимает кнопку продления
-- Следует процессу платежа снова
-- Выдаётся новая конфигурация
-- Нет перерыва в обслуживании
+### Renewal
+- User clicks renewal button
+- Follows payment flow again
+- New configuration issued
+- No service interruption
 
-## Конфигурация системы пробных периодов
+## Trial System Configuration
 
-### Включить пробные периоды
+### Enable Trials
 
 ```env
 TRIAL_DAYS=7
@@ -40,104 +40,104 @@ TRIAL_TRAFFIC_LIMIT=10
 TRIAL_REMNAWAVE_TAG=trial_user
 ```
 
-### Как это работает
+### How It Works
 
-1. **Новый пользователь**: Автоматически предлагается пробный период
-2. **Длительность пробы**: 7 дней (настраивается)
-3. **Лимит трафика**: 10 ГБ (настраивается)
-4. **Отслеживание**: Отдельный тег в Remnawave
-5. **Конверсия**: Пробные пользователи могут перейти на платные планы
+1. **New User**: Automatically offered trial
+2. **Trial Period**: 7 days (configurable)
+3. **Traffic Limit**: 10GB (configurable)
+4. **Tracking**: Separate tag in Remnawave
+5. **Conversion**: Trial users can upgrade to paid plans
 
-### Преимущества пробы
+### Trial Benefits
 
-- ✅ Привлекайте пользователей без обязательств
-- ✅ Позволяют пользователям протестировать качество услуги
-- ✅ Преобразуйте в платящих клиентов
-- ✅ Отдельное назначение сквадов
-- ✅ Управление ресурсами
+- ✅ Attract users without commitment
+- ✅ Let users test service quality
+- ✅ Convert to paying customers
+- ✅ Separate squad assignment
+- ✅ Resource control
 
-### Конфигурация сквадов пробы
+### Trial Squad Configuration
 
-Пробные периоды могут использовать разные сквады:
+Trials can use different squads:
 
 ```env
 TRIAL_INTERNAL_SQUADS=abc12345-def6-7890-ghij-klmnopqrstuv
 TRIAL_EXTERNAL_SQUAD_UUID=xyz98765-abc4-3210-defg-hijklmnopqrs
 ```
 
-## Стратегия ценообразования подписок
+## Subscription Pricing Strategy
 
-### Пример установки
+### Example Setup
 
 ```
-1 месяц:   $5   (базовая цена)
-3 месяца:  $12  (20% скидка)
-6 месяцев: $20  (33% скидка)
-12 месяцев: $35 (42% скидка)
+1 Month:   $5   (baseline)
+3 Months:  $12  (20% discount)
+6 Months:  $20  (33% discount)
+12 Months: $35  (42% discount)
 ```
 
-### Лучшие практики
+### Best Practices
 
-1. **Ценообразование конкурентоспособно**: Исследуйте региональные цены
-2. **Предложите скидки**: Более длительные периоды = лучшая стоимость
-3. **Протестируйте цены**: Контролируйте показатели конверсии
-4. **Учитывайте налоги**: Добавьте НДС где применимо
-5. **Региональное ценообразование**: Регулируйте для местных рынков
+1. **Price Competitively**: Research regional pricing
+2. **Offer Discounts**: Longer periods = better value
+3. **Test Prices**: Monitor conversion rates
+4. **Consider Taxes**: Add VAT where applicable
+5. **Regional Pricing**: Adjust for local markets
 
-## Лимиты трафика
+## Traffic Limits
 
-Контролируйте использование пропускной способности:
+Control bandwidth usage:
 
 ```env
-TRAFFIC_LIMIT=100          # Обычные пользователи: 100 ГБ
-TRIAL_TRAFFIC_LIMIT=10     # Пробные пользователи: 10 ГБ
+TRAFFIC_LIMIT=100          # Regular users: 100GB
+TRIAL_TRAFFIC_LIMIT=10     # Trial users: 10GB
 ```
 
-- **0** = Неограниченный трафик
-- Единицы в **ГБ**
-- Контролируется за подписку
-- Применяется панелью
+- **0** = Unlimited traffic
+- Units in **GB**
+- Monitored per subscription
+- Enforced by panel
 
-## Состояния подписки
+## Subscription States
 
 ```
-Активна → (за 24h) → Вот-вот истекает → Истекла
+Active → (24h before) → About to Expire → Expired
   ↓
-  └→ Продление → Активна
+  └→ Renewal → Active
 ```
 
-Пользователи могут:
-- ✅ Просмотреть статус подписки в любое время
-- ✅ Продлить рано, если нужно
-- ✅ Изменить план при продлении
-- ✅ Переключить способ оплаты
-- ❌ Не могут вернуть активные дни
+Users can:
+- ✅ View subscription status anytime
+- ✅ Renew early if desired
+- ✅ Change plan on renewal
+- ✅ Switch payment methods
+- ❌ Cannot refund active days
 
-## Отслеживание БД
+## Database Tracking
 
-Подписки отслеживаются в PostgreSQL:
+Subscriptions tracked in PostgreSQL:
 
-- Даты подписки
-- Использованный способ оплаты
-- Использованный трафик
-- Назначения сквадов
-- Предпочтения пользователя
+- Subscription dates
+- Payment method used
+- Traffic consumed
+- Squad assignments
+- User preferences
 
-Доступно через панель Remnawave или прямые запросы.
+Accessible via Remnawave panel or direct queries.
 
-## Устранение неполадок
+## Troubleshooting
 
-**Пользователь не получает напоминание**
-- Проверьте системное время (16:00 UTC)
-- Проверьте действительность токена Telegram
-- Проверьте предпочтение языка пользователя
+**User not receiving reminder**
+- Check system time (16:00 UTC)
+- Verify Telegram token is active
+- Check user language preference
 
-**Пробный период не активируется**
-- Проверьте `TRIAL_DAYS > 0`
-- Проверьте подключение Remnawave
-- Просмотрите логи на предмет ошибок
+**Trial not activating**
+- Verify `TRIAL_DAYS > 0`
+- Check Remnawave connectivity
+- Review logs for errors
 
-**Не получается продлить подписку**
-- Убедитесь, что способ оплаты включен
-- Проверьте, нет ли проблем с балансом пользователя
-- Проверьте подключение к панели Remnawave
+**Can't renew subscription**
+- Ensure payment method is enabled
+- Verify user has no balance issues
+- Check Remnawave panel connectivity

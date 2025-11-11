@@ -1,128 +1,128 @@
 ---
-title: Команды администратора
-description: Доступные команды для администраторов бота
+title: Admin Commands
+description: Available commands for bot administrators
 ---
 
-## Справочник команд администратора
+## Admin Command Reference
 
 ### /sync
 
-Синхронизируйте пользователей из панели Remnawave с БД.
+Synchronize users from Remnawave panel with database.
 
-**Что делает:**
-- Загружает всех пользователей с панели Remnawave
-- Обновляет существующих пользователей в БД
-- Удаляет пользователей, которых больше нет в Remnawave
-- Обеспечивает согласованность БД
+**What it does:**
+- Fetches all users from Remnawave panel
+- Updates existing users in database
+- Removes users no longer present in Remnawave
+- Ensures database consistency
 
-**Использование:**
+**Usage:**
 ```
-Отправьте команду /sync боту как администратор
-```
-
-**Требует:**
-- Пользовательский ID в `ADMIN_TELEGRAM_ID`
-- Действительные учётные данные API Remnawave
-- Подключение к БД
-
-**Когда использовать:**
-- После массовых изменений пользователей в Remnawave
-- Для исправления несоответствий БД
-- Как часть режима обслуживания
-- До/после миграций
-
-**Пример сценария:**
-```
-Администратор вносит изменения в панель Remnawave
-→ Администратор выполняет команду /sync
-→ Бот загружает обновленный список пользователей
-→ БД синхронизирована
-→ Всё согласовано
+Send /sync command to the bot as admin
 ```
 
-## Будущие команды
+**Requires:**
+- User ID in `ADMIN_TELEGRAM_ID`
+- Valid Remnawave API credentials
+- Database connectivity
 
-Следующие команды могут быть добавлены:
+**When to use:**
+- After bulk user changes in Remnawave
+- To fix database inconsistencies
+- As part of maintenance routine
+- Before/after migrations
 
-- `/stats` - Просмотр статистики
-- `/broadcast` - Отправить сообщение всем пользователям
-- `/suspend <id>` - Приостановить пользователя
-- `/ban <id>` - Забанить пользователя
-- `/refund <id>` - Обработать возврат
-- `/export` - Экспортировать данные пользователей
+**Example scenario:**
+```
+Admin makes changes in Remnawave panel
+→ Administrator runs /sync command
+→ Bot fetches updated user list
+→ Database synchronized
+→ All consistent
+```
 
-## Управление доступом пользователей
+## Future Commands
 
-Только пользователи с ID в `ADMIN_TELEGRAM_ID` могут выполнять команды администратора.
+The following commands may be added:
 
-Чтобы установить ваш ID администратора:
+- `/stats` - View statistics
+- `/broadcast` - Send message to all users
+- `/suspend <id>` - Suspend user
+- `/ban <id>` - Ban user
+- `/refund <id>` - Process refund
+- `/export` - Export user data
+
+## User Access Control
+
+Only users with ID in `ADMIN_TELEGRAM_ID` can run admin commands.
+
+To set your admin ID:
 
 ```env
 ADMIN_TELEGRAM_ID=123456789
 ```
 
-Найдите ваш Telegram ID:
-- Отправьте любое сообщение [@userinfobot](https://t.me/userinfobot)
-- Запишите возвращённый ID
-- Добавьте в конфигурацию
+Find your Telegram ID:
+- Send any message to [@userinfobot](https://t.me/userinfobot)
+- Note the ID returned
+- Add to configuration
 
-## Разрешения команд
+## Command Permissions
 
-| Команда | Требуемое разрешение |
-|---------|------------------|
-| `/start` | Любой пользователь |
-| `/help` | Любой пользователь |
-| `/sync` | Только администратор |
+| Command | Permission Required |
+|---------|-------------------|
+| `/start` | Any user |
+| `/help` | Any user |
+| `/sync` | Admin only |
 
-## Лучшие практики
+## Best Practices
 
-1. **Выполняйте /sync регулярно** - Ежедневное или еженедельное обслуживание
-2. **Проверяйте логи** - Подтвердите успешное выполнение
-3. **Мониторьте производительность** - Крупные операции синхронизации могут занять время
-4. **Создайте резервную копию БД** - Перед крупными операциями
-5. **Документируйте изменения** - Ведите журнал действий администратора
+1. **Run /sync regularly** - Daily or weekly maintenance
+2. **Check logs** - Verify successful execution
+3. **Monitor performance** - Large sync operations may take time
+4. **Backup database** - Before major operations
+5. **Document changes** - Keep audit log of admin actions
 
-## Устранение неполадок
+## Troubleshooting
 
-### /sync не работает
+### /sync not working
 
-**Проверьте:**
-- `ADMIN_TELEGRAM_ID` соответствует вашему ID
-- API Remnawave доступен
-- Учётные данные API действительны
-- Подключение к БД активно
+**Check:**
+- `ADMIN_TELEGRAM_ID` matches your ID
+- Remnawave API is accessible
+- API credentials are valid
+- Database connection is active
 
-**Исправьте:**
+**Fix:**
 ```bash
-# Просмотрите логи
+# View logs
 docker compose logs remnawave-telegram-shop-bot
 
-# Проверьте БД
+# Check database
 docker compose logs postgres
 
-# Перезагрузитесь при необходимости
+# Restart if needed
 docker compose restart remnawave-telegram-shop-bot
 ```
 
-### Доступ запрещён
+### Access Denied
 
-- Проверьте ваш Telegram ID
-- Подтвердите, что он в `ADMIN_TELEGRAM_ID`
-- Перезагрузите бота: `docker compose down && docker compose up -d`
+- Verify your Telegram ID
+- Confirm it's in `ADMIN_TELEGRAM_ID`
+- Restart bot: `docker compose down && docker compose up -d`
 
-### Синхронизация медленная
+### Sync is slow
 
-- Большие базы пользователей требуют времени
-- Проверьте производительность БД
-- Контролируйте ресурсы сервера
-- Выполняйте в часы низкой нагрузки
+- Large user bases take time
+- Check database performance
+- Monitor server resources
+- Run during off-peak hours
 
-## Соображения безопасности
+## Security Considerations
 
-✅ Команды администратора безопасны  
-✅ Только авторизованные пользователи могут выполнять  
-✅ Все действия регистрируются  
-✅ Операции атомарны  
+✅ Admin commands are secure  
+✅ Only authorized users can execute  
+✅ All actions are logged  
+✅ Operations are atomic  
 
-❌ Никогда не делитесь ID администратора  
-❌ Не транслируйте чувствительную информацию
+❌ Never share your admin ID  
+❌ Don't broadcast sensitive info

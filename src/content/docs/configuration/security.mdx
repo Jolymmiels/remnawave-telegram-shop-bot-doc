@@ -1,82 +1,83 @@
 ---
-title: Параметры безопасности
-description: Настройка фильтрации пользователей и функций безопасности
+title: Security Settings
+description: Configure user filtering and security features
 ---
 
-## Фильтрация пользователей
+## User Filtering
 
-Бот включает встроенные функции безопасности для предотвращения злоупотреблений:
+The bot includes built-in security features to prevent abuse:
 
-### Заблокированные пользователи
+### Blocked Users
 
-Заблокируйте определённые Telegram ID от доступа к боту:
+Block specific Telegram IDs from accessing the bot:
 
 ```env
 BLOCKED_TELEGRAM_IDS=123456789,987654321,555555555
 ```
 
-- Добавьте Telegram ID пользователей, разделённые запятой
-- Изменения вступают в силу после перезагрузки
-- Полезно для блокировки спамеров или нарушителей
+- Add comma-separated Telegram user IDs
+- Changes take effect after restart
+- Useful for blocking spammers or abusers
 
-### Белые списки пользователей
+### Whitelisted Users
 
-Разрешить определённым пользователям обойти проверки безопасности:
+Allow specific users to bypass security checks:
 
 ```env
 WHITELISTED_TELEGRAM_IDS=111111111,222222222,333333333
 ```
 
-- Пользователи в белом списке пропускают проверку подозрительных аккаунтов
-- Изменения вступают в силу немедленно
-- Полезно для служебных аккаунтов или сотрудников
+- Whitelisted users skip suspicious account detection
+- Changes take effect immediately
+- Useful for service accounts or staff
 
-## Обнаружение подозрительных пользователей
+## Suspicious User Detection
 
-Бот автоматически обнаруживает потенциально вредоносные аккаунты:
+The bot automatically detects potentially malicious accounts:
 
-### Методы обнаружения
+### Detection Methods
 
-1. **Анализ ключевых слов**: Проверяет паттерны фишинга/мошенничества
-2. **Проверка имён аккаунтов**: Выявляет подозрительные имена
-3. **Комбинированные проверки**: Анализирует опасные комбинации ключевых слов
-4. **Распознавание служебных аккаунтов**: Разрешает легитимные аккаунты типа `@CompanySupportAdmin`
+1. **Keyword Analysis**: Checks for phishing/fraud patterns
+2. **Account Name Validation**: Identifies suspicious account names
+3. **Combination Checks**: Analyzes dangerous keyword combinations
+4. **Service Account Recognition**: Allows legitimate accounts like `@CompanySupportAdmin`
 
-### Как это работает
+### How It Works
 
 ```
-Входящий пользователь → Проверка имени → Анализ ключевых слов → 
-→ Проверка служебного аккаунта → Решение (Разрешить/Заблокировать)
+Detection Flow:
+Incoming User → Account Name Check → Keyword Analysis → 
+→ Service Account Test → Decision (Allow/Block)
 ```
 
-## Лучшие практики
+## Best Practices
 
-1. **Регулярный мониторинг**: Проверяйте логи на наличие заблокированных пользователей
-2. **Управление белым списком**: Держите список актуальным
-3. **Обновление обнаружения**: Обновляйте бот для новых правил безопасности
-4. **Аудит доступа**: Периодически проверяйте учётные записи в белом списке
+1. **Regular Monitoring**: Check logs for blocked users
+2. **Whitelist Management**: Keep whitelist current
+3. **Update Detection**: Keep bot updated for latest security rules
+4. **Audit Access**: Review whitelisted accounts periodically
 
-## Пример конфигурации
+## Example Configuration
 
 ```env
-# Блокируйте известных спамеров
+# Block known spammers
 BLOCKED_TELEGRAM_IDS=123456789,987654321
 
-# Белый список служебного персонала
+# Whitelist service staff
 WHITELISTED_TELEGRAM_IDS=111111111,222222222,333333333
 ```
 
-## Устранение неполадок
+## Troubleshooting
 
-### Легитимные пользователи заблокированы
+### Legitimate users blocked
 
-Если действительные пользователи заблокированы:
-1. Добавьте их в WHITELISTED_TELEGRAM_IDS
-2. Сообщите о ложном срабатывании на GitHub
-3. Проверьте, не совпадают ли имена аккаунтов с паттернами фишинга
+If valid users are blocked:
+1. Add them to WHITELISTED_TELEGRAM_IDS
+2. Report the false positive on GitHub
+3. Check account names don't match phishing patterns
 
-### Изменения не вступают в силу
+### Changes not taking effect
 
-- Перезагрузите бота: `docker compose down && docker compose up -d`
-- Проверьте формат переменной окружения
-- Проверьте на опечатки в ID
+- Restart the bot: `docker compose down && docker compose up -d`
+- Verify the environment variable format
+- Check for typos in IDs

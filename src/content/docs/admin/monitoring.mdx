@@ -1,19 +1,19 @@
 ---
-title: Мониторинг и проверки здоровья
-description: Мониторинг статуса бота и проверки здоровья
+title: Monitoring & Health Checks
+description: Monitor bot status and health
 ---
 
-## Конечная точка проверки здоровья
+## Health Check Endpoint
 
-Бот предоставляет конечную точку мониторинга на настроенном порту.
+The bot provides a monitoring endpoint on the configured port.
 
 ```bash
 curl http://your-bot:8080/healthcheck
 ```
 
-### Ответ
+### Response
 
-**Здоров (200 OK):**
+**Healthy (200 OK):**
 ```json
 {
   "status": "ok",
@@ -23,7 +23,7 @@ curl http://your-bot:8080/healthcheck
 }
 ```
 
-**Ошибка (500 Error):**
+**Error (500 Error):**
 ```json
 {
   "status": "error",
@@ -31,18 +31,18 @@ curl http://your-bot:8080/healthcheck
 }
 ```
 
-## Что проверяется
+## What Gets Checked
 
-1. **База данных** - Подключение к PostgreSQL
-2. **Панель Remnawave** - Доступность API
-3. **Служба бота** - Процесс запущен
-4. **API ключ** - Учётные данные действительны
+1. **Database** - PostgreSQL connectivity
+2. **Remnawave Panel** - API availability
+3. **Bot Service** - Process running
+4. **API Key** - Credentials valid
 
-## Настройка мониторинга
+## Monitoring Setup
 
-### Проверка здоровья Docker Compose
+### Docker Compose Health Check
 
-Уже настроена в `docker-compose.yaml`:
+Already configured in `docker-compose.yaml`:
 
 ```yaml
 healthcheck:
@@ -52,113 +52,113 @@ healthcheck:
   retries: 3
 ```
 
-### Ручной мониторинг
+### Manual Monitoring
 
-Регулярно проверяйте статус:
+Check status regularly:
 
 ```bash
-# Проверить сейчас
+# Check now
 curl -s http://localhost:8080/healthcheck | jq
 
-# Проверить каждую минуту
+# Check every minute
 watch -n 60 'curl -s http://localhost:8080/healthcheck | jq'
 
-# Записать результаты
+# Log results
 while true; do
   echo "$(date): $(curl -s http://localhost:8080/healthcheck)"
   sleep 60
 done >> /var/log/bot-health.log
 ```
 
-### Внешний мониторинг
+### External Monitoring
 
-**Uptime Robot** (рекомендуется):
-1. Перейдите на [uptimerobot.com](https://uptimerobot.com)
-2. Добавьте HTTP монитор
+**Uptime Robot** (recommended):
+1. Go to [uptimerobot.com](https://uptimerobot.com)
+2. Add HTTP monitor
 3. URL: `https://bot.example.com/healthcheck`
-4. Интервал: 5 минут
-5. Получайте оповещения об отказах
+4. Interval: 5 minutes
+5. Get alerts on failures
 
 **Grafana + Prometheus**:
-- Скрейпируйте конечную точку каждые 30 сек
-- Создавайте дашборды
-- Устанавливайте оповещения
+- Scrape endpoint every 30s
+- Create dashboards
+- Set up alerts
 
-## Логи и отладка
+## Logs & Debugging
 
-### Просмотр логов
+### View Logs
 
 ```bash
-# Текущие логи
+# Current logs
 docker compose logs remnawave-telegram-shop-bot
 
-# Следить за логами (в реальном времени)
+# Follow logs (live)
 docker compose logs -f remnawave-telegram-shop-bot
 
-# Последние N строк
+# Last N lines
 docker compose logs --tail 100 remnawave-telegram-shop-bot
 
-# Определённый диапазон времени
+# Specific time range
 docker compose logs --since 2024-11-10T10:00:00 --until 2024-11-10T11:00:00 remnawave-telegram-shop-bot
 ```
 
-### Логи БД
+### Database Logs
 
 ```bash
 docker compose logs -f postgres
 ```
 
-### Фильтрация логов
+### Filter Logs
 
 ```bash
-# Только ошибки
+# Errors only
 docker compose logs remnawave-telegram-shop-bot | grep ERROR
 
-# Связанные с платежами
+# Payment related
 docker compose logs remnawave-telegram-shop-bot | grep -i payment
 
-# Конкретный пользователь
+# Specific user
 docker compose logs remnawave-telegram-shop-bot | grep "user_id:123456789"
 ```
 
-## Ключевые метрики для контроля
+## Key Metrics to Monitor
 
-| Метрика | Здорово | Предупреждение | Критично |
-|---------|---------|---|----------|
-| Время отклика | < 100ms | 100-500ms | > 500ms |
-| Уровень ошибок | < 1% | 1-5% | > 5% |
-| Использование CPU | < 50% | 50-80% | > 80% |
-| Память | < 500MB | 500-1GB | > 1GB |
-| Подключения БД | < 10 | 10-20 | > 20 |
+| Metric | Healthy | Warning | Critical |
+|--------|---------|---------|----------|
+| Response Time | under 100ms | 100-500ms | over 500ms |
+| Error Rate | under 1% | 1-5% | over 5% |
+| CPU Usage | under 50% | 50-80% | over 80% |
+| Memory | under 500MB | 500-1GB | over 1GB |
+| DB Connections | under 10 | 10-20 | over 20 |
 
-## Оптимизация производительности
+## Performance Tuning
 
-### Оптимизация БД
+### Optimize Database
 
 ```sql
--- Проверьте медленные запросы
+-- Check slow queries
 EXPLAIN ANALYZE SELECT * FROM subscriptions WHERE user_id = 123;
 
--- Создайте индексы при необходимости
+-- Create indexes if needed
 CREATE INDEX idx_subscriptions_user_id ON subscriptions(user_id);
 
--- Проверьте раздутость
+-- Check bloat
 SELECT * FROM pg_stat_user_tables WHERE n_dead_tup > 1000;
 ```
 
-### Масштабирование бота
+### Scale Bot
 
-- Несколько экземпляров за балансировщик нагрузки
-- Репликация БД
-- Слой кэширования (Redis)
-- CDN для статического контента
+- Multiple instances behind load balancer
+- Database replication
+- Cache layer (Redis)
+- CDN for static content
 
-## Настройка оповещений
+## Alert Setup
 
-### Email оповещения
+### Email Alerts
 
 ```bash
-# В crontab
+# In crontab
 */5 * * * * /usr/local/bin/check-bot-health.sh
 
 #!/bin/bash
@@ -167,50 +167,50 @@ if ! curl -s http://localhost:8080/healthcheck | grep -q "ok"; then
 fi
 ```
 
-### Уведомления в Telegram
+### Telegram Notifications
 
 ```bash
-# Отправить оповещение администратору
+# Send alert to admin
 curl -X POST https://api.telegram.org/bot<TOKEN>/sendMessage \
   -d "chat_id=<ADMIN_ID>" \
   -d "text=Bot health check failed"
 ```
 
-## Устранение неполадок нездорового бота
+## Troubleshooting Unhealthy Bot
 
-1. **Проверьте процесс**
+1. **Check Process**
    ```bash
    docker compose ps
    docker compose logs -f
    ```
 
-2. **Проверьте БД**
+2. **Check Database**
    ```bash
    docker compose exec postgres psql -U remnawave -d remnawave -c "SELECT 1"
    ```
 
-3. **Проверьте Remnawave**
+3. **Check Remnawave**
    ```bash
    curl https://your-panel.com/health
    ```
 
-4. **Перезагрузитесь при необходимости**
+4. **Restart If Needed**
    ```bash
    docker compose restart remnawave-telegram-shop-bot
    ```
 
-5. **Полная перезагрузка**
+5. **Full Restart**
    ```bash
    docker compose down
    docker compose up -d
    docker compose logs -f
    ```
 
-## Окна обслуживания
+## Maintenance Windows
 
-Планируйте обслуживание в часы низкой нагрузки:
-- 2-4 AM локальное время
-- Обновление образов Docker
-- Обслуживание БД
-- Резервная копия данных
-- Тестирование восстановления
+Plan maintenance during low-traffic hours:
+- 2-4 AM local time
+- Update Docker images
+- Run database maintenance
+- Backup data
+- Test restore procedures

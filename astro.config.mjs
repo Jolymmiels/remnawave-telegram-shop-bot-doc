@@ -3,60 +3,86 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
 export default defineConfig({
-	site: 'https://remnawave-doc.example.com',
+	site: 'https://docs.example.com',
 	integrations: [
 		starlight({
-			title: 'Remnawave Telegram Shop',
-			description: 'Complete documentation for Remnawave Telegram Shop Bot',
+			title: 'Remnawave Telegram Shop Bot',
+			description: 'Complete documentation for managing VPN subscriptions through Telegram',
 			logo: {
 				src: './src/assets/logo.svg',
 			},
 			defaultLocale: 'root',
 			locales: {
 				root: {
-					label: 'Русский',
-					lang: 'ru-RU',
-				},
-				en: {
 					label: 'English',
-					lang: 'en-US',
+					lang: 'en',
+				},
+				ru: {
+					label: 'Русский',
+					lang: 'ru',
 				},
 			},
-			tableOfContents: { minHeadingLevel: 2, maxHeadingLevel: 3 },
+			editLink: {
+				baseUrl: 'https://github.com/Jolymmiels/remnawave-telegram-shop-bot-doc/edit/main/docs/',
+			},
 			social: [
-				{ icon: 'telegram', label: 'Telegram', href: 'https://t.me/remnawavetelegramshop' },
 				{ icon: 'github', label: 'GitHub', href: 'https://github.com/Jolymmiels/remnawave-telegram-shop' },
+				{ icon: 'telegram', label: 'Telegram', href: 'https://t.me/remnawavetelegramshop' },
 			],
 			sidebar: [
 				{
-					label: 'Начало',
-					translations: { en: 'Getting Started' },
-					autogenerate: { directory: 'getting-started' },
+					label: 'Getting Started',
+					translations: { ru: 'Начало' },
+					items: [
+						{ label: 'Overview', slug: 'getting-started/overview', translations: { ru: 'Обзор' } },
+						{ label: 'Setup', slug: 'getting-started/setup', translations: { ru: 'Установка' } },
+					],
 				},
 				{
-					label: 'Конфигурация',
-					translations: { en: 'Configuration' },
-					autogenerate: { directory: 'configuration' },
+					label: 'Configuration',
+					translations: { ru: 'Конфигурация' },
+					items: [
+						{ label: 'Environment Variables', slug: 'configuration/variables', translations: { ru: 'Переменные окружения' } },
+						{ label: 'Squad Configuration', slug: 'configuration/squads', translations: { ru: 'Конфигурация отрядов' } },
+						{ label: 'Security Settings', slug: 'configuration/security', translations: { ru: 'Параметры безопасности' } },
+					],
 				},
 				{
-					label: 'Возможности',
-					translations: { en: 'Features' },
-					autogenerate: { directory: 'features' },
+					label: 'Features',
+					translations: { ru: 'Возможности' },
+					items: [
+						{ label: 'Core Features', slug: 'features/core', translations: { ru: 'Основные возможности' } },
+						{ label: 'Payment Methods', slug: 'features/payments', translations: { ru: 'Методы оплаты' } },
+						{ label: 'Subscriptions', slug: 'features/subscriptions', translations: { ru: 'Подписки' } },
+					],
 				},
 				{
-					label: 'Платежные системы',
-					translations: { en: 'Payment Systems' },
-					autogenerate: { directory: 'payments' },
+					label: 'Payment Systems',
+					translations: { ru: 'Платежные системы' },
+					items: [
+						{ label: 'YooKassa', slug: 'payments/yookassa', translations: { ru: 'YooKassa' } },
+						{ label: 'CryptoPay', slug: 'payments/cryptopay', translations: { ru: 'CryptoPay' } },
+						{ label: 'Telegram Stars', slug: 'payments/telegram-stars', translations: { ru: 'Telegram Stars' } },
+						{ label: 'Tribute', slug: 'payments/tribute', translations: { ru: 'Tribute' } },
+					],
 				},
 				{
-					label: 'Администрирование',
-					translations: { en: 'Administration' },
-					autogenerate: { directory: 'admin' },
+					label: 'Administration',
+					translations: { ru: 'Администрирование' },
+					items: [
+						{ label: 'Admin Commands', slug: 'admin/commands', translations: { ru: 'Команды администратора' } },
+						{ label: 'User Management', slug: 'admin/users', translations: { ru: 'Управление пользователями' } },
+						{ label: 'Monitoring', slug: 'admin/monitoring', translations: { ru: 'Мониторинг' } },
+						{ label: 'Maintenance', slug: 'admin/maintenance', translations: { ru: 'Обслуживание' } },
+					],
 				},
 				{
-					label: 'Решение проблем',
-					translations: { en: 'Troubleshooting' },
-					autogenerate: { directory: 'troubleshooting' },
+					label: 'Troubleshooting',
+					translations: { ru: 'Устранение неполадок' },
+					items: [
+						{ label: 'Common Issues', slug: 'troubleshooting/issues', translations: { ru: 'Частые проблемы' } },
+						{ label: 'Logs & Debugging', slug: 'troubleshooting/logs', translations: { ru: 'Логи и отладка' } },
+					],
 				},
 			],
 			customCss: ['./src/styles/custom.css'],

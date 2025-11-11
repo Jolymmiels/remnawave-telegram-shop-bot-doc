@@ -1,20 +1,20 @@
 ---
-title: Переменные окружения
-description: Полный справочник всех переменных конфигурации
+title: Environment Variables
+description: Complete reference for all configuration variables
 ---
 
-## Основная конфигурация
+## Essential Configuration
 
-| Переменная | Описание | Пример |
-|-----------|---------|---------|
-| `TELEGRAM_TOKEN` | Токен API Telegram бота | `123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11` |
-| `DATABASE_URL` | Строка подключения PostgreSQL | `postgresql://user:pass@postgres:5432/remnawave` |
-| `REMNAWAVE_URL` | URL API панели Remnawave | `https://panel.example.com` |
-| `REMNAWAVE_TOKEN` | Токен API Remnawave | `your_token` |
-| `X_API_KEY` | API ключ панели | `your_key` |
-| `ADMIN_TELEGRAM_ID` | Telegram ID администратора | `123456789` |
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `TELEGRAM_TOKEN` | Telegram Bot API token | `123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11` |
+| `DATABASE_URL` | PostgreSQL connection string | `postgresql://user:pass@postgres:5432/remnawave` |
+| `REMNAWAVE_URL` | Remnawave panel API URL | `https://panel.example.com` |
+| `REMNAWAVE_TOKEN` | Remnawave API token | `your_token` |
+| `X_API_KEY` | Panel API key | `your_key` |
+| `ADMIN_TELEGRAM_ID` | Admin's Telegram ID | `123456789` |
 
-## Конфигурация ценообразования
+## Pricing Configuration
 
 ```env
 PRICE_1=5
@@ -24,7 +24,7 @@ PRICE_12=35
 DAYS_IN_MONTH=30
 ```
 
-Для Telegram Stars:
+For Telegram Stars:
 ```env
 STARS_PRICE_1=50
 STARS_PRICE_3=120
@@ -32,7 +32,7 @@ STARS_PRICE_6=200
 STARS_PRICE_12=350
 ```
 
-## Параметры подписок и пробных периодов
+## Subscription & Trial Settings
 
 ```env
 REMNAWAVE_TAG=paying_user
@@ -43,7 +43,7 @@ TRAFFIC_LIMIT=100
 REFERRAL_DAYS=0
 ```
 
-## Платежные системы
+## Payment Systems
 
 ### YooKassa
 ```env
@@ -75,7 +75,7 @@ TRIBUTE_PAYMENT_URL=https://t.me/tribute/app?startapp=...
 HEALTH_CHECK_PORT=8080
 ```
 
-## Интерфейс и ссылки
+## UI & Links
 
 ```env
 DEFAULT_LANGUAGE=ru
@@ -88,14 +88,14 @@ CHANNEL_URL=https://t.me/channel
 TOS_URL=https://example.com/tos
 ```
 
-## Управление пользователями
+## User Management
 
 ```env
 BLOCKED_TELEGRAM_IDS=123456789,987654321
 WHITELISTED_TELEGRAM_IDS=111111111,222222222
 ```
 
-## Конфигурация БД
+## Database Configuration
 
 ```env
 POSTGRES_USER=remnawave
@@ -103,7 +103,7 @@ POSTGRES_PASSWORD=secure_password
 POSTGRES_DB=remnawave
 ```
 
-## Конфигурация сервера
+## Server Configuration
 
 ```env
 HEALTH_CHECK_PORT=8080

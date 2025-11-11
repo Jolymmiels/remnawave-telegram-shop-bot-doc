@@ -71,7 +71,6 @@ Tribute provides recurring subscription management through Telegram with automat
 3. User completes Telegram subscription
 4. Tribute sends webhook to your bot
 5. Bot activates subscription for user
-6. User receives VPN configuration
 
 ## Configuration Variables
 
@@ -81,21 +80,6 @@ Tribute provides recurring subscription management through Telegram with automat
 | `TRIBUTE_API_KEY` | API key from Tribute settings |
 | `TRIBUTE_PAYMENT_URL` | Subscription link from Tribute |
 | `HEALTH_CHECK_PORT` | Port for webhook (usually 8080) |
-
-## Advantages
-
-✅ Recurring subscriptions  
-✅ Automatic renewals  
-✅ Multi-currency support  
-✅ Subscription dashboard  
-✅ Customer management  
-
-## Limitations
-
-❌ Requires public domain and SSL  
-❌ More complex setup  
-❌ Dependent on Tribute availability  
-❌ Webhook configuration needed
 
 ## Getting API Key
 
@@ -111,46 +95,6 @@ Tribute provides recurring subscription management through Telegram with automat
 # Using Certbot with Nginx
 sudo certbot certonly --standalone -d bot.example.com
 ```
-
-### Self-Signed (Testing Only)
-```bash
-openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365
-```
-
-## Troubleshooting
-
-### Webhook Not Received
-- Verify domain is public and resolvable
-- Check SSL certificate is valid
-- Test endpoint: `curl -I https://bot.example.com/tribute/webhook`
-- Check firewall allows port 443
-
-### Bot Not Activating Subscriptions
-- Verify `TRIBUTE_API_KEY` is correct
-- Check bot logs: `docker compose logs remnawave-telegram-shop-bot`
-- Ensure Remnawave connectivity
-- Review webhook signature
-
-### Invalid API Key
-- Regenerate key in Tribute settings
-- Verify no extra spaces in `.env`
-- Restart bot after updating
-
-## Testing
-
-1. Create test Telegram channel
-2. Set up Tribute subscription (test amount)
-3. Configure bot with test URL
-4. Send test webhook from Tribute dashboard
-5. Verify bot receives and processes it
-
-## Security
-
-✅ Use strong API keys  
-✅ Keep webhook path secret  
-✅ Validate webhook signatures  
-✅ Monitor failed webhooks  
-✅ Rotate keys periodically  
 
 ## Support
 

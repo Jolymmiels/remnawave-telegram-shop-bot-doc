@@ -1,91 +1,120 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import starlightScrollToTop from 'starlight-scroll-to-top';
+import starlightUtils from "@lorenzo_lewis/starlight-utils";
+import starlightLinksValidator from 'starlight-links-validator'
+import starlightSidebarTopics from 'starlight-sidebar-topics';
+import starlightKbd from 'starlight-kbd';
+import autoImport from 'astro-auto-import';
+import starlightGitHubAlerts from 'starlight-github-alerts';
+import starlightThemeGalaxy from 'starlight-theme-galaxy';
 
+// https://astro.build/config
 export default defineConfig({
-	site: 'https://docs.example.com',
+	site: 'https://wiki.egam.es',
 	integrations: [
+		autoImport({
+			imports: [],
+		}),
 		starlight({
-			title: 'Remnawave Telegram Shop Bot',
-			description: 'Complete documentation for managing VPN subscriptions through Telegram',
-			logo: {
-				src: './src/assets/logo.svg',
+			components: {
+				SiteTitle: './src/components/SiteTitle.astro',
 			},
-			defaultLocale: 'root',
+			plugins: [
+				starlightThemeGalaxy(),
+				starlightGitHubAlerts(),
+				starlightScrollToTop({
+					showTooltip: false,
+					borderRadius: '25',
+				}),
+				starlightKbd({
+					globalPicker: false,
+					types: [
+						{ id: 'mac', label: 'macOS' },
+						{ id: 'windows', label: 'Windows', default: true },
+						{ id: 'linux', label: 'Linux' },
+					]
+				})
+			],
+			title: 'Remnawave Reverse-Proxy',
+			logo: {
+				src: './src/assets/logo.webp',
+			},
+			customCss: [
+				'./src/styles/custom.css',
+			],
+			defaultLocale: 'root', // https://starlight.astro.build/guides/i18n/
 			locales: {
 				root: {
 					label: 'English',
-					lang: 'en',
+					lang: 'en', // lang is required for the root locales
 				},
-				ru: {
+				'ru': {
 					label: 'Русский',
 					lang: 'ru',
 				},
 			},
 			editLink: {
-				baseUrl: 'https://github.com/Jolymmiels/remnawave-telegram-shop-bot-doc/edit/main/docs/',
+				baseUrl: "https://github.com/eGamesAPI/remnawave-reverse-proxy/edit/main/docs/",
 			},
 			social: [
-				{ icon: 'github', label: 'GitHub', href: 'https://github.com/Jolymmiels/remnawave-telegram-shop' },
-				{ icon: 'telegram', label: 'Telegram', href: 'https://t.me/remnawavetelegramshop' },
+				{ icon: 'github', label: 'GitHub', href: 'https://github.com/eGamesAPI/remnawave-reverse-proxy/' },
+				{ icon: 'telegram', label: 'Telegram', href: 'https://t.me/remnawave_reverse' },
+				{ icon: 'seti:zip', label: 'Used resources', href: '/contribution/resources' }
 			],
 			sidebar: [
 				{
-					label: 'Getting Started',
-					translations: { ru: 'Начало' },
+					label: 'Introduction', translations: { ru: 'Введение' },
 					items: [
-						{ label: 'Overview', slug: 'getting-started/overview', translations: { ru: 'Обзор' } },
-						{ label: 'Setup', slug: 'getting-started/setup', translations: { ru: 'Установка' } },
+						{ label: 'Overview', slug: 'introduction/overview', translations: { ru: 'Обзор' } },
 					],
 				},
 				{
-					label: 'Configuration',
-					translations: { ru: 'Конфигурация' },
+					label: 'Installation', translations: { ru: 'Установка' },
 					items: [
-						{ label: 'Environment Variables', slug: 'configuration/variables', translations: { ru: 'Переменные окружения' } },
-						{ label: 'Squad Configuration', slug: 'configuration/squads', translations: { ru: 'Конфигурация отрядов' } },
-						{ label: 'Security Settings', slug: 'configuration/security', translations: { ru: 'Параметры безопасности' } },
+						{ label: 'Requirements', slug: 'installation/requirements', translations: { ru: 'Обязательные условия' } },
+						{ label: 'Panel and node', slug: 'installation/panel-and-node', translations: { ru: 'Панель и нода' } },
+						{ label: 'Panel only', slug: 'installation/panel-only', translations: { ru: 'Только панель' } },
+						{ label: 'Node only', slug: 'installation/node-only', translations: { ru: 'Только нода' } },
+						{ label: 'Add node to panel', slug: 'installation/add-node', translations: { ru: 'Добавление ноды в панель' } },
 					],
 				},
 				{
-					label: 'Features',
-					translations: { ru: 'Возможности' },
+					label: 'Configuration Remnawave', translations: { ru: 'Настройка Remnawave' },
 					items: [
-						{ label: 'Core Features', slug: 'features/core', translations: { ru: 'Основные возможности' } },
-						{ label: 'Payment Methods', slug: 'features/payments', translations: { ru: 'Методы оплаты' } },
-						{ label: 'Subscriptions', slug: 'features/subscriptions', translations: { ru: 'Подписки' } },
+						{ label: 'How to replace a domain', slug: 'configuration/how-to-replace-a-domain', translations: { ru: 'Как изменить домен' } },
+						{ label: 'Access to Prometheus metrics', slug: 'configuration/prometheus-metrics', translations: { ru: 'Доступ к метрикам Prometheus' } },
+						{ label: 'External access to API', slug: 'configuration/external-api', translations: { ru: 'Внешний доступ к API' } },
 					],
 				},
 				{
-					label: 'Payment Systems',
-					translations: { ru: 'Платежные системы' },
+					label: 'Configuration', translations: { ru: 'Настройка' },
 					items: [
-						{ label: 'YooKassa', slug: 'payments/yookassa', translations: { ru: 'YooKassa' } },
-						{ label: 'CryptoPay', slug: 'payments/cryptopay', translations: { ru: 'CryptoPay' } },
-						{ label: 'Telegram Stars', slug: 'payments/telegram-stars', translations: { ru: 'Telegram Stars' } },
-						{ label: 'Tribute', slug: 'payments/tribute', translations: { ru: 'Tribute' } },
+						{ label: 'Certwarden', slug: 'configuration/certwarden', translations: { ru: 'Certwarden' } },
+						{ label: 'Warp Native', slug: 'configuration/warp-native', translations: { ru: 'Warp Native' } },
+						{ label: 'Beszel', slug: 'configuration/beszel', translations: { ru: 'Beszel' } },
+						{ label: 'Netbird', slug: 'configuration/netbird', translations: { ru: 'Netbird' } },
+						{ label: 'Monitoring with Grafana and Victoria Metrics', slug: 'configuration/grafana-monitoring-setup', translations: { ru: 'Мониторинг через Grafana и Victoria Metrics' } },
+						{ label: 'SWAG (Secure Web Application Gateway)', slug: 'configuration/swag', translations: { ru: 'SWAG (Secure Web Application Gateway)' } },
 					],
 				},
 				{
-					label: 'Administration',
-					translations: { ru: 'Администрирование' },
+					label: 'Troubleshooting', translations: { ru: 'Устранение неполадок' },
 					items: [
-						{ label: 'Admin Commands', slug: 'admin/commands', translations: { ru: 'Команды администратора' } },
-						{ label: 'User Management', slug: 'admin/users', translations: { ru: 'Управление пользователями' } },
-						{ label: 'Monitoring', slug: 'admin/monitoring', translations: { ru: 'Мониторинг' } },
-						{ label: 'Maintenance', slug: 'admin/maintenance', translations: { ru: 'Обслуживание' } },
+						{ label: 'Common issues', slug: 'troubleshooting/common-issues', translations: { ru: 'Частые проблемы' } },
+						{ label: 'Docker related issues', slug: 'troubleshooting/docker-issues', translations: { ru: 'Проблемы, связанные с Docker' } },
+						// { label: 'Logs', slug: 'troubleshooting/logs', translations: { ru: 'Логи' } },
 					],
 				},
 				{
-					label: 'Troubleshooting',
-					translations: { ru: 'Устранение неполадок' },
+					label: 'Contribution', translations: { ru: 'Помощь в разработке' },
 					items: [
-						{ label: 'Common Issues', slug: 'troubleshooting/issues', translations: { ru: 'Частые проблемы' } },
-						{ label: 'Logs & Debugging', slug: 'troubleshooting/logs', translations: { ru: 'Логи и отладка' } },
+						{ label: 'Contributors', slug: 'contribution/contributors', translations: { ru: 'Участники разработки' } },
+						{ label: 'Contribution Guide', slug: 'contribution/guide', translations: { ru: 'Руководство по внесению изменений' } },
 					],
 				},
 			],
-			customCss: ['./src/styles/custom.css'],
 		}),
 	],
 });

@@ -1,0 +1,11 @@
+---
+import type { ComponentProps } from "astro/types";
+
+import Default from "@astrojs/starlight/components/SocialIcons.astro";
+
+export type Props = ComponentProps<typeof Default>;
+---
+
+<Default {...Astro.props}>
+	<slot />
+</Default>

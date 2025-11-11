@@ -2,6 +2,7 @@
 import type { ComponentProps } from "astro/types";
 
 import Default from "@astrojs/starlight/components/SiteTitle.astro";
+import GitHubStars from "./GitHubStars.astro";
 import { version } from "../../package.json";
 
 export type Props = ComponentProps<typeof Default>;
@@ -11,15 +12,24 @@ export type Props = ComponentProps<typeof Default>;
 	<slot />
 </Default>
 
-<a
-	rel="noopener noreferrer"
-	class="version-link"
-	target="_blank"
->
-	{`${version}`}
-</a>
+<div class="header-links">
+	<a
+		rel="noopener noreferrer"
+		class="version-link"
+		target="_blank"
+	>
+		{`${version}`}
+	</a>
+	<GitHubStars repo="Jolymmiels/remnawave-telegram-shop" />
+</div>
 
 <style>
+	.header-links {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
 	.version-link {
 		display: flex;
 		align-items: center;

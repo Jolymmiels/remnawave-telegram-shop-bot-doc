@@ -14,7 +14,6 @@
     "@lorenzo_lewis/starlight-utils": "^0.3.2",
     "astro": "^5.15.3",
     "astro-auto-import": "^0.4.4",
-    "sharp": "^0.34.4",
     "starlight-contributor-list": "^0.3.0",
     "starlight-github-alerts": "^0.1.1",
     "starlight-kbd": "^0.2.0",
@@ -25,5 +24,9 @@
     "starlight-sidebar-topics": "^0.6.1",
     "starlight-sidebar-topics-dropdown": "^0.5.1",
     "starlight-theme-galaxy": "^0.5.1"
+  },
+  "devDependencies": {
+    "favicons": "^7.2.0",
+    "sharp": "^0.34.5"
   }
 }

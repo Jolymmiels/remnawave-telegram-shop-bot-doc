@@ -16,6 +16,7 @@ export default defineConfig({
         starlight({
             components: {
                 SiteTitle: './src/components/SiteTitle.astro',
+                Head: './src/components/Head.astro',
             },
             plugins: [
                 starlightThemeGalaxy(),

@@ -13,8 +13,7 @@ export default defineConfig({
 			},
 			tableOfContents: { minHeadingLevel: 2, maxHeadingLevel: 3 },
 			social: [
-				{ icon: 'github', label: 'GitHub', href: 'https://github.com/Jolymmiels/remnawave-telegram-shop' },
-				{ icon: 'github', label: 'Telegram', href: 'https://t.me/remnawave' },
+				{ icon: 'telegram', label: 'Telegram', href: 'https://t.me/remnawavetelegramshop' },
 			],
 			sidebar: [
 				{

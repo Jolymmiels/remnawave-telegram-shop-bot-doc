@@ -238,6 +238,126 @@ starlight-toc li:where(.astro-g2bywc46) {
   padding: 0;
 }
 
+/* Mobile TOC Styles */
+mobile-starlight-toc nav:where(.astro-doynk5tl) {
+  position: fixed;
+  z-index: var(--sl-z-index-toc);
+  top: calc(var(--sl-nav-height) - 1px);
+  inset-inline: 0;
+  border-top: 1px solid var(--sl-color-gray-5);
+  background-color: var(--sl-color-bg-nav);
+}
+
+@media (min-width: 50rem) {
+  mobile-starlight-toc nav:where(.astro-doynk5tl) {
+    inset-inline-start: var(--sl-content-inline-start, 0);
+  }
+}
+
+summary:where(.astro-doynk5tl) {
+  gap: 0.5rem;
+  align-items: center;
+  height: var(--sl-mobile-toc-height);
+  border-bottom: 1px solid var(--sl-color-hairline-shade);
+  padding: 0.5rem 1rem;
+  font-size: var(--sl-text-xs);
+  outline-offset: var(--sl-outline-offset-inside);
+}
+
+summary:where(.astro-doynk5tl)::marker,
+summary:where(.astro-doynk5tl)::-webkit-details-marker {
+  display: none;
+}
+
+.toggle:where(.astro-doynk5tl) {
+  flex-shrink: 0;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.5rem;
+  padding-block: 0.5rem;
+  padding-inline-start: 0.75rem;
+  padding-inline-end: 0.5rem;
+  line-height: 1;
+  background-color: var(--sl-color-black);
+  user-select: none;
+  cursor: pointer;
+}
+
+details:where(.astro-doynk5tl)[open] .toggle:where(.astro-doynk5tl) {
+  color: var(--sl-color-white);
+  border-color: var(--sl-color-accent);
+}
+
+details:where(.astro-doynk5tl) .toggle:where(.astro-doynk5tl):hover {
+  color: var(--sl-color-white);
+  border-color: var(--sl-color-gray-2);
+}
+
+[dir=rtl] .caret:where(.astro-doynk5tl) {
+  transform: rotate(180deg);
+}
+
+details:where(.astro-doynk5tl)[open] .caret:where(.astro-doynk5tl) {
+  transform: rotate(90deg);
+}
+
+.display-current:where(.astro-doynk5tl) {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: var(--sl-color-white);
+}
+
+.dropdown:where(.astro-doynk5tl) {
+  --border-top: 1px;
+  margin-top: calc(-1 * var(--border-top));
+  border: var(--border-top) solid var(--sl-color-gray-6);
+  border-top-color: var(--sl-color-hairline-shade);
+  max-height: calc(85vh - var(--sl-nav-height) - var(--sl-mobile-toc-height));
+  overflow-y: auto;
+  background-color: var(--sl-color-black);
+  box-shadow: var(--sl-shadow-md);
+  overscroll-behavior: contain;
+}
+
+.isMobile:where(.astro-g2bywc46) a:where(.astro-g2bywc46) {
+  --pad-inline: 1rem;
+  display: flex;
+  justify-content: space-between;
+  gap: var(--pad-inline);
+  border-top: 1px solid var(--sl-color-gray-6);
+  border-radius: 0;
+  padding-block: 0.5rem;
+  color: var(--sl-color-text);
+  font-size: var(--sl-text-sm);
+  text-decoration: none;
+  outline-offset: var(--sl-outline-offset-inside);
+}
+
+.isMobile:where(.astro-g2bywc46):first-child > li:where(.astro-g2bywc46):first-child > a:where(.astro-g2bywc46) {
+  border-top: 0;
+}
+
+.isMobile:where(.astro-g2bywc46) a:where(.astro-g2bywc46)[aria-current=true],
+.isMobile:where(.astro-g2bywc46) a:where(.astro-g2bywc46)[aria-current=true]:hover,
+.isMobile:where(.astro-g2bywc46) a:where(.astro-g2bywc46)[aria-current=true]:focus {
+  color: var(--sl-color-white);
+  background-color: unset;
+}
+
+.isMobile:where(.astro-g2bywc46) a:where(.astro-g2bywc46)[aria-current=true]:after {
+  content: "";
+  width: 1rem;
+  background-color: var(--sl-color-text-accent);
+  -webkit-mask-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxNCAxNCc+PHBhdGggZD0nTTEwLjkxNCA0LjIwNmEuNTgzLjU4MyAwIDAgMC0uODI4IDBMNS43NCA4LjU1NyAzLjkxNCA2LjcyNmEuNTk2LjU5NiAwIDAgMC0uODI4Ljg1N2wyLjI0IDIuMjRhLjU4My41ODMgMCAwIDAgLjgyOCAwbDQuNzYtNC43NmEuNTgzLjU4MyAwIDAgMCAwLS44NTdaJy8+PC9zdmc+Cg==);
+  mask-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxNCAxNCc+PHBhdGggZD0nTTEwLjkxNCA0LjIwNmEuNTgzLjU4MyAwIDAgMC0uODI4IDBMNS43NCA4LjU1NyAzLjkxNCA2LjcyNmEuNTk2LjU5NiAwIDAgMC0uODI4Ljg1N2wyLjI0IDIuMjRhLjU4My41ODMgMCAwIDAgLjgyOCAwbDQuNzYtNC43NmEuNTgzLjU4MyAwIDAgMCAwLS44NTdaJy8+PC9zdmc+Cg==);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  flex-shrink: 0;
+}
+
 /* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 6px;

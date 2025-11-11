@@ -8,10 +8,24 @@
   --sl-color-bg: #17181c;
   --sl-color-bg-sidebar: #0d1117;
   --sl-color-bg-nav: #0d1117;
+  color-scheme: dark;
+}
+
+html {
+  color-scheme: dark;
 }
 
 html, body {
   background: #17181c;
+}
+
+/* Hide light theme toggle */
+[data-theme-toggle] {
+  display: none !important;
+}
+
+.theme-toggle {
+  display: none !important;
 }
 
 /* Headings with gradient */
@@ -528,8 +542,74 @@ details:where(.astro-doynk5tl)[open] .caret:where(.astro-doynk5tl) {
   flex-shrink: 0;
 }
 
-/* Responsive Design */
+/* Pagination Links */
+.pagination-links {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+}
+
+.pagination-links a {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--sl-color-gray-6);
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(99, 102, 241, 0.02) 100%);
+  color: var(--sl-color-text);
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pagination-links a:hover {
+  border-color: var(--sl-color-accent-high);
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(99, 102, 241, 0.08) 100%);
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.15);
+  transform: translateY(-2px);
+}
+
+.pagination-links a[rel="prev"] {
+  justify-self: start;
+}
+
+.pagination-links a[rel="next"] {
+  justify-self: end;
+}
+
+.pagination-links svg {
+  flex-shrink: 0;
+  color: var(--sl-color-accent-high);
+}
+
+.pagination-links span {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.pagination-links .link-title {
+  font-weight: 600;
+  color: var(--sl-color-white);
+}
+
+.pagination-links a[rel="prev"] svg {
+  order: -1;
+}
+
 @media (max-width: 768px) {
+  .pagination-links {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .pagination-links a[rel="prev"],
+  .pagination-links a[rel="next"] {
+    justify-self: auto;
+  }
+
   .sl-markdown-content table {
     font-size: var(--sl-text-sm);
   }

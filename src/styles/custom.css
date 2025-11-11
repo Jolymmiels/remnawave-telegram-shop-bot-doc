@@ -5,6 +5,11 @@
   --sl-color-accent: hsl(228, 100%, 70%);
   --sl-color-accent-low: hsl(228, 70%, 30%);
   --sl-color-accent-high: #b6c4fb;
+  --sl-color-bg: #17181c;
+}
+
+html, body {
+  background: #17181c;
 }
 
 /* Headings with gradient */

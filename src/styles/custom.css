@@ -395,7 +395,6 @@ starlight-toc a:where(.astro-g2bywc46) {
   --pad-inline: 0.5rem;
   display: block;
   border-radius: 0;
-  border-inline-start: 1px solid var(--sl-color-hairline-light);
   padding-block: 0.25rem;
   padding-inline: calc(1rem * var(--depth) + var(--pad-inline) + 0.35rem) var(--pad-inline);
   line-height: 1.25;

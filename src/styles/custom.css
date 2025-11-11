@@ -127,37 +127,72 @@ pre {
 }
 
 /* Tables - Component Grid */
-table {
+.sl-markdown-content table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   margin: var(--space-lg) 0;
-  background: var(--bg-surface);
+  background: transparent;
   border-radius: 0.5rem;
   overflow: hidden;
   box-shadow: var(--shadow-md);
 }
 
-thead {
-  background: var(--bg-surface-light);
-  border-bottom: 2px solid var(--accent-primary);
+.sl-markdown-content thead {
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-primary-dark) 100%);
+  border: none;
 }
 
-th, td {
-  padding: var(--space-md);
+.sl-markdown-content th {
+  padding: var(--space-md) var(--space-lg);
   text-align: left;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  line-height: var(--line-height-normal);
-}
-
-th {
   font-weight: 600;
-  color: var(--accent-primary-light);
-  text-transform: uppercase;
+  color: #ffffff;
   font-size: var(--font-size-sm);
+  letter-spacing: 0.5px;
+  border: none;
+  white-space: nowrap;
 }
 
-tr:hover {
-  background-color: var(--bg-interactive);
+.sl-markdown-content th:first-child {
+  border-radius: 0.5rem 0 0 0;
+}
+
+.sl-markdown-content th:last-child {
+  border-radius: 0 0.5rem 0 0;
+}
+
+.sl-markdown-content tbody td {
+  padding: var(--space-md) var(--space-lg);
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  line-height: var(--line-height-normal);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.sl-markdown-content tbody td:first-child {
+  white-space: nowrap;
+  font-family: 'Courier New', monospace;
+  color: var(--accent-primary-light);
+}
+
+.sl-markdown-content tbody tr:last-child td:first-child {
+  border-radius: 0 0 0 0.5rem;
+}
+
+.sl-markdown-content tbody tr:last-child td:last-child {
+  border-radius: 0 0 0.5rem 0;
+}
+
+.sl-markdown-content tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.sl-markdown-content tbody tr:hover td {
+  background-color: rgba(99, 102, 241, 0.1);
 }
 
 /* Headings - Hierarchy */
@@ -249,6 +284,108 @@ a:hover {
 
 .sl-markdown-content > :first-child {
   margin-top: 0;
+}
+
+/* Table of Contents - Permanent Sidebar */
+aside.right-sidebar-container {
+  background: var(--bg-base);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0;
+  margin: 0;
+}
+
+.right-sidebar {
+  padding: var(--space-xl) var(--space-lg);
+}
+
+/* TOC Panel */
+.right-sidebar-panel {
+  display: block !important;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* TOC Title styling */
+starlight-toc h2 {
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: var(--font-size-lg);
+  margin: 0 0 var(--space-lg) 0;
+  padding: 0;
+}
+
+/* TOC List */
+starlight-toc nav {
+  border-left: 3px solid var(--accent-primary);
+  padding-left: 0;
+}
+
+starlight-toc ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: var(--font-size-sm);
+}
+
+starlight-toc li {
+  margin: 0;
+  padding: 0;
+}
+
+starlight-toc a {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  display: block;
+  padding: var(--space-sm) var(--space-md);
+  position: relative;
+  border-left: 3px solid transparent;
+  margin-left: -3px;
+}
+
+starlight-toc a:first-of-type {
+  color: var(--accent-primary-light);
+  background-color: rgba(99, 102, 241, 0.15);
+  border-left-color: var(--accent-primary);
+  margin-left: -3px;
+}
+
+starlight-toc a:hover {
+  color: var(--accent-primary-light);
+  background-color: rgba(99, 102, 241, 0.1);
+  padding-left: var(--space-lg);
+}
+
+/* Nested list indentation */
+starlight-toc li ul {
+  padding-left: var(--space-lg);
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+starlight-toc li ul a {
+  padding-left: var(--space-lg);
+  font-size: 0.9em;
+  border-left: none;
+  margin-left: 0;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 102, 241, 0.6);
 }
 
 p {

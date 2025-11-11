@@ -1,147 +1,281 @@
-/* Custom styles for Remnawave Telegram Shop documentation */
+/* Remnawave Documentation Design System */
+/* Inspired by depth, hierarchy, and component-based principles */
 
 :root {
-  --sl-color-accent: #6366f1;
-  --sl-color-accent-low: rgba(99, 102, 241, 0.2);
-  --sl-color-accent-high: rgba(99, 102, 241, 0.8);
+  /* Color Palette - Indigo */
+  --color-primary-hue: 262;
+  --color-primary-sat: 80%;
+  
+  /* Background Shades - Dark Mode */
+  --bg-base: #0f0f1a;
+  --bg-surface: #16162b;
+  --bg-surface-light: #1d1d35;
+  --bg-interactive: #282850;
+  
+  /* Text Colors */
+  --text-primary: #ffffff;
+  --text-secondary: #c9c9d4;
+  --text-muted: #8a8a99;
+  
+  /* Accent */
+  --accent-primary: #6366f1;
+  --accent-primary-dark: #4f46e5;
+  --accent-primary-light: #818cf8;
+  
+  /* Shadows - Depth Layers */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.6);
+  
+  /* Inner Shadows for Depth */
+  --shadow-inner-light: inset 0 1px 2px rgba(255, 255, 255, 0.1);
+  --shadow-inner-dark: inset 0 -1px 2px rgba(0, 0, 0, 0.5);
+  
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  
+  /* Typography */
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.5rem;
+  --line-height-tight: 1.3;
+  --line-height-normal: 1.6;
+}
+
+[data-theme="light"] {
+  /* Light Mode - Inverted */
+  --bg-base: #ffffff;
+  --bg-surface: #f8f8fc;
+  --bg-surface-light: #f0f0f8;
+  --bg-interactive: #e8e8f5;
+  
+  --text-primary: #0f0f1a;
+  --text-secondary: #4a4a5e;
+  --text-muted: #7a7a8e;
+  
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.15);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Global Reset & Baseline */
+* {
+  box-sizing: border-box;
 }
 
 /* Hero Section */
 .hero {
   text-align: center;
-  padding-bottom: 2rem;
+  padding-bottom: var(--space-2xl);
+  background: linear-gradient(135deg, var(--bg-base) 0%, var(--bg-surface) 100%);
+  position: relative;
 }
 
-/* Cards */
-.card {
-  transition: all 0.3s ease;
+/* Card Component - Depth Layer 1 */
+.card, .sl-markdown-content aside, .doc-section {
+  background: var(--bg-surface);
+  border-radius: 0.75rem;
+  padding: var(--space-lg);
+  margin: var(--space-lg) 0;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: var(--shadow-md), var(--shadow-inner-light);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+  background: var(--bg-surface-light);
+  box-shadow: var(--shadow-lg), var(--shadow-inner-light);
 }
 
-/* Code blocks */
+/* Elevated Card - Depth Layer 2 */
+.card-elevated {
+  background: var(--bg-surface-light);
+  box-shadow: var(--shadow-lg), var(--shadow-inner-light);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+/* Code Blocks - Depth Layer 0 */
 code {
   font-size: 0.9em;
-  padding: 0.2em 0.4em;
-  border-radius: 0.3em;
-  background-color: var(--sl-color-accent-low);
-  color: var(--sl-color-accent);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: 0.4rem;
+  background-color: var(--bg-interactive);
+  color: var(--accent-primary-light);
+  font-family: 'Courier New', monospace;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  transition: all 0.2s ease;
 }
 
 pre {
-  background-color: #1a1a2e;
-  color: #e0e0e0;
-  border-left: 4px solid var(--sl-color-accent);
-  padding-left: 1rem;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  background-color: var(--bg-base);
+  color: var(--text-secondary);
+  border-left: 4px solid var(--accent-primary);
+  border-radius: 0.5rem;
+  padding: var(--space-lg);
+  margin: var(--space-lg) 0;
+  overflow-x: auto;
+  box-shadow: var(--shadow-md), var(--shadow-inner-dark);
 }
 
-/* Tables */
+/* Tables - Component Grid */
 table {
   width: 100%;
   border-collapse: collapse;
-  margin: 1.5rem 0;
+  margin: var(--space-lg) 0;
+  background: var(--bg-surface);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
 }
 
 thead {
-  background-color: var(--sl-color-accent-low);
+  background: var(--bg-surface-light);
+  border-bottom: 2px solid var(--accent-primary);
 }
 
 th, td {
-  padding: 0.75rem;
+  padding: var(--space-md);
   text-align: left;
-  border-bottom: 1px solid var(--sl-color-accent-low);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  line-height: var(--line-height-normal);
+}
+
+th {
+  font-weight: 600;
+  color: var(--accent-primary-light);
+  text-transform: uppercase;
+  font-size: var(--font-size-sm);
 }
 
 tr:hover {
-  background-color: rgba(99, 102, 241, 0.05);
+  background-color: var(--bg-interactive);
 }
 
-/* Links */
-a {
-  color: var(--sl-color-accent);
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-/* Headings */
+/* Headings - Hierarchy */
 h1, h2, h3, h4, h5, h6 {
-  color: #fff;
-  font-weight: 600;
-  margin-top: 1.5rem;
-  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+  font-weight: 700;
+  line-height: var(--line-height-tight);
+  margin-top: var(--space-xl);
+  margin-bottom: var(--space-md);
+}
+
+h1 {
+  font-size: var(--font-size-xl);
+  letter-spacing: -0.02em;
 }
 
 h2 {
-  border-bottom: 2px solid var(--sl-color-accent-low);
-  padding-bottom: 0.5rem;
+  font-size: var(--font-size-lg);
+  border-bottom: 2px solid var(--accent-primary);
+  padding-bottom: var(--space-md);
+}
+
+h3 {
+  color: var(--accent-primary-light);
+  font-size: var(--font-size-lg);
 }
 
 /* Lists */
 ul, ol {
-  line-height: 1.8;
+  line-height: var(--line-height-normal);
+  margin: var(--space-lg) 0;
+  padding-left: var(--space-xl);
 }
 
 li {
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--space-md);
+  color: var(--text-secondary);
 }
 
-/* Callouts */
-.callout, .note, .warning, .tip {
-  padding: 1rem;
+/* Callouts - Alert Components */
+.callout, .note, .warning, .tip, .important, .caution {
+  padding: var(--space-lg);
   border-radius: 0.5rem;
-  border-left: 4px solid var(--sl-color-accent);
-  margin: 1rem 0;
-  background-color: var(--sl-color-accent-low);
+  border-left: 4px solid var(--accent-primary);
+  margin: var(--space-lg) 0;
+  background-color: rgba(99, 102, 241, 0.15);
+  box-shadow: var(--shadow-md), var(--shadow-inner-light);
 }
 
-.warning {
+.warning, .caution {
   border-left-color: #ff6b6b;
-  background-color: rgba(255, 107, 107, 0.1);
+  background-color: rgba(255, 107, 107, 0.15);
 }
 
-.tip {
+.tip, .important {
   border-left-color: #51cf66;
-  background-color: rgba(81, 207, 102, 0.1);
+  background-color: rgba(81, 207, 102, 0.15);
 }
 
-/* Navigation */
+/* Links */
+a {
+  color: var(--accent-primary-light);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+a:hover {
+  color: var(--accent-primary);
+  text-decoration: underline;
+}
+
+/* Navigation Elements */
+.sidebar a, nav a {
+  color: inherit;
+  transition: all 0.2s ease;
+}
+
+.sidebar a:hover, nav a:hover {
+  color: var(--accent-primary-light);
+  padding-left: var(--space-md);
+}
+
+/* Content Spacing & Typography */
+.sl-markdown-content {
+  color: var(--text-secondary);
+  line-height: var(--line-height-normal);
+}
+
 .sl-markdown-content > :first-child {
   margin-top: 0;
 }
 
-/* Responsive */
+p {
+  margin: var(--space-md) 0;
+  color: var(--text-secondary);
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
   table {
-    font-size: 0.9em;
+    font-size: var(--font-size-sm);
   }
 
   th, td {
-    padding: 0.5rem;
+    padding: var(--space-sm) var(--space-md);
   }
 
   code {
     font-size: 0.8em;
+    padding: var(--space-xs) var(--space-sm);
   }
-}
-
-/* Dark mode (default) adjustments */
-[data-theme="dark"] {
-  color-scheme: dark;
-}
-
-[data-theme="light"] {
-  color-scheme: light;
-  code {
-    background-color: #f5f5f5;
-    color: #333;
+  
+  h1 {
+    font-size: var(--font-size-lg);
+  }
+  
+  .card {
+    padding: var(--space-md);
   }
 }

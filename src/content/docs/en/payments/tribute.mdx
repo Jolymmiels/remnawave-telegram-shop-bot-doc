@@ -1,0 +1,158 @@
+---
+title: Tribute Setup
+description: Configure Tribute for subscription management
+---
+
+import { Steps } from '@astrojs/starlight/components';
+
+Tribute provides recurring subscription management through Telegram with automatic renewals.
+
+## Critical Requirements
+
+⚠️ **You must have a public domain** with valid SSL certificate (e.g., `bot.example.com`). Webhooks will NOT work on localhost or private IPs.
+
+## Setup Instructions
+
+<Steps>
+
+1. **Create Tribute Channel**
+   - Open Tribute app on Telegram
+   - Create a channel
+   - In "Channels and Groups" → Add your channel
+   - Create new subscription
+
+2. **Get Subscription Link**
+   - In Tribute: Subscription → Links
+   - Copy "Telegram Link"
+   - Should look like: `https://t.me/tribute/app?startapp=...`
+
+3. **Configure Environment**
+   ```env
+   TRIBUTE_WEBHOOK_URL=/tribute/webhook
+   TRIBUTE_API_KEY=your_api_key_from_tribute
+   TRIBUTE_PAYMENT_URL=https://t.me/tribute/app?startapp=...
+   HEALTH_CHECK_PORT=8080
+   ```
+
+4. **Setup Reverse Proxy**
+   
+   Configure Nginx or Traefik to forward HTTPS requests to bot:8080
+   
+   ```nginx
+   server {
+     server_name bot.example.com;
+     listen 443 ssl;
+     
+     ssl_certificate /path/to/cert.pem;
+     ssl_certificate_key /path/to/key.pem;
+     
+     location / {
+       proxy_pass http://localhost:8080;
+     }
+   }
+   ```
+
+5. **Restart Bot**
+   ```bash
+   docker compose down && docker compose up -d
+   ```
+
+6. **Test Webhook**
+   ```bash
+   curl https://bot.example.com/tribute/webhook
+   ```
+
+</Steps>
+
+## How It Works
+
+1. User clicks payment button
+2. Redirected to Tribute subscription page
+3. User completes Telegram subscription
+4. Tribute sends webhook to your bot
+5. Bot activates subscription for user
+6. User receives VPN configuration
+
+## Configuration Variables
+
+| Variable | Description |
+|----------|-------------|
+| `TRIBUTE_WEBHOOK_URL` | Webhook path (e.g., `/tribute/webhook`) |
+| `TRIBUTE_API_KEY` | API key from Tribute settings |
+| `TRIBUTE_PAYMENT_URL` | Subscription link from Tribute |
+| `HEALTH_CHECK_PORT` | Port for webhook (usually 8080) |
+
+## Advantages
+
+✅ Recurring subscriptions  
+✅ Automatic renewals  
+✅ Multi-currency support  
+✅ Subscription dashboard  
+✅ Customer management  
+
+## Limitations
+
+❌ Requires public domain and SSL  
+❌ More complex setup  
+❌ Dependent on Tribute availability  
+❌ Webhook configuration needed
+
+## Getting API Key
+
+1. Open Tribute app
+2. Settings → API Settings
+3. Create new API key
+4. Copy and paste in `.env`
+
+## SSL Certificate Options
+
+### Let's Encrypt (Free)
+```bash
+# Using Certbot with Nginx
+sudo certbot certonly --standalone -d bot.example.com
+```
+
+### Self-Signed (Testing Only)
+```bash
+openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365
+```
+
+## Troubleshooting
+
+### Webhook Not Received
+- Verify domain is public and resolvable
+- Check SSL certificate is valid
+- Test endpoint: `curl -I https://bot.example.com/tribute/webhook`
+- Check firewall allows port 443
+
+### Bot Not Activating Subscriptions
+- Verify `TRIBUTE_API_KEY` is correct
+- Check bot logs: `docker compose logs remnawave-telegram-shop-bot`
+- Ensure Remnawave connectivity
+- Review webhook signature
+
+### Invalid API Key
+- Regenerate key in Tribute settings
+- Verify no extra spaces in `.env`
+- Restart bot after updating
+
+## Testing
+
+1. Create test Telegram channel
+2. Set up Tribute subscription (test amount)
+3. Configure bot with test URL
+4. Send test webhook from Tribute dashboard
+5. Verify bot receives and processes it
+
+## Security
+
+✅ Use strong API keys  
+✅ Keep webhook path secret  
+✅ Validate webhook signatures  
+✅ Monitor failed webhooks  
+✅ Rotate keys periodically  
+
+## Support
+
+- **Tribute Help**: In-app support
+- **Telegram Communities**: Crypto payment groups

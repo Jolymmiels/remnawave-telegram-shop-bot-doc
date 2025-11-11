@@ -11,6 +11,17 @@ export default defineConfig({
 			logo: {
 				src: './src/assets/logo.svg',
 			},
+			defaultLocale: 'root',
+			locales: {
+				root: {
+					label: 'Русский',
+					lang: 'ru-RU',
+				},
+				en: {
+					label: 'English',
+					lang: 'en-US',
+				},
+			},
 			tableOfContents: { minHeadingLevel: 2, maxHeadingLevel: 3 },
 			social: [
 				{ icon: 'telegram', label: 'Telegram', href: 'https://t.me/remnawavetelegramshop' },
@@ -18,27 +29,33 @@ export default defineConfig({
 			],
 			sidebar: [
 				{
-					label: 'Getting Started',
+					label: 'Начало',
+					translations: { en: 'Getting Started' },
 					autogenerate: { directory: 'getting-started' },
 				},
 				{
-					label: 'Configuration',
+					label: 'Конфигурация',
+					translations: { en: 'Configuration' },
 					autogenerate: { directory: 'configuration' },
 				},
 				{
-					label: 'Features',
+					label: 'Функции',
+					translations: { en: 'Features' },
 					autogenerate: { directory: 'features' },
 				},
 				{
-					label: 'Payment Systems',
+					label: 'Платежные системы',
+					translations: { en: 'Payment Systems' },
 					autogenerate: { directory: 'payments' },
 				},
 				{
-					label: 'Administration',
+					label: 'Администрирование',
+					translations: { en: 'Administration' },
 					autogenerate: { directory: 'admin' },
 				},
 				{
-					label: 'Troubleshooting',
+					label: 'Решение проблем',
+					translations: { en: 'Troubleshooting' },
 					autogenerate: { directory: 'troubleshooting' },
 				},
 			],

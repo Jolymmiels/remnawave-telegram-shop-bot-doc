@@ -1,0 +1,112 @@
+---
+title: Telegram Stars Setup
+description: Configure Telegram Stars for native payments
+---
+
+Telegram Stars is the native payment system built into Telegram, providing seamless payment experience for users.
+
+## Setup Instructions
+
+1. **Enable Stars in BotFather**
+   - Open [@BotFather](https://t.me/BotFather)
+   - Select your bot
+   - Bot Settings → Payments → Stars
+   - Enable Telegram Stars
+
+2. **Configure Prices**
+   ```env
+   TELEGRAM_STARS_ENABLED=true
+   STARS_PRICE_1=50
+   STARS_PRICE_3=120
+   STARS_PRICE_6=200
+   STARS_PRICE_12=350
+   ```
+
+3. **Optional: Require Prior Payment**
+   ```env
+   REQUIRE_PAID_PURCHASE_FOR_STARS=true
+   ```
+   
+   Forces users to complete card or crypto payment before using Stars.
+
+4. **Restart Bot**
+   ```bash
+   docker compose down && docker compose up -d
+   ```
+
+## Configuration Variables
+
+| Variable | Description |
+|----------|-------------|
+| `TELEGRAM_STARS_ENABLED` | Enable Stars payments |
+| `STARS_PRICE_1` | Price in Stars for 1 month |
+| `STARS_PRICE_3` | Price in Stars for 3 months |
+| `STARS_PRICE_6` | Price in Stars for 6 months |
+| `STARS_PRICE_12` | Price in Stars for 12 months |
+| `REQUIRE_PAID_PURCHASE_FOR_STARS` | Force prior payment |
+
+## Advantages
+
+✅ Native Telegram integration  
+✅ Familiar user interface  
+✅ Global availability  
+✅ Instant transactions  
+✅ No external payment processor needed  
+
+## Limitations
+
+❌ Limited conversion methods  
+❌ Not all countries support purchases  
+❌ Prices must be whole numbers  
+❌ Only works with Telegram app
+
+## Pricing Guidelines
+
+- **Conversion Rate**: 1 Star ≈ $0.01-0.02
+- **Example Pricing**:
+  - 1 Month: 50 Stars ($0.50-1.00)
+  - 3 Months: 120 Stars ($1.20-2.40)
+  - 6 Months: 200 Stars ($2.00-4.00)
+  - 12 Months: 350 Stars ($3.50-7.00)
+
+## Strategy
+
+### Option 1: Stars Only
+- Simple setup
+- Good for tech-savvy users
+- Limited audience
+
+### Option 2: Stars + Cards
+- Broader audience
+- Recommended for most deployments
+- Multiple payment options
+
+### Option 3: Stars + Require Prior Purchase
+- Prevents abuse
+- Ensures verified users
+- May reduce conversion
+
+## Troubleshooting
+
+### Stars Not Appearing
+- Verify Stars are enabled in BotFather
+- Check bot is running: `docker compose ps`
+- Verify `TELEGRAM_STARS_ENABLED=true`
+- Restart bot
+
+### Transaction Failed
+- Check user has Stars balance
+- Verify prices are whole numbers
+- Check bot has permissions
+- Review Telegram logs
+
+### Conversion Issues
+- Use whole numbers only (1, 2, 3...)
+- Don't use decimals
+- Verify user location supports Stars
+
+## Support
+
+- **BotFather**: [@BotFather](https://t.me/BotFather)
+- **Telegram Docs**: [core.telegram.org/bots/payments](https://core.telegram.org/bots/payments)
+- **Issues**: Report on GitHub

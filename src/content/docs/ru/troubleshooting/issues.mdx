@@ -1,309 +1,309 @@
 ---
-title: Common Issues
-description: Solutions to frequently encountered problems
+title: Частые проблемы
+description: Решения для часто встречаемых проблем
 ---
 
-## Bot Issues
+## Проблемы с ботом
 
-### Bot Not Responding
+### Бот не отвечает
 
-**Symptoms**: No reply to `/start` command
+**Симптомы**: Нет ответа на команду `/start`
 
-**Causes & Solutions**:
+**Причины и решения**:
 
-1. **Container not running**
+1. **Контейнер не запущен**
    ```bash
    docker compose ps
-   # Status should be "Up"
+   # Статус должен быть "Up"
    ```
 
-2. **Invalid Telegram token**
-   - Verify token from [@BotFather](https://t.me/BotFather)
-   - Check for typos in `.env`
-   - Regenerate if uncertain
+2. **Неправильный токен Telegram**
+   - Проверьте токен у [@BotFather](https://t.me/BotFather)
+   - Проверьте на опечатки в `.env`
+   - Переге нерируйте токен если не уверены
 
-3. **Network connectivity**
+3. **Проблемы с сетью**
    ```bash
    docker compose exec remnawave-telegram-shop-bot \
      curl -I https://api.telegram.org
    ```
 
-4. **Port conflict**
+4. **Конфликт портов**
    ```bash
    docker compose logs remnawave-telegram-shop-bot | grep "port\|error"
    ```
 
-### Bot Crashing
+### Бот падает
 
-**Symptoms**: Container exits unexpectedly
+**Симптомы**: Контейнер неожиданно завершает работу
 
-**Check logs**:
+**Проверьте логи**:
 ```bash
 docker compose logs --tail 50 remnawave-telegram-shop-bot
 ```
 
-**Common causes**:
-- Database connection failed
-- Invalid configuration
-- Out of memory
-- Unhandled exception
+**Частые причины**:
+- Ошибка подключения к БД
+- Неправильная конфигурация
+- Недостаточно памяти
+- Необработанное исключение
 
-**Fix**:
+**Решение**:
 ```bash
-# Restart
+# Перезагрузите бот
 docker compose restart remnawave-telegram-shop-bot
 
-# Update if outdated
+# Обновитесь если версия устаревшая
 docker compose pull
 docker compose up -d
 ```
 
-## Payment Issues
+## Проблемы с платежами
 
-### YooKassa Payments Failing
+### Платежи YooKassa не работают
 
-**Check**:
+**Проверьте**:
 ```bash
-# Valid credentials
+# Правильные учетные данные
 echo $YOOKASA_SHOP_ID
 echo $YOOKASA_SECRET_KEY
 
-# Connectivity
+# Доступность
 docker compose exec remnawave-telegram-shop-bot \
   curl -I https://payment.yandex.net
 ```
 
-**Solutions**:
-- Verify Shop ID and Secret Key are correct
-- Check IP whitelist in YooKassa dashboard
-- Ensure SSL certificate is valid
-- Review payment logs
+**Решения**:
+- Проверьте что Shop ID и Secret Key правильные
+- Проверьте IP whitelist в панели YooKassa
+- Убедитесь что SSL сертификат валидный
+- Проверьте логи платежей
 
-### CryptoPay Not Working
+### CryptoPay не работает
 
-**Check**:
+**Проверьте**:
 ```bash
 docker compose logs remnawave-telegram-shop-bot | grep -i crypto
 ```
 
-**Solutions**:
-- Regenerate API token if expired
-- Verify token format (no spaces)
-- Check CryptoPay server status
-- Test with valid cryptocurrency address
+**Решения**:
+- Переге нерируйте API токен если он истёк
+- Проверьте формат токена (нет пробелов)
+- Проверьте статус сервера CryptoPay
+- Протестируйте с правильным адресом криптовалюты
 
-### Telegram Stars Not Appearing
+### Telegram Stars не появляются
 
-**Check**:
+**Проверьте**:
 ```bash
-# Verify enabled
+# Проверьте что включено
 grep TELEGRAM_STARS_ENABLED .env
 ```
 
-**Solutions**:
-- Enable in [@BotFather](https://t.me/BotFather) settings
-- Verify prices are whole numbers
-- Restart bot: `docker compose restart`
-- Check user location supports Stars
+**Решения**:
+- Включите в параметрах [@BotFather](https://t.me/BotFather)
+- Проверьте что цены целые числа
+- Перезагрузите бот: `docker compose restart`
+- Проверьте что location пользователя поддерживает Stars
 
-## Database Issues
+## Проблемы с базой данных
 
-### Database Connection Failed
+### Ошибка подключения к БД
 
-**Symptoms**: "database connection failed" in logs
+**Симптомы**: "database connection failed" в логах
 
 ```bash
-# Check if PostgreSQL is running
+# Проверьте запущен ли PostgreSQL
 docker compose ps postgres
 
-# Check if accessible
+# Проверьте доступность
 docker compose exec postgres \
   psql -U remnawave -d remnawave -c "SELECT 1"
 ```
 
-**Fix**:
+**Решение**:
 ```bash
-# Restart database
+# Перезагрузите БД
 docker compose restart postgres
 
-# Check credentials in .env
+# Проверьте учетные данные в .env
 grep DATABASE_URL .env
 
-# Full restart if needed
+# Полная перезагрузка если необходимо
 docker compose down
 docker compose up -d
 ```
 
-### Database is Full
+### База данных переполнена
 
-**Symptoms**: Insert/update failures
+**Симптомы**: Ошибки при INSERT/UPDATE
 
 ```bash
-# Check size
+# Проверьте размер
 docker compose exec postgres \
   du -sh /var/lib/postgresql/data
 ```
 
-**Solutions**:
-- Archive old data
-- Delete unused records
-- Increase disk space
-- Run VACUUM: `docker compose exec postgres psql -U remnawave -d remnawave -c "VACUUM;"`
+**Решения**:
+- Архивируйте старые данные
+- Удалите неиспользуемые записи
+- Увеличьте дисковое пространство
+- Запустите VACUUM: `docker compose exec postgres psql -U remnawave -d remnawave -c "VACUUM;"`
 
-### Slow Database Queries
+### Медленные запросы в БД
 
-**Symptoms**: Timeouts, high latency
+**Симптомы**: Таймауты, высокая задержка
 
 ```bash
-# Check connections
+# Проверьте соединения
 docker compose exec postgres \
   psql -U remnawave -d remnawave -c "SELECT count(*) FROM pg_stat_activity;"
 
-# Run analyze
+# Запустите анализ
 docker compose exec postgres \
   psql -U remnawave -d remnawave -c "ANALYZE;"
 ```
 
-**Solutions**:
-- Create missing indexes
-- Update table statistics
-- Archive historical data
-- Upgrade hardware
+**Решения**:
+- Создайте недостающие индексы
+- Обновите статистику таблиц
+- Архивируйте исторические данные
+- Обновите оборудование
 
-## Configuration Issues
+## Проблемы с конфигурацией
 
-### Invalid Environment Variable
+### Неправильная переменная окружения
 
-**Symptom**: Boot failure
+**Симптом**: Ошибка при загрузке
 
-**Check**:
+**Проверьте**:
 ```bash
-# Validate .env syntax
+# Проверьте синтаксис .env
 docker compose config
 
-# Check for typos
+# Проверьте на опечатки
 grep -E "INVALID|TYPO" .env
 ```
 
-**Common mistakes**:
-- Missing `=` sign
-- Unquoted values with spaces
-- Invalid UUID format
-- Trailing whitespace
+**Частые ошибки**:
+- Отсутствует знак `=`
+- Значения с пробелами без кавычек
+- Неправильный формат UUID
+- Пробелы в конце строки
 
-### Changes Not Taking Effect
+### Изменения не применяются
 
-**Cause**: Bot not restarted
+**Причина**: Бот не перезагружен
 
-**Solution**:
+**Решение**:
 ```bash
 docker compose down
 docker compose up -d
 ```
 
-## API Issues
+## Проблемы с API
 
-### Remnawave Panel Connection Failed
+### Ошибка подключения к панели Remnawave
 
-**Check**:
+**Проверьте**:
 ```bash
-# Test connectivity
+# Протестируйте подключение
 docker compose exec remnawave-telegram-shop-bot \
   curl -I https://your-panel.com
 
-# Verify credentials
+# Проверьте учетные данные
 grep REMNAWAVE .env
 ```
 
-**Solutions**:
-- Check panel is running
-- Verify REMNAWAVE_URL is correct
-- Check API token validity
-- Review panel logs
-- Verify X_API_KEY is correct
+**Решения**:
+- Проверьте что панель работает
+- Проверьте что REMNAWAVE_URL правильный
+- Проверьте валидность API токена
+- Проверьте логи панели
+- Проверьте что X_API_KEY правильный
 
-### API Rate Limiting
+### API rate limiting
 
-**Symptoms**: 429 Too Many Requests
+**Симптомы**: 429 Too Many Requests
 
-**Solutions**:
-- Reduce sync frequency
-- Increase interval between requests
-- Contact panel administrator
-- Check for malicious access
+**Решения**:
+- Снизьте частоту синхронизации
+- Увеличьте интервал между запросами
+- Свяжитесь с администратором панели
+- Проверьте на вредоносный доступ
 
-## User Issues
+## Проблемы пользователей
 
-### Users Can't Buy Subscriptions
+### Пользователи не могут купить подписку
 
-**Check**:
+**Проверьте**:
 ```bash
 docker compose logs remnawave-telegram-shop-bot | grep -i purchase
 ```
 
-**Common causes**:
-- Payment method not enabled
-- Invalid payment credentials
-- User blocked
-- Insufficient funds
+**Частые причины**:
+- Метод оплаты не включен
+- Неправильные учетные данные платежной системы
+- Пользователь заблокирован
+- Недостаточно средств
 
-**Solution**:
-- Verify payment methods enabled
-- Check payment provider credentials
-- Review user logs
-- Test payment flow manually
+**Решение**:
+- Проверьте что методы оплаты включены
+- Проверьте учетные данные платежной системы
+- Проверьте логи пользователя
+- Протестируйте процесс оплаты вручную
 
-### Expiration Notifications Not Sending
+### Уведомления об истечении не отправляются
 
-**Check**:
+**Проверьте**:
 ```bash
-# Notification time
+# Время уведомления
 grep "16:00\|notification" /var/log/bot.log
 
-# Check Telegram token
+# Проверьте токен Telegram
 docker compose logs remnawave-telegram-shop-bot | grep -i notification
 ```
 
-**Solutions**:
-- Verify system time is correct (UTC)
-- Check Telegram token is valid
-- Review notification logs
-- Verify user language settings
-- Check for rate limiting
+**Решения**:
+- Проверьте что системное время правильное (UTC)
+- Проверьте что токен Telegram валидный
+- Проверьте логи уведомлений
+- Проверьте языковые настройки пользователя
+- Проверьте rate limiting
 
-## Troubleshooting Commands
+## Команды для диагностики
 
 ```bash
-# Full diagnostic
+# Полная диагностика
 docker compose ps
 docker compose logs --tail 100 remnawave-telegram-shop-bot
 docker compose logs -f postgres
 
-# Test connectivity
+# Проверьте подключение
 docker compose exec remnawave-telegram-shop-bot curl -I https://api.telegram.org
 docker compose exec remnawave-telegram-shop-bot curl -I https://your-panel.com
 
-# Check resources
+# Проверьте ресурсы
 docker stats remnawave-telegram-shop-bot
 
-# Validate config
+# Проверьте конфигурацию
 docker compose config
 ```
 
-## When to Restart
+## Когда нужна перезагрузка
 
-| Scenario | Action |
-|----------|--------|
-| Changed `.env` | `docker compose down && docker compose up -d` |
-| Added users to block/whitelist | Automatic (for whitelist) or restart |
-| Updated Docker image | `docker compose pull && docker compose up -d` |
-| Database issues | `docker compose restart postgres` |
-| Full reset | `docker compose down && docker compose up -d` |
+| Сценарий | Действие |
+|----------|---------|
+| Изменили `.env` | `docker compose down && docker compose up -d` |
+| Добавили пользователей в блоклист/вайтлист | Автоматически (для вайтлиста) или перезагрузка |
+| Обновили образ Docker | `docker compose pull && docker compose up -d` |
+| Проблемы с БД | `docker compose restart postgres` |
+| Полный сброс | `docker compose down && docker compose up -d` |
 
-## Getting Help
+## Получение помощи
 
-If issues persist:
-1. Collect logs: `docker compose logs > logs.txt`
-2. Check GitHub issues
-3. Review documentation
-4. Create issue with logs and configuration (without secrets)
+Если проблема остается:
+1. Соберите логи: `docker compose logs > logs.txt`
+2. Проверьте GitHub issues
+3. Ознакомьтесь с документацией
+4. Создайте issue с логами и конфигурацией (без секретов)

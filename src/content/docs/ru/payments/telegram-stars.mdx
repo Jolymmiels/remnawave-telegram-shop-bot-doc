@@ -1,19 +1,19 @@
 ---
-title: Telegram Stars Setup
-description: Configure Telegram Stars for native payments
+title: Настройка Telegram Stars
+description: Настройте Telegram Stars для встроенных платежей
 ---
 
-Telegram Stars is the native payment system built into Telegram, providing seamless payment experience for users.
+Telegram Stars - это встроенная в Telegram система платежей, обеспечивающая удобство платежей для пользователей.
 
-## Setup Instructions
+## Инструкции по настройке
 
-1. **Enable Stars in BotFather**
-   - Open [@BotFather](https://t.me/BotFather)
-   - Select your bot
+1. **Включите Stars в BotFather**
+   - Откройте [@BotFather](https://t.me/BotFather)
+   - Выберите вашего бота
    - Bot Settings → Payments → Stars
-   - Enable Telegram Stars
+   - Включите Telegram Stars
 
-2. **Configure Prices**
+2. **Настройте цены**
    ```env
    TELEGRAM_STARS_ENABLED=true
    STARS_PRICE_1=50
@@ -22,31 +22,31 @@ Telegram Stars is the native payment system built into Telegram, providing seaml
    STARS_PRICE_12=350
    ```
 
-3. **Optional: Require Prior Payment**
+3. **Опционально: Требовать предварительный платеж**
    ```env
    REQUIRE_PAID_PURCHASE_FOR_STARS=true
    ```
    
-   Forces users to complete card or crypto payment before using Stars.
+   Требует от пользователей завершить платеж картой или криптовалютой перед использованием Stars.
 
-4. **Restart Bot**
+4. **Перезагрузите бота**
    ```bash
    docker compose down && docker compose up -d
    ```
 
-## Configuration Variables
+## Переменные конфигурации
 
-| Variable | Description |
+| Переменная | Описание |
 |----------|-------------|
-| `TELEGRAM_STARS_ENABLED` | Enable Stars payments |
-| `STARS_PRICE_1` | Price in Stars for 1 month |
-| `STARS_PRICE_3` | Price in Stars for 3 months |
-| `STARS_PRICE_6` | Price in Stars for 6 months |
-| `STARS_PRICE_12` | Price in Stars for 12 months |
-| `REQUIRE_PAID_PURCHASE_FOR_STARS` | Force prior payment |
+| `TELEGRAM_STARS_ENABLED` | Включить платежи Stars |
+| `STARS_PRICE_1` | Цена в Stars за 1 месяц |
+| `STARS_PRICE_3` | Цена в Stars за 3 месяца |
+| `STARS_PRICE_6` | Цена в Stars за 6 месяцев |
+| `STARS_PRICE_12` | Цена в Stars за 12 месяцев |
+| `REQUIRE_PAID_PURCHASE_FOR_STARS` | Требовать предварительный платеж |
 
-## Support
+## Поддержка
 
 - **BotFather**: [@BotFather](https://t.me/BotFather)
-- **Telegram Docs**: [core.telegram.org/bots/payments](https://core.telegram.org/bots/payments)
-- **Issues**: Report on GitHub
+- **Документация Telegram**: [core.telegram.org/bots/payments](https://core.telegram.org/bots/payments)
+- **Проблемы**: Сообщайте на GitHub

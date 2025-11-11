@@ -1,72 +1,72 @@
 ---
-title: CryptoPay Setup
-description: Configure CryptoPay for cryptocurrency payments
+title: Настройка CryptoPay
+description: Настройте CryptoPay для платежей криптовалютой
 ---
 
 import { Steps } from '@astrojs/starlight/components';
 
-CryptoPay enables cryptocurrency payments (Bitcoin, Ethereum, USDT, and more) directly through Telegram.
+CryptoPay позволяет принимать платежи криптовалютой (Bitcoin, Ethereum, USDT и другие) прямо через Telegram.
 
-## Supported Cryptocurrencies
+## Поддерживаемые криптовалюты
 
 - Bitcoin (BTC)
 - Ethereum (ETH)
 - TON Coin (TON)
 - USDT (Tether)
-- Plus 10+ other altcoins
+- Плюс 10+ других альткойнов
 
-## Requirements
+## Требования
 
-- Telegram account
-- CryptoPay merchant account
-- Generated API token
+- Аккаунт Telegram
+- Торговый аккаунт CryptoPay
+- Сгенерированный API токен
 
-## Setup Instructions
+## Инструкции по настройке
 
 <Steps>
 
-1. **Create CryptoPay Account**
-   - Open [@CryptoBot](https://t.me/CryptoBot) on Telegram
-   - Start the bot
-   - Go to "Merchant" section
-   - Accept terms
+1. **Создайте аккаунт CryptoPay**
+   - Откройте [@CryptoBot](https://t.me/CryptoBot) в Telegram
+   - Запустите бота
+   - Перейдите в раздел "Merchant"
+   - Примите условия
 
-2. **Generate API Token**
-   - In CryptoPay merchant panel
-   - Navigate to "API Settings"
-   - Create new API token
-   - Copy the token
+2. **Сгенерируйте API токен**
+   - В панели CryptoPay для торговцев
+   - Перейдите в "API Settings"
+   - Создайте новый API токен
+   - Скопируйте токен
 
-3. **Configure Environment**
+3. **Настройте переменные окружения**
    ```env
    CRYPTO_PAY_ENABLED=true
-   CRYPTO_PAY_TOKEN=your_token_here
+   CRYPTO_PAY_TOKEN=ваш_токен_здесь
    CRYPTO_PAY_URL=https://pay.crypt.bot
    ```
 
-4. **Restart Bot**
+4. **Перезагрузите бота**
    ```bash
    docker compose down && docker compose up -d
    ```
 
-5. **Test Payment**
-   - Send `/start` to bot
-   - Select subscription
-   - Choose CryptoPay
-   - Complete test transaction
+5. **Протестируйте платеж**
+   - Отправьте `/start` боту
+   - Выберите подписку
+   - Выберите CryptoPay
+   - Завершите тестовую транзакцию
 
 </Steps>
 
-## Configuration Variables
+## Переменные конфигурации
 
-| Variable | Description |
+| Переменная | Описание |
 |----------|-------------|
-| `CRYPTO_PAY_ENABLED` | Enable/disable CryptoPay |
-| `CRYPTO_PAY_TOKEN` | Your API token |
-| `CRYPTO_PAY_URL` | API endpoint |
+| `CRYPTO_PAY_ENABLED` | Включить/отключить CryptoPay |
+| `CRYPTO_PAY_TOKEN` | Ваш API токен |
+| `CRYPTO_PAY_URL` | Endpoint API |
 
-## Support
+## Поддержка
 
-- **CryptoPay Help**: [@CryptoBot](https://t.me/CryptoBot)
-- **API Documentation**: Available in merchant panel
-- **Community**: Telegram crypto communities
+- **Справка CryptoPay**: [@CryptoBot](https://t.me/CryptoBot)
+- **API документация**: Доступна в панели торговца
+- **Сообщество**: Telegram крипто сообщества

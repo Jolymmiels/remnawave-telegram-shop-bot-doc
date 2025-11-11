@@ -1,50 +1,50 @@
 ---
-title: Tribute Setup
-description: Configure Tribute for subscription management
+title: Настройка Tribute
+description: Настройте Tribute для управления подписками
 ---
 
 import { Steps } from '@astrojs/starlight/components';
 
-Tribute provides recurring subscription management through Telegram with automatic renewals.
+Tribute обеспечивает управление повторяющимися подписками через Telegram с автоматическим продлением.
 
-## Critical Requirements
+## Критические требования
 
-⚠️ **You must have a public domain** with valid SSL certificate (e.g., `bot.example.com`). Webhooks will NOT work on localhost or private IPs.
+⚠️ **У вас должен быть публичный домен** с действительным SSL сертификатом (например, `bot.example.com`). Вебхуки НЕ будут работать на localhost или частных IP адресах.
 
-## Setup Instructions
+## Инструкции по настройке
 
 <Steps>
 
-1. **Create Tribute Channel**
-   - Open Tribute app on Telegram
-   - Create a channel
-   - In "Channels and Groups" → Add your channel
-   - Create new subscription
+1. **Создайте канал Tribute**
+   - Откройте приложение Tribute в Telegram
+   - Создайте канал
+   - В "Channels and Groups" → Добавьте ваш канал
+   - Создайте новую подписку
 
-2. **Get Subscription Link**
-   - In Tribute: Subscription → Links
-   - Copy "Telegram Link"
-   - Should look like: `https://t.me/tribute/app?startapp=...`
+2. **Получите ссылку подписки**
+   - В Tribute: Subscription → Links
+   - Скопируйте "Telegram Link"
+   - Должна выглядеть так: `https://t.me/tribute/app?startapp=...`
 
-3. **Configure Environment**
+3. **Настройте переменные окружения**
    ```env
    TRIBUTE_WEBHOOK_URL=/tribute/webhook
-   TRIBUTE_API_KEY=your_api_key_from_tribute
+   TRIBUTE_API_KEY=ваш_api_ключ_из_tribute
    TRIBUTE_PAYMENT_URL=https://t.me/tribute/app?startapp=...
    HEALTH_CHECK_PORT=8080
    ```
 
-4. **Setup Reverse Proxy**
+4. **Настройте обратный прокси**
    
-   Configure Nginx or Traefik to forward HTTPS requests to bot:8080
+   Настройте Nginx или Traefik для перенаправления HTTPS запросов боту:8080
    
    ```nginx
    server {
      server_name bot.example.com;
      listen 443 ssl;
      
-     ssl_certificate /path/to/cert.pem;
-     ssl_certificate_key /path/to/key.pem;
+     ssl_certificate /путь/к/cert.pem;
+     ssl_certificate_key /путь/к/key.pem;
      
      location / {
        proxy_pass http://localhost:8080;
@@ -52,51 +52,51 @@ Tribute provides recurring subscription management through Telegram with automat
    }
    ```
 
-5. **Restart Bot**
+5. **Перезагрузите бота**
    ```bash
    docker compose down && docker compose up -d
    ```
 
-6. **Test Webhook**
+6. **Протестируйте вебхук**
    ```bash
    curl https://bot.example.com/tribute/webhook
    ```
 
 </Steps>
 
-## How It Works
+## Как это работает
 
-1. User clicks payment button
-2. Redirected to Tribute subscription page
-3. User completes Telegram subscription
-4. Tribute sends webhook to your bot
-5. Bot activates subscription for user
+1. Пользователь нажимает кнопку платежа
+2. Перенаправляется на страницу подписки Tribute
+3. Пользователь завершает подписку в Telegram
+4. Tribute отправляет вебхук на ваш бот
+5. Бот активирует подписку для пользователя
 
-## Configuration Variables
+## Переменные конфигурации
 
-| Variable | Description |
+| Переменная | Описание |
 |----------|-------------|
-| `TRIBUTE_WEBHOOK_URL` | Webhook path (e.g., `/tribute/webhook`) |
-| `TRIBUTE_API_KEY` | API key from Tribute settings |
-| `TRIBUTE_PAYMENT_URL` | Subscription link from Tribute |
-| `HEALTH_CHECK_PORT` | Port for webhook (usually 8080) |
+| `TRIBUTE_WEBHOOK_URL` | Путь вебхука (например, `/tribute/webhook`) |
+| `TRIBUTE_API_KEY` | API ключ из настроек Tribute |
+| `TRIBUTE_PAYMENT_URL` | Ссылка подписки из Tribute |
+| `HEALTH_CHECK_PORT` | Порт для вебхука (обычно 8080) |
 
-## Getting API Key
+## Получение API ключа
 
-1. Open Tribute app
+1. Откройте приложение Tribute
 2. Settings → API Settings
-3. Create new API key
-4. Copy and paste in `.env`
+3. Создайте новый API ключ
+4. Скопируйте и вставьте в `.env`
 
-## SSL Certificate Options
+## Варианты SSL сертификата
 
-### Let's Encrypt (Free)
+### Let's Encrypt (Бесплатно)
 ```bash
-# Using Certbot with Nginx
+# Используя Certbot с Nginx
 sudo certbot certonly --standalone -d bot.example.com
 ```
 
-## Support
+## Поддержка
 
-- **Tribute Help**: In-app support
-- **Telegram Communities**: Crypto payment groups
+- **Справка Tribute**: Встроенная поддержка
+- **Telegram сообщества**: Группы платежей криптовалютой

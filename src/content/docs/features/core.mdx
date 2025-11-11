@@ -12,8 +12,6 @@ description: Main capabilities of Remnawave Telegram Shop Bot
 - **6 Months**: Better value proposition
 - **12 Months**: Best value with highest discount
 
-Each plan has independent pricing configured via environment variables.
-
 ### Automatic Notifications
 
 - Runs daily at **16:00 UTC**
@@ -101,7 +99,7 @@ Fetches all users from panel and updates database, removing any users no longer 
 - Independent configuration for trials
 
 ### External Squads
-- Single squad UUID for load balancing
+- Single squad UUID
 - Included in all user operations
 - Optional assignment
 
@@ -112,7 +110,7 @@ TRAFFIC_LIMIT=100
 TRIAL_TRAFFIC_LIMIT=10
 ```
 
-- Set maximum bandwidth per subscription
+- Set traffic limit per subscription
 - Separate limits for regular and trial users
 - 0 = unlimited traffic
 
@@ -123,12 +121,4 @@ REFERRAL_DAYS=30
 ```
 
 - Track user referrals
-- Set tracking window
 - Disabled if set to 0
-
-## API Features
-
-- RESTful endpoints for webhooks
-- Telegram webhook integration
-- Payment processor callbacks
-- Real-time subscription updates

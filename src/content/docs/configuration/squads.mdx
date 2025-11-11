@@ -5,7 +5,7 @@ description: Configure squad assignment for users and trials
 
 ## What are Squads?
 
-Squads represent different connection methods or server groups in Remnawave. You can selectively assign which squads users get access to.
+Squads represent groups in Remnawave. You can selectively assign which squads users get access to.
 
 ## Internal Squad Configuration
 
@@ -16,7 +16,6 @@ SQUAD_UUIDS=773db654-a8b2-413a-a50b-75c3536238fd,bc979bdd-f1fa-4d94-8a51-38a0f51
 - Configure comma-separated squad UUIDs
 - Only matching squads are assigned to users
 - If empty, all available squads are assigned
-- Allows fine-grained control over connection methods
 
 ## External Squad Configuration
 
@@ -27,7 +26,6 @@ EXTERNAL_SQUAD_UUID=773db654-a8b2-413a-a50b-75c3536238fd
 - Single external squad UUID
 - Included in all user creation/update requests
 - Leave empty to disable
-- Useful for external load balancing
 
 ## Trial Squad Configuration
 
@@ -46,10 +44,8 @@ TRIAL_EXTERNAL_SQUAD_UUID=773db654-a8b2-413a-a50b-75c3536238fd
 
 ## Example Configuration
 
-### Production Setup
-
 ```env
-# Regular users get access to multiple production squads
+# Regular users get access to multiple squads
 SQUAD_UUIDS=773db654-a8b2-413a-a50b-75c3536238fd,bc979bdd-f1fa-4d94-8a51-38a0f518a2a2
 EXTERNAL_SQUAD_UUID=773db654-a8b2-413a-a50b-75c3536238fd
 
@@ -57,15 +53,6 @@ EXTERNAL_SQUAD_UUID=773db654-a8b2-413a-a50b-75c3536238fd
 TRIAL_INTERNAL_SQUADS=abc12345-def6-7890-ghij-klmnopqrstuv
 TRIAL_EXTERNAL_SQUAD_UUID=xyz98765-abc4-3210-defg-hijklmnopqrs
 ```
-
-This setup ensures:
-- Production users have full access to multiple servers
-- Trial users are isolated in separate squads
-- Resources are fairly distributed
-
-## Best Practices
-
-1. **Create separate trial squads** for monitoring and resource control
 2. **Use external squads** for load distribution
 3. **Document squad purposes** with meaningful naming
 4. **Test squad assignment** with test users first

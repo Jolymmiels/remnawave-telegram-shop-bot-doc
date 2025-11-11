@@ -179,7 +179,7 @@ aside.right-sidebar-container {
 }
 
 .right-sidebar {
-  padding: var(--sl-spacing-lg) var(--sl-sidebar-pad-x);
+  padding: calc(var(--sl-nav-height) + var(--sl-spacing-xl)) var(--sl-sidebar-pad-x) var(--sl-spacing-lg);
 }
 
 .right-sidebar-panel {

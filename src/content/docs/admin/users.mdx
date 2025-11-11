@@ -1,182 +1,182 @@
 ---
-title: User Management
-description: Manage users with blocklists and whitelists
+title: Управление пользователями
+description: Управление пользователями с помощью чёрных и белых списков
 ---
 
-## Blocking Users
+## Блокировка пользователей
 
-Block specific users from accessing the bot.
+Заблокируйте конкретных пользователей от доступа к боту.
 
 ```env
 BLOCKED_TELEGRAM_IDS=123456789,987654321,555555555
 ```
 
-### How to Block a User
+### Как заблокировать пользователя
 
-1. Get their Telegram ID
-2. Add to `BLOCKED_TELEGRAM_IDS`
-3. Restart bot: `docker compose down && docker compose up -d`
+1. Получите их Telegram ID
+2. Добавьте в `BLOCKED_TELEGRAM_IDS`
+3. Перезагрузите бота: `docker compose down && docker compose up -d`
 
-### When to Block
+### Когда блокировать
 
-- Spammers or abusers
-- Users attempting fraud
-- Accounts that violate ToS
-- Suspicious activity
+- Спамеры или хулиганы
+- Пользователи, пытающиеся совершить мошенничество
+- Аккаунты, нарушающие Условия обслуживания
+- Подозрительная активность
 
-### Find User Telegram ID
+### Найти Telegram ID пользователя
 
-Users can find their ID:
-- Send message to [@userinfobot](https://t.me/userinfobot)
-- Copy the ID returned
-- Share with admin (if needed)
+Пользователи могут найти свой ID:
+- Отправить сообщение [@userinfobot](https://t.me/userinfobot)
+- Скопировать возвращённый ID
+- Поделиться с администратором (если требуется)
 
-## Whitelisting Users
+## Добавление в белый список пользователей
 
-Allow specific users to bypass security checks.
+Разрешить определённым пользователям обойти проверки безопасности.
 
 ```env
 WHITELISTED_TELEGRAM_IDS=111111111,222222222,333333333
 ```
 
-### How to Whitelist
+### Как добавить в белый список
 
-1. Get Telegram ID (see above)
-2. Add to `WHITELISTED_TELEGRAM_IDS`
-3. Changes take effect immediately
+1. Получите Telegram ID (см. выше)
+2. Добавьте в `WHITELISTED_TELEGRAM_IDS`
+3. Изменения вступают в силу немедленно
 
-### When to Whitelist
+### Когда добавлять в белый список
 
-- Service accounts
-- Staff members
-- Verified partners
-- Legitimate bots
-- VIP customers
+- Служебные аккаунты
+- Члены команды
+- Проверенные партнёры
+- Легитимные боты
+- VIP клиенты
 
-### Whitelist Priority
-
-```
-Blocked IDs > Whitelist > Security Checks
-```
-
-If a user is in both blocked and whitelist, they are **blocked**.
-
-## User Filtering
-
-### Built-in Detection
-
-The bot automatically detects suspicious accounts:
-
-| Check | Description |
-|-------|-------------|
-| Keyword Analysis | Phishing/fraud patterns |
-| Account Names | Service vs suspicious |
-| Combinations | Dangerous keyword pairs |
-| Service Recognition | Allow `@CompanySupportAdmin` |
-
-### False Positives
-
-If legitimate users are blocked:
-
-1. Get their Telegram ID
-2. Add to `WHITELISTED_TELEGRAM_IDS`
-3. Restart bot if needed
-4. Report issue on GitHub
-
-## User States
+### Приоритет белого списка
 
 ```
-New User
+Чёрный список > Белый список > Проверки безопасности
+```
+
+Если пользователь в обоих списках, он **заблокирован**.
+
+## Фильтрация пользователей
+
+### Встроенное обнаружение
+
+Бот автоматически обнаруживает подозрительные аккаунты:
+
+| Проверка | Описание |
+|---------|---------|
+| Анализ ключевых слов | Паттерны фишинга/мошенничества |
+| Имена аккаунтов | Служебные vs подозрительные |
+| Комбинации | Опасные пары ключевых слов |
+| Распознавание служб | Разрешить `@CompanySupportAdmin` |
+
+### Ложные срабатывания
+
+Если легитимные пользователи заблокированы:
+
+1. Получите их Telegram ID
+2. Добавьте в `WHITELISTED_TELEGRAM_IDS`
+3. Перезагрузитесь при необходимости
+4. Сообщите проблему на GitHub
+
+## Состояния пользователей
+
+```
+Новый пользователь
   ↓
-Security Check
-  ├─ Blocked → Denied
-  ├─ Whitelisted → Allowed
-  └─ Check filters
-      ├─ Suspicious → Denied
-      └─ OK → Allowed
+Проверка безопасности
+  ├─ Заблокирован → Отказано
+  ├─ В белом списке → Разрешено
+  └─ Проверка фильтров
+      ├─ Подозрительный → Отказано
+      └─ OK → Разрешено
 ```
 
-## Configuration Examples
+## Примеры конфигурации
 
-### Strict Security
+### Строгая безопасность
 
 ```env
-# Block known spammers
+# Блокируйте известных спамеров
 BLOCKED_TELEGRAM_IDS=123456789,987654321
 
-# Only allow staff
+# Разрешьте только сотрудников
 WHITELISTED_TELEGRAM_IDS=111111111,222222222,333333333
 ```
 
-### Open Access
+### Открытый доступ
 
 ```env
-# No blocked users
+# Нет заблокированных пользователей
 BLOCKED_TELEGRAM_IDS=
 
-# Whitelist for staff
+# Белый список для сотрудников
 WHITELISTED_TELEGRAM_IDS=111111111
 ```
 
-### Selective Trust
+### Выборочное доверие
 
 ```env
-# Block specific troublemakers
+# Блокируйте конкретных проблемных пользователей
 BLOCKED_TELEGRAM_IDS=999999999
 
-# Trust partners
+# Доверяйте партнёрам
 WHITELISTED_TELEGRAM_IDS=111111111,222222222
 ```
 
-## Monitoring
+## Мониторинг
 
-Check logs for user access attempts:
+Проверьте логи попыток доступа пользователей:
 
 ```bash
 docker compose logs remnawave-telegram-shop-bot | grep "user\|access\|security"
 ```
 
-Look for:
-- Access denied messages
-- Failed authentications
-- Suspicious patterns
-- Repeated attempts
+Ищите:
+- Сообщения об отказе в доступе
+- Неудачные аутентификации
+- Подозрительные паттерны
+- Повторные попытки
 
-## Best Practices
+## Лучшие практики
 
-1. **Review Regularly** - Update lists quarterly
-2. **Document Changes** - Keep notes of why users blocked
-3. **Archive History** - Track decisions for appeals
-4. **Monitor Activity** - Watch for abuse patterns
-5. **Trust Partnership** - Communicate with trusted users
+1. **Регулярно пересматривайте** - Обновляйте списки ежеквартально
+2. **Документируйте изменения** - Ведите записи о причинах блокировок
+3. **Архивируйте историю** - Отслеживайте решения для апелляций
+4. **Контролируйте активность** - Наблюдайте за паттернами злоупотреблений
+5. **Взаимодействие** - Сообщайте с доверенными пользователями
 
-## Troubleshooting
+## Устранение неполадок
 
-### Blocked User Can Still Access
+### Заблокированный пользователь всё ещё может получить доступ
 
-- Clear browser cache
-- Check configuration format (commas, no spaces)
-- Verify restart completed
-- Check logs for errors
+- Очистите кэш браузера
+- Проверьте формат конфигурации (запятые, нет пробелов)
+- Проверьте завершение перезагрузки
+- Проверьте логи на предмет ошибок
 
-### Whitelist Not Working
+### Белый список не работает
 
-- Changes need restart? For blocked IDs yes
-- Whitelist changes are immediate
-- Verify ID format (numeric only)
-- Check for typos
+- Чёрный список требует перезагрузки? Да
+- Белый список работает немедленно
+- Проверьте формат ID (только цифры)
+- Проверьте на опечатки
 
-### Too Many False Positives
+### Слишком много ложных срабатываний
 
-- Adjust security settings
-- Whitelist legitimate accounts
-- Update bot to latest version
-- Report to GitHub
+- Отрегулируйте параметры безопасности
+- Добавьте легитимные аккаунты в белый список
+- Обновите бот до последней версии
+- Сообщите на GitHub
 
-## Appeals
+## Апелляции
 
-Users blocked by mistake can:
-1. Contact administrator
-2. Provide explanation
-3. Get whitelisted or unblocked
-4. Admin documents reason
+Ошибочно заблокированные пользователи могут:
+1. Связаться с администратором
+2. Предоставить объяснение
+3. Получить добавление в белый список или разблокировку
+4. Администратор документирует причину

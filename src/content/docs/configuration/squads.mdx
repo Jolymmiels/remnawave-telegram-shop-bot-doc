@@ -1,72 +1,72 @@
 ---
-title: Squad Configuration
-description: Configure squad assignment for users and trials
+title: Конфигурация сквадов
+description: Настройка назначения сквадов для пользователей и пробных периодов
 ---
 
-## What are Squads?
+## Что такое сквады?
 
-Squads represent different connection methods or server groups in Remnawave. You can selectively assign which squads users get access to.
+Сквады - это различные методы подключения или группы серверов в Remnawave. Вы можете выборочно назначать, к каким сквадам получают доступ пользователи.
 
-## Internal Squad Configuration
+## Конфигурация внутренних сквадов
 
 ```env
 SQUAD_UUIDS=773db654-a8b2-413a-a50b-75c3536238fd,bc979bdd-f1fa-4d94-8a51-38a0f518a2a2
 ```
 
-- Configure comma-separated squad UUIDs
-- Only matching squads are assigned to users
-- If empty, all available squads are assigned
-- Allows fine-grained control over connection methods
+- Настройте UUIDs сквадов, разделённые запятой
+- Только соответствующие сквады назначаются пользователям
+- Если пусто, назначаются все доступные сквады
+- Позволяет гранулярный контроль методов подключения
 
-## External Squad Configuration
+## Конфигурация внешних сквадов
 
 ```env
 EXTERNAL_SQUAD_UUID=773db654-a8b2-413a-a50b-75c3536238fd
 ```
 
-- Single external squad UUID
-- Included in all user creation/update requests
-- Leave empty to disable
-- Useful for external load balancing
+- Один UUID внешнего сквада
+- Включается во все запросы создания/обновления пользователя
+- Оставьте пусто для отключения
+- Полезно для внешней балансировки нагрузки
 
-## Trial Squad Configuration
+## Конфигурация сквадов для пробных периодов
 
-Separate squads can be assigned to trial users:
+Отдельные сквады можно назначить пробным пользователям:
 
 ```env
 TRIAL_INTERNAL_SQUADS=773db654-a8b2-413a-a50b-75c3536238fd,bc979bdd-f1fa-4d94-8a51-38a0f518a2a2
 TRIAL_EXTERNAL_SQUAD_UUID=773db654-a8b2-413a-a50b-75c3536238fd
 ```
 
-### Behavior
+### Поведение
 
-- **If set**: Trial users are assigned to trial-specific squads
-- **If not set**: Trial users use regular squad configuration (fallback behavior)
-- **Use case**: Isolate trial traffic to prevent resource exhaustion
+- **Если установлено**: Пробные пользователи назначаются на пробные сквады
+- **Если не установлено**: Пробные пользователи используют обычную конфигурацию сквадов (резервное поведение)
+- **Вариант использования**: Изоляция пробного трафика для предотвращения истощения ресурсов
 
-## Example Configuration
+## Пример конфигурации
 
-### Production Setup
+### Боевая установка
 
 ```env
-# Regular users get access to multiple production squads
+# Обычные пользователи получают доступ к нескольким боевым сквадам
 SQUAD_UUIDS=773db654-a8b2-413a-a50b-75c3536238fd,bc979bdd-f1fa-4d94-8a51-38a0f518a2a2
 EXTERNAL_SQUAD_UUID=773db654-a8b2-413a-a50b-75c3536238fd
 
-# Trial users get separate trial squads
+# Пробные пользователи получают отдельные пробные сквады
 TRIAL_INTERNAL_SQUADS=abc12345-def6-7890-ghij-klmnopqrstuv
 TRIAL_EXTERNAL_SQUAD_UUID=xyz98765-abc4-3210-defg-hijklmnopqrs
 ```
 
-This setup ensures:
-- Production users have full access to multiple servers
-- Trial users are isolated in separate squads
-- Resources are fairly distributed
+Эта установка гарантирует:
+- Боевые пользователи имеют полный доступ к нескольким серверам
+- Пробные пользователи изолированы на отдельные сквады
+- Ресурсы справедливо распределены
 
-## Best Practices
+## Лучшие практики
 
-1. **Create separate trial squads** for monitoring and resource control
-2. **Use external squads** for load distribution
-3. **Document squad purposes** with meaningful naming
-4. **Test squad assignment** with test users first
-5. **Monitor squad usage** in Remnawave panel
+1. **Создавайте отдельные пробные сквады** для мониторинга и управления ресурсами
+2. **Используйте внешние сквады** для распределения нагрузки
+3. **Документируйте назначение сквадов** с помощью осмысленного именования
+4. **Протестируйте назначение сквадов** с тестовыми пользователями
+5. **Мониторьте использование сквадов** в панели Remnawave

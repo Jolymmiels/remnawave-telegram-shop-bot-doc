@@ -1,37 +1,37 @@
 ---
-title: Setup Instructions
-description: Step-by-step guide to install and run Remnawave Telegram Shop Bot
+title: Инструкции установки
+description: Пошаговое руководство по установке и запуску Remnawave Telegram Shop Bot
 ---
 
 import { Steps } from '@astrojs/starlight/components';
 
-## Prerequisites
+## Предварительные требования
 
-Before starting, ensure you have:
-- A Linux server or VPS
-- Docker and Docker Compose installed
-- A Telegram Bot token from [@BotFather](https://t.me/BotFather)
-- Remnawave panel with API token and X_API_KEY
-- PostgreSQL support (included in docker-compose)
+Перед началом убедитесь, что у вас есть:
+- Linux сервер или VPS
+- Установленные Docker и Docker Compose
+- Токен Telegram бота от [@BotFather](https://t.me/BotFather)
+- Панель Remnawave с API токеном и X_API_KEY
+- Поддержка PostgreSQL (включена в docker-compose)
 
-## Installation
+## Установка
 
 <Steps>
 
-1. **Clone the repository**
+1. **Клонируйте репозиторий**
    ```bash
    git clone https://github.com/Jolymmiels/remnawave-telegram-shop
    cd remnawave-telegram-shop
    ```
 
-2. **Create environment file**
+2. **Создайте файл окружения**
    ```bash
    cp .env.sample .env
    ```
 
-3. **Configure essential variables**
+3. **Настройте основные переменные**
    
-   Edit `.env` with your settings:
+   Отредактируйте `.env` с вашими параметрами:
    ```env
    TELEGRAM_TOKEN=your_bot_token_here
    DATABASE_URL=postgresql://user:password@postgres:5432/remnawave
@@ -45,26 +45,26 @@ Before starting, ensure you have:
    PRICE_12=35
    ```
 
-4. **Start the bot**
+4. **Запустите бота**
    ```bash
    docker compose up -d
    ```
 
-5. **Verify installation**
+5. **Проверьте установку**
    ```bash
    docker compose logs -f remnawave-telegram-shop-bot
    ```
    
-   The bot is ready when you see "Starting bot" message.
+   Бот готов, когда вы видите сообщение "Starting bot".
 
-6. **Test the bot**
-   Send `/start` command to your bot on Telegram
+6. **Протестируйте бота**
+   Отправьте команду `/start` вашему боту в Telegram
 
 </Steps>
 
-## Update Instructions
+## Инструкции обновления
 
-To update to the latest version:
+Для обновления до последней версии:
 
 ```bash
 docker compose pull
@@ -72,33 +72,33 @@ docker compose down
 docker compose up -d
 ```
 
-## Version Support Matrix
+## Матрица совместимости версий
 
-| Remnawave | Bot      |
+| Remnawave | Бот      |
 |-----------|----------|
 | 1.6       | 2.3.6    |
 | 2.0-2.1.9 | 3.2.4    |
 | 2.2.*     | 3.2.5+   |
 
-## Troubleshooting
+## Устранение неполадок
 
-### Bot not responding
-- Check if container is running: `docker compose ps`
-- Verify Telegram token is correct
-- Review logs: `docker compose logs remnawave-telegram-shop-bot`
+### Бот не отвечает
+- Проверьте, работает ли контейнер: `docker compose ps`
+- Проверьте корректность токена Telegram
+- Просмотрите логи: `docker compose logs remnawave-telegram-shop-bot`
 
-### Database connection error
-- Ensure PostgreSQL container is running
-- Verify DATABASE_URL format
-- Check database credentials
+### Ошибка подключения к БД
+- Убедитесь, что контейнер PostgreSQL запущен
+- Проверьте формат DATABASE_URL
+- Проверьте учётные данные БД
 
-### Remnawave API errors
-- Verify REMNAWAVE_URL is accessible
-- Check REMNAWAVE_TOKEN validity
-- Test API connectivity from the container
+### Ошибки API Remnawave
+- Проверьте доступность REMNAWAVE_URL
+- Проверьте действительность REMNAWAVE_TOKEN
+- Протестируйте подключение к API из контейнера
 
-## Next Steps
+## Следующие шаги
 
-- Configure [payment methods](/payments/yookassa/)
-- Set up [environment variables](/configuration/variables/)
-- Learn about [admin commands](/admin/commands/)
+- Настройте [способы оплаты](/payments/yookassa/)
+- Установите [переменные окружения](/configuration/variables/)
+- Узнайте о [командах администратора](/admin/commands/)

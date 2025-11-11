@@ -1,45 +1,45 @@
 ---
-title: Maintenance & Best Practices
-description: Regular maintenance and operational best practices
+title: Обслуживание и лучшие практики
+description: Обслуживание и оперативные лучшие практики
 ---
 
 import { Steps } from '@astrojs/starlight/components';
 
-## Regular Maintenance Schedule
+## График регулярного обслуживания
 
-### Daily
+### Ежедневно
 
-- ✅ Monitor bot health
-- ✅ Check error logs
-- ✅ Review suspicious users
-- ✅ Verify payment processing
+- ✅ Контролируйте здоровье бота
+- ✅ Проверяйте логи ошибок
+- ✅ Пересматривайте подозрительных пользователей
+- ✅ Проверьте обработку платежей
 
-### Weekly
+### Еженедельно
 
-- ✅ Backup database
-- ✅ Review user access logs
-- ✅ Check resource usage
-- ✅ Test recovery procedures
+- ✅ Резервная копия БД
+- ✅ Пересматривайте логи доступа пользователей
+- ✅ Проверьте использование ресурсов
+- ✅ Протестируйте процедуры восстановления
 
-### Monthly
+### Ежемесячно
 
-- ✅ Update Docker images
-- ✅ Review security settings
-- ✅ Audit user permissions
-- ✅ Plan improvements
+- ✅ Обновите образы Docker
+- ✅ Пересмотрите параметры безопасности
+- ✅ Аудит разрешений пользователей
+- ✅ Планируйте улучшения
 
-### Quarterly
+### Ежеквартально
 
-- ✅ Full security audit
-- ✅ Review and rotate keys
-- ✅ Performance tuning
-- ✅ Compliance check
+- ✅ Полный аудит безопасности
+- ✅ Пересмотр и ротация ключей
+- ✅ Оптимизация производительности
+- ✅ Проверка соответствия
 
-## Database Backup
+## Резервная копия БД
 
 <Steps>
 
-1. **Manual Backup**
+1. **Ручная резервная копия**
    ```bash
    docker compose exec postgres pg_dump \
      -U remnawave \
@@ -47,8 +47,8 @@ import { Steps } from '@astrojs/starlight/components';
      > backup_$(date +%Y%m%d_%H%M%S).sql
    ```
 
-2. **Automated Backup**
-   Create `/usr/local/bin/backup-bot.sh`:
+2. **Автоматическая резервная копия**
+   Создайте `/usr/local/bin/backup-bot.sh`:
    ```bash
    #!/bin/bash
    DATE=$(date +%Y%m%d_%H%M%S)
@@ -58,101 +58,101 @@ import { Steps } from '@astrojs/starlight/components';
    gzip /backups/bot_$DATE.sql
    ```
 
-3. **Add to Cron**
+3. **Добавьте в Cron**
    ```bash
    crontab -e
-   # Run daily at 2 AM
+   # Выполнять ежедневно в 2 AM
    0 2 * * * /usr/local/bin/backup-bot.sh
    ```
 
-4. **Test Restore**
+4. **Протестируйте восстановление**
    ```bash
-   # Verify backup is valid
+   # Проверьте, что резервная копия действительна
    gunzip -c backup_20241110_020000.sql.gz | head -100
    ```
 
 </Steps>
 
-## Updates & Upgrades
+## Обновления и升级
 
-### Update Bot
+### Обновите бота
 
 ```bash
-# Check for updates
+# Проверьте обновления
 docker pull ghcr.io/jolymmiels/remnawave-telegram-shop-bot:latest
 
-# Update
+# Обновите
 docker compose pull
 docker compose down
 docker compose up -d
 
-# Verify
+# Проверьте
 docker compose logs -f remnawave-telegram-shop-bot
 ```
 
-### Update Dependencies
+### Обновите зависимости
 
-Monitor for security updates:
+Контролируйте обновления безопасности:
 
 ```bash
-# Check for vulnerabilities
+# Проверьте уязвимости
 docker scout cves ghcr.io/jolymmiels/remnawave-telegram-shop-bot
 
-# Update base image if issues found
+# Обновите базовый образ при обнаружении проблем
 docker compose build --pull
 ```
 
-### Version Compatibility
+### Совместимость версий
 
-Always check compatibility before updating:
+Всегда проверяйте совместимость перед обновлением:
 
-| Old Version | Update To | Notes |
-|------------|-----------|-------|
-| 3.2.4 | 3.2.5+ | Safe, recommended |
-| 3.2.5 | 3.4.1 | Safe |
-| 3.0.x | 3.2.x | Requires migration |
+| Старая версия | Обновление | Заметки |
+|-----------|-----------|---------|
+| 3.2.4 | 3.2.5+ | Безопасно, рекомендуется |
+| 3.2.5 | 3.4.1 | Безопасно |
+| 3.0.x | 3.2.x | Требует миграции |
 
-## Security Hardening
+## Укрепление безопасности
 
-### Environment Security
+### Безопасность окружения
 
 ```bash
-# Never commit .env
+# Никогда не коммитьте .env
 echo ".env" >> .gitignore
 
-# Restrict file permissions
+# Ограничьте разрешения файла
 chmod 600 .env
 
-# Use strong passwords
+# Используйте сильные пароли
 openssl rand -base64 32
 ```
 
-### API Key Rotation
+### Ротация API ключа
 
 ```bash
-# Every 90 days
-1. Generate new key in payment/Remnawave dashboard
-2. Update .env file
-3. Restart bot
-4. Delete old key after verification
+# Каждые 90 дней
+1. Сгенерируйте новый ключ в панели платежей/Remnawave
+2. Обновите файл .env
+3. Перезагрузите бота
+4. Удалите старый ключ после проверки
 ```
 
-### Access Control
+### Контроль доступа
 
-- Limit admin Telegram IDs
-- Use strong authentication
-- Enable 2FA where available
-- Monitor access logs
+- Ограничьте Telegram ID администраторов
+- Используйте сильную аутентификацию
+- Включите 2FA где доступно
+- Контролируйте логи доступа
 
-## Performance Optimization
+## Оптимизация производительности
 
-### Database Optimization
+### Оптимизация БД
 
 ```bash
-# Connect to PostgreSQL
+# Подключитесь к PostgreSQL
 docker compose exec postgres psql -U remnawave -d remnawave
 
-# Check table sizes
+# Проверьте размеры таблиц
 SELECT 
   schemaname, 
   tablename, 
@@ -160,22 +160,22 @@ SELECT
 FROM pg_tables 
 ORDER BY pg_total_relation_size(schemaname||'.'||tablename) DESC;
 
-# Vacuum and analyze
+# Vacuum и анализ
 VACUUM ANALYZE;
 
-# Check index usage
+# Проверьте использование индексов
 SELECT * FROM pg_stat_user_indexes ORDER BY idx_scan DESC;
 ```
 
-### Server Resources
+### Ресурсы сервера
 
-Monitor and adjust:
+Контролируйте и регулируйте:
 
 ```bash
-# Check usage
+# Проверьте использование
 docker stats remnawave-telegram-shop-bot
 
-# Update limits in docker-compose.yaml
+# Обновите лимиты в docker-compose.yaml
 services:
   remnawave-telegram-shop-bot:
     deploy:
@@ -185,71 +185,71 @@ services:
           memory: 1G
 ```
 
-## Disaster Recovery
+## Восстановление после аварии
 
-### Backup Restoration
+### Восстановление резервной копии
 
 ```bash
-# Stop services
+# Остановите сервисы
 docker compose down
 
-# Restore database
+# Восстановите БД
 gunzip -c backup_latest.sql.gz | \
   docker compose exec -T postgres \
   psql -U remnawave -d remnawave
 
-# Start services
+# Запустите сервисы
 docker compose up -d
 ```
 
-### Verification After Restore
+### Проверка после восстановления
 
 ```bash
-# Check data integrity
+# Проверьте целостность данных
 docker compose exec postgres psql -U remnawave -d remnawave \
   -c "SELECT COUNT(*) FROM subscriptions;"
 
-# Test bot
+# Протестируйте бота
 docker compose logs -f remnawave-telegram-shop-bot
 ```
 
-## Capacity Planning
+## Планирование ёмкости
 
-Plan for growth:
+Планируйте рост:
 
 ```
-Current Users: 1,000
-Growth Rate: 20% per month
-Estimate: 3,200 users in 6 months
+Текущие пользователи: 1 000
+Темп роста: 20% в месяц
+Прогноз: 3 200 пользователей через 6 месяцев
 
-Resource Needs:
-- Database: +50GB
-- Bot Memory: +200MB
-- Network: +100Mbps
+Потребности ресурсов:
+- БД: +50GB
+- Память бота: +200MB
+- Сеть: +100Mbps
 ```
 
-## Documentation
+## Документирование
 
-Keep detailed records:
+Ведите подробные записи:
 
-- ✅ Configuration changes
-- ✅ Security incidents
-- ✅ Performance issues
-- ✅ User complaints
-- ✅ System upgrades
+- ✅ Изменения конфигурации
+- ✅ Инциденты безопасности
+- ✅ Проблемы производительности
+- ✅ Жалобы пользователей
+- ✅ Обновления системы
 
-## Troubleshooting Common Issues
+## Устранение распространённых проблем
 
-| Issue | Cause | Solution |
-|-------|-------|----------|
-| Bot slow | High traffic | Scale up resources |
-| DB full | Large tables | Archive old data |
-| Payments fail | API issue | Check connectivity |
-| Memory leak | Buggy version | Update bot |
+| Проблема | Причина | Решение |
+|----------|--------|---------|
+| Бот медленный | Высокая нагрузка | Масштабируйте ресурсы |
+| БД полная | Большие таблицы | Архивируйте старые данные |
+| Платежи сбиваются | Проблема API | Проверьте подключение |
+| Утечка памяти | Версия с ошибкой | Обновите бота |
 
-## Support Resources
+## Ресурсы поддержки
 
-- **GitHub Issues**: Report bugs
-- **Documentation**: This site
-- **Telegram Community**: Join group
-- **Commercial Support**: Available (contact)
+- **GitHub Issues**: Сообщайте об ошибках
+- **Документация**: Этот сайт
+- **Telegram сообщество**: Присоединитесь к группе
+- **Коммерческая поддержка**: Доступна (свяжитесь)

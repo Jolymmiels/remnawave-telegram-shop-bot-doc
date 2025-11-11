@@ -1,37 +1,37 @@
 ---
-title: Core Features
-description: Main capabilities of Remnawave Telegram Shop Bot
+title: Основные функции
+description: Основные возможности Remnawave Telegram Shop Bot
 ---
 
-## Subscription Management
+## Управление подписками
 
-### Multiple Plans
+### Несколько планов
 
-- **1 Month**: Quick trial or short-term access
-- **3 Months**: Popular mid-term option
-- **6 Months**: Better value proposition
-- **12 Months**: Best value with highest discount
+- **1 месяц**: Быстрый пробный или краткосрочный доступ
+- **3 месяца**: Популярный среднесрочный вариант
+- **6 месяцев**: Лучшее соотношение цены и качества
+- **12 месяцев**: Лучшее значение с наибольшей скидкой
 
-Each plan has independent pricing configured via environment variables.
+Каждый план имеет независимое ценообразование, настроенное через переменные окружения.
 
-### Automatic Notifications
+### Автоматические уведомления
 
-- Runs daily at **16:00 UTC**
-- Notifies users **3 days before** expiration
-- Includes exact expiration date
-- Provides convenient renewal button
-- Multi-language support (Russian/English)
+- Запускается ежедневно в **16:00 UTC**
+- Уведомляет пользователей **за 3 дня** до истечения
+- Включает точную дату истечения
+- Предоставляет удобную кнопку продления
+- Поддержка нескольких языков (русский/английский)
 
-## User Management
+## Управление пользователями
 
-### Built-in Filtering
+### Встроенная фильтрация
 
-- **Suspicious Account Detection**: Prevents phishing accounts
-- **Whitelist Support**: Bypass checks for trusted users
-- **Blacklist Support**: Block specific users
-- **Service Account Recognition**: Allow legitimate bots
+- **Обнаружение подозрительных аккаунтов**: Предотвращает фишинг аккаунты
+- **Поддержка белого списка**: Обход проверок для доверенных пользователей
+- **Поддержка чёрного списка**: Блокировка конкретных пользователей
+- **Распознавание служебных аккаунтов**: Разрешить легитимные боты
 
-### Trial System
+### Система пробных периодов
 
 ```env
 TRIAL_DAYS=7
@@ -39,96 +39,96 @@ TRIAL_TRAFFIC_LIMIT=10
 TRIAL_REMNAWAVE_TAG=trial_user
 ```
 
-- Attract new users with free trial
-- Limit traffic to prevent abuse
-- Track trial users separately
-- Optional separate squad assignment
+- Привлекайте новых пользователей бесплатной пробой
+- Ограничьте трафик для предотвращения злоупотреблений
+- Отдельно отслеживайте пробных пользователей
+- Опциональное отдельное назначение сквадов
 
-## Dynamic UI
+## Динамический интерфейс
 
-Buttons are shown/hidden based on configuration:
+Кнопки показываются/скрываются в зависимости от конфигурации:
 
-| Button | Required Variable | Use Case |
-|--------|------------------|----------|
-| Main Menu | Always shown | Navigation |
-| Purchase | Always shown | Buy subscription |
-| Connect | Always shown | Get VPN config |
-| Server Status | `SERVER_STATUS_URL` | System health |
-| Support | `SUPPORT_URL` | Get help |
-| Feedback | `FEEDBACK_URL` | Send feedback |
-| Channel | `CHANNEL_URL` | Community |
-| TOS | `TOS_URL` | Legal info |
+| Кнопка | Обязательная переменная | Вариант использования |
+|--------|------------------------|----------------------|
+| Главное меню | Всегда показана | Навигация |
+| Купить | Всегда показана | Покупка подписки |
+| Подключить | Всегда показана | Получить конфиг VPN |
+| Статус сервера | `SERVER_STATUS_URL` | Здоровье системы |
+| Поддержка | `SUPPORT_URL` | Получить помощь |
+| Обратная связь | `FEEDBACK_URL` | Отправить отзыв |
+| Канал | `CHANNEL_URL` | Сообщество |
+| Условия использования | `TOS_URL` | Юридическая информация |
 
-## Multi-language Support
+## Многоязычная поддержка
 
-Supported languages:
-- **Russian** (default)
-- **English**
+Поддерживаемые языки:
+- **Русский** (по умолчанию)
+- **Английский**
 
 ```env
 DEFAULT_LANGUAGE=ru
 ```
 
-All messages customizable via translation files in `translations/` folder.
+Все сообщения настраиваются через файлы переводов в папке `translations/`.
 
-## Health Checks
+## Проверки здоровья
 
-The bot provides monitoring endpoints:
+Бот предоставляет конечные точки мониторинга:
 
 ```bash
 curl http://your-bot:8080/healthcheck
 ```
 
-Checks:
-- Database connectivity
-- Remnawave panel availability
-- Bot service status
-- API key validity
+Проверяет:
+- Подключение к БД
+- Доступность панели Remnawave
+- Статус службы бота
+- Действительность API ключа
 
-## Admin Commands
+## Команды администратора
 
 ```
-/sync - Synchronize users from Remnawave
+/sync - Синхронизировать пользователей из Remnawave
 ```
 
-Fetches all users from panel and updates database, removing any users no longer present in Remnawave.
+Загружает всех пользователей с панели и обновляет БД, удаляя тех, кого больше нет в Remnawave.
 
-## Squad Management
+## Управление сквадами
 
-### Internal Squads
-- Control which connection methods users access
-- Multiple squads per user supported
-- Independent configuration for trials
+### Внутренние сквады
+- Управление методами подключения, к которым получают доступ пользователи
+- Несколько сквадов на пользователя
+- Независимая конфигурация для пробных
 
-### External Squads
-- Single squad UUID for load balancing
-- Included in all user operations
-- Optional assignment
+### Внешние сквады
+- Один UUID сквада для балансировки нагрузки
+- Включается во все операции с пользователем
+- Опциональное назначение
 
-## Traffic Management
+## Управление трафиком
 
 ```env
 TRAFFIC_LIMIT=100
 TRIAL_TRAFFIC_LIMIT=10
 ```
 
-- Set maximum bandwidth per subscription
-- Separate limits for regular and trial users
-- 0 = unlimited traffic
+- Установите максимальную полосу пропускания на подписку
+- Отдельные лимиты для обычных и пробных пользователей
+- 0 = неограниченный трафик
 
-## Referral System (Optional)
+## Система рекомендаций (опциональная)
 
 ```env
 REFERRAL_DAYS=30
 ```
 
-- Track user referrals
-- Set tracking window
-- Disabled if set to 0
+- Отслеживание рекомендаций пользователями
+- Установка временного окна отслеживания
+- Отключено, если установлено значение 0
 
-## API Features
+## Функции API
 
-- RESTful endpoints for webhooks
-- Telegram webhook integration
-- Payment processor callbacks
-- Real-time subscription updates
+- Конечные точки RESTful для вебхуков
+- Интеграция вебхуков Telegram
+- Обратные вызовы обработчиков платежей
+- Обновления подписки в реальном времени

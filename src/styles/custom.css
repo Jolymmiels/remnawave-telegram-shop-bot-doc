@@ -6,6 +6,8 @@
   --sl-color-accent-low: hsl(228, 70%, 30%);
   --sl-color-accent-high: #b6c4fb;
   --sl-color-bg: #17181c;
+  --sl-color-bg-sidebar: #0d1117;
+  --sl-color-bg-nav: #0d1117;
 }
 
 html, body {

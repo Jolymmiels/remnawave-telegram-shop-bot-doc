@@ -436,6 +436,28 @@ details:where(.astro-doynk5tl)[open] .caret:where(.astro-doynk5tl) {
   background: var(--sl-color-accent-high);
 }
 
+/* Sidebar current page styling */
+.sidebar-content [aria-current="page"],
+.sidebar-content [aria-current="page"]:hover,
+.sidebar-content [aria-current="page"]:focus {
+  color: var(--sl-color-white);
+  background-color: var(--sl-color-gray-7);
+  box-shadow: 2px 1px 2px 1px rgba(0, 0, 0, 0.03);
+  position: relative;
+}
+
+.sidebar-content [aria-current="page"]:before {
+  position: absolute;
+  top: 0;
+  left: -10px;
+  width: 5px;
+  height: 100%;
+  content: "";
+  background-color: var(--sl-color-text-accent);
+  border-bottom-right-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+}
+
 /* Links */
 .sl-markdown-content a {
   color: var(--sl-color-accent-high);

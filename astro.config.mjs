@@ -11,7 +11,7 @@ import starlightGitHubAlerts from 'starlight-github-alerts';
 import starlightThemeGalaxy from 'starlight-theme-galaxy';
 
 export default defineConfig({
-    site: 'https://docs.example.com',
+    site: 'https://remnawave-telegram-shop-bot-doc.vercel.app',
     integrations: [
         starlight({
             components: {

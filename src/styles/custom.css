@@ -199,57 +199,43 @@ starlight-toc h2 {
 }
 
 starlight-toc nav {
-  border-left: 3px solid var(--sl-color-accent);
+  border-left: none;
 }
 
-starlight-toc ul {
+/* TOC List items - copy from Starlight */
+starlight-toc ul:where(.astro-g2bywc46) {
+  padding: 0;
   list-style: none;
-  padding: 0;
   margin: 0;
-  font-size: var(--sl-text-xs);
 }
 
-starlight-toc li {
-  margin: 0;
-  padding: 0;
-}
-
-starlight-toc a {
+starlight-toc a:where(.astro-g2bywc46) {
+  --pad-inline: 0.5rem;
+  display: block;
+  border-radius: 0.25rem;
+  padding-block: 0.25rem;
+  padding-inline: calc(1rem * var(--depth) + var(--pad-inline)) var(--pad-inline);
+  line-height: 1.25;
   color: var(--sl-color-gray-3);
   text-decoration: none;
   transition: all 0.2s ease;
-  display: block;
-  padding: var(--sl-spacing-xs) var(--sl-spacing-md);
-  position: relative;
-  border-left: 3px solid transparent;
-  margin-left: -3px;
-  line-height: 1.5;
+  font-size: var(--sl-text-xs);
 }
 
-starlight-toc a:first-of-type {
-  color: var(--sl-color-accent-high);
-  background-color: rgba(99, 102, 241, 0.15);
-  border-left-color: var(--sl-color-accent);
-  margin-left: -3px;
+starlight-toc a:where(.astro-g2bywc46)[aria-current="true"] {
+  color: var(--sl-color-text-accent);
+  background-color: var(--sl-color-gray-7);
+  border-radius: 0.25rem;
 }
 
-starlight-toc a:hover {
-  color: var(--sl-color-accent-high);
-  background-color: rgba(99, 102, 241, 0.1);
-  padding-left: var(--sl-spacing-lg);
+starlight-toc a:where(.astro-g2bywc46):hover {
+  color: var(--sl-color-white);
+  background-color: var(--sl-color-gray-7);
 }
 
-starlight-toc li ul {
-  padding-left: var(--sl-spacing-lg);
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-starlight-toc li ul a {
-  padding-left: var(--sl-spacing-lg);
-  font-size: 0.9em;
-  border-left: none;
-  margin-left: 0;
+starlight-toc li:where(.astro-g2bywc46) {
+  margin: 0;
+  padding: 0;
 }
 
 /* Scrollbar styling */

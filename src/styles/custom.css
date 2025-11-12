@@ -51,17 +51,50 @@
 	color: black !important;
 }
 
-/* Fix splash page overflow */
-html[data-has-hero] {
-	overflow-y: hidden;
+/* Fix splash page overflow - but allow mobile scrolling */
+@media (min-width: 1024px) {
+	html[data-has-hero] {
+		overflow-y: hidden;
+	}
+
+	html[data-has-hero] body {
+		overflow-y: hidden;
+		max-height: 100vh;
+	}
+
+	.page[data-has-hero] {
+		max-height: 100vh;
+		overflow-y: hidden;
+	}
 }
 
-html[data-has-hero] body {
-	overflow-y: hidden;
-	max-height: 100vh;
-}
+/* Mobile responsiveness for text and spacing */
+@media (max-width: 768px) {
+	:root {
+		--font-size-small: 0.75rem;
+	}
 
-.page[data-has-hero] {
-	max-height: 100vh;
-	overflow-y: hidden;
+	body {
+		font-size: 0.95rem;
+	}
+
+	.header-links {
+		gap: 0.25rem !important;
+		flex-wrap: wrap;
+	}
+
+	.version-link {
+		font-size: 0.65rem !important;
+		padding: 0.1rem 0.25rem !important;
+	}
+
+	.github-stars {
+		font-size: 0.65rem !important;
+		gap: 0.25rem !important;
+	}
+
+	.star-icon {
+		width: 0.9rem !important;
+		height: 0.9rem !important;
+	}
 }

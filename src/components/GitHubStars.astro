@@ -49,6 +49,7 @@ try {
 		font-size: var(--font-size-small);
 		font-weight: 500;
 		transition: all 0.2s ease;
+		white-space: nowrap;
 	}
 
 	.github-stars:hover {
@@ -63,5 +64,33 @@ try {
 
 	.stars-count {
 		display: inline-block;
+	}
+
+	@media (max-width: 768px) {
+		.github-stars {
+			font-size: 0.65rem;
+			gap: 0.25rem;
+		}
+
+		.star-icon {
+			width: 0.9rem;
+			height: 0.9rem;
+		}
+
+		.stars-count {
+			display: none;
+		}
+	}
+
+	@media (min-width: 769px) and (max-width: 1023px) {
+		.github-stars {
+			font-size: 0.7rem;
+			gap: 0.3rem;
+		}
+
+		.star-icon {
+			width: 0.95rem;
+			height: 0.95rem;
+		}
 	}
 </style>

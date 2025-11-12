@@ -68,6 +68,31 @@
 	}
 }
 
+/* iOS/Mobile specific fixes */
+@supports (padding: max(0px)) {
+	html {
+		padding-left: max(0px, env(safe-area-inset-left));
+		padding-right: max(0px, env(safe-area-inset-right));
+		padding-top: max(0px, env(safe-area-inset-top));
+	}
+
+	body {
+		padding-bottom: max(0px, env(safe-area-inset-bottom));
+	}
+}
+
+html {
+	-webkit-user-select: text;
+	-webkit-touch-callout: default;
+	-webkit-text-size-adjust: 100%;
+}
+
+body {
+	-webkit-font-smoothing: antialiased;
+	-webkit-user-select: text;
+	touch-action: auto;
+}
+
 /* Mobile responsiveness for text and spacing */
 @media (max-width: 768px) {
 	:root {

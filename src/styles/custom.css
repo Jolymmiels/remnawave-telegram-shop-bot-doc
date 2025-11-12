@@ -167,7 +167,7 @@ body {
 
 	[data-has-hero] .hero svg,
 	[data-has-hero] .hero img {
-		max-width: 120px !important;
+		max-width: 240px !important;
 		height: auto !important;
 		margin: 0.5rem auto !important;
 	}

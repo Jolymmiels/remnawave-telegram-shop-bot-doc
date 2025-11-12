@@ -51,23 +51,6 @@
 	color: black !important;
 }
 
-/* Fix splash page overflow - but allow mobile scrolling */
-@media (min-width: 1024px) {
-	html[data-has-hero] {
-		overflow-y: hidden;
-	}
-
-	html[data-has-hero] body {
-		overflow-y: hidden;
-		max-height: 100vh;
-	}
-
-	.page[data-has-hero] {
-		max-height: 100vh;
-		overflow-y: hidden;
-	}
-}
-
 /* iOS/Mobile specific fixes */
 @supports (padding: max(0px)) {
 	html {

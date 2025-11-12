@@ -54,17 +54,21 @@
 /* Block scroll on splash page (homepage with hero) - desktop only */
 @media (min-width: 1024px) {
 	html[data-has-hero] {
-		overflow-y: hidden;
+		overflow-y: hidden !important;
+		height: 100vh !important;
+		max-height: 100vh !important;
 	}
 
 	html[data-has-hero] body {
-		overflow-y: hidden;
-		max-height: 100vh;
+		overflow-y: hidden !important;
+		max-height: 100vh !important;
+		height: 100vh !important;
 	}
 
 	html[data-has-hero] .page {
-		max-height: 100vh;
-		overflow-y: hidden;
+		max-height: 100vh !important;
+		overflow-y: hidden !important;
+		height: 100vh !important;
 	}
 }
 
@@ -123,19 +127,27 @@ body {
 		height: 0.9rem !important;
 	}
 
-	/* Scale down splash page hero content on mobile */
+	/* Scale down splash page hero content on mobile - NO SCROLL */
 	html[data-has-hero] {
-		overflow-y: hidden;
+		overflow-y: hidden !important;
+		height: 100vh !important;
+		max-height: 100vh !important;
 	}
 
 	html[data-has-hero] body {
-		max-height: 100vh;
-		overflow-y: hidden;
+		max-height: 100vh !important;
+		overflow-y: hidden !important;
+		height: 100vh !important;
 	}
 
 	html[data-has-hero] .page {
-		max-height: 100vh;
-		overflow-y: hidden;
+		max-height: 100vh !important;
+		overflow-y: hidden !important;
+		height: 100vh !important;
+	}
+
+	html[data-has-hero] * {
+		overflow-y: visible !important;
 	}
 
 	/* Reduce hero content size to fit viewport */

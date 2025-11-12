@@ -56,7 +56,7 @@ export default defineConfig({
                 },
             },
             editLink: {
-                baseUrl: 'https://github.com/Jolymmiels/remnawave-telegram-shop-bot-doc',
+                baseUrl: 'https://github.com/Jolymmiels/remnawave-telegram-shop-bot-doc/edit/master',
             },
             social: [
                 { icon: 'github', label: 'GitHub', href: 'https://github.com/Jolymmiels/remnawave-telegram-shop' },

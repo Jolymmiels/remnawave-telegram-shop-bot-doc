@@ -51,6 +51,21 @@
 	color: black !important;
 }
 
+/* Block scroll on splash page (homepage with hero) */
+html[data-has-hero] {
+	overflow-y: hidden;
+}
+
+html[data-has-hero] body {
+	overflow-y: hidden;
+	max-height: 100vh;
+}
+
+html[data-has-hero] .page {
+	max-height: 100vh;
+	overflow-y: hidden;
+}
+
 /* iOS/Mobile specific fixes */
 @supports (padding: max(0px)) {
 	html {

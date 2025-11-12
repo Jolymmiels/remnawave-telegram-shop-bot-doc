@@ -32,7 +32,7 @@ description: Управление подписками и система про�
 
 ### Включить пробные периоды
 
-```env
+```bash
 TRIAL_DAYS=7
 TRIAL_TRAFFIC_LIMIT=10
 TRIAL_REMNAWAVE_TAG=trial_user
@@ -49,7 +49,7 @@ TRIAL_REMNAWAVE_TAG=trial_user
 
 Пробные периоды могут использовать разные сквады:
 
-```env
+```bash
 TRIAL_INTERNAL_SQUADS=abc12345-def6-7890-ghij-klmnopqrstuv
 TRIAL_EXTERNAL_SQUAD_UUID=xyz98765-abc4-3210-defg-hijklmnopqrs
 ```
@@ -58,7 +58,7 @@ TRIAL_EXTERNAL_SQUAD_UUID=xyz98765-abc4-3210-defg-hijklmnopqrs
 
 Контролируйте использование пропускной способности:
 
-```env
+```bash
 TRAFFIC_LIMIT=100          # Обычные пользователи: 100 ГБ
 TRIAL_TRAFFIC_LIMIT=10     # Пробные пользователи: 10 ГБ
 ```

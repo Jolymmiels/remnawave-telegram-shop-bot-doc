@@ -12,6 +12,11 @@ import starlightThemeGalaxy from 'starlight-theme-galaxy';
 
 export default defineConfig({
     site: 'https://remnawave-telegram-shop-bot-doc.vercel.app',
+    markdown: {
+        shikiConfig: {
+            langs: ['bash', 'shell', 'yaml', 'json', 'javascript', 'typescript', 'python', 'go', 'rust', 'toml', 'dockerfile'],
+        },
+    },
     integrations: [
         starlight({
             components: {

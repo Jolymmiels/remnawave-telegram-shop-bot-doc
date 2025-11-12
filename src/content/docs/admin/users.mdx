@@ -7,7 +7,7 @@ description: Manage users with blocklists and whitelists
 
 Block specific users from accessing the bot.
 
-```env
+```bash
 BLOCKED_TELEGRAM_IDS=123456789,987654321,555555555
 ```
 
@@ -35,7 +35,7 @@ Users can find their ID:
 
 Allow specific users to bypass security checks.
 
-```env
+```bash
 WHITELISTED_TELEGRAM_IDS=111111111,222222222,333333333
 ```
 
@@ -100,7 +100,7 @@ Security Check
 
 ### Strict Security
 
-```env
+```bash
 # Block known spammers
 BLOCKED_TELEGRAM_IDS=123456789,987654321
 
@@ -110,7 +110,7 @@ WHITELISTED_TELEGRAM_IDS=111111111,222222222,333333333
 
 ### Open Access
 
-```env
+```bash
 # No blocked users
 BLOCKED_TELEGRAM_IDS=
 
@@ -120,7 +120,7 @@ WHITELISTED_TELEGRAM_IDS=111111111
 
 ### Selective Trust
 
-```env
+```bash
 # Block specific troublemakers
 BLOCKED_TELEGRAM_IDS=999999999
 

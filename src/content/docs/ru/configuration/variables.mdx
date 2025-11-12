@@ -16,7 +16,7 @@ description: Полный справочник всех переменных к�
 
 ## Конфигурация ценообразования
 
-```env
+```bash
 PRICE_1=5
 PRICE_3=12
 PRICE_6=20
@@ -25,7 +25,7 @@ DAYS_IN_MONTH=30
 ```
 
 Для Telegram Stars:
-```env
+```bash
 STARS_PRICE_1=50
 STARS_PRICE_3=120
 STARS_PRICE_6=200
@@ -34,7 +34,7 @@ STARS_PRICE_12=350
 
 ## Параметры подписок и пробных периодов
 
-```env
+```bash
 REMNAWAVE_TAG=paying_user
 TRIAL_REMNAWAVE_TAG=trial_user
 TRIAL_DAYS=7
@@ -46,7 +46,7 @@ REFERRAL_DAYS=0
 ## Платежные системы
 
 ### YooKassa
-```env
+```bash
 YOOKASA_ENABLED=true
 YOOKASA_SHOP_ID=your_id
 YOOKASA_SECRET_KEY=your_key
@@ -55,20 +55,20 @@ YOOKASA_URL=https://payment.yandex.net
 ```
 
 ### CryptoPay
-```env
+```bash
 CRYPTO_PAY_ENABLED=true
 CRYPTO_PAY_TOKEN=your_token
 CRYPTO_PAY_URL=https://pay.crypt.bot
 ```
 
 ### Telegram Stars
-```env
+```bash
 TELEGRAM_STARS_ENABLED=true
 REQUIRE_PAID_PURCHASE_FOR_STARS=false
 ```
 
 ### Tribute
-```env
+```bash
 TRIBUTE_WEBHOOK_URL=/tribute/webhook
 TRIBUTE_API_KEY=your_key
 TRIBUTE_PAYMENT_URL=https://t.me/tribute/app?startapp=...
@@ -77,7 +77,7 @@ HEALTH_CHECK_PORT=8080
 
 ## Интерфейс и ссылки
 
-```env
+```bash
 DEFAULT_LANGUAGE=ru
 IS_WEB_APP_LINK=false
 MINI_APP_URL=https://example.com/app
@@ -90,14 +90,14 @@ TOS_URL=https://example.com/tos
 
 ## Управление пользователями
 
-```env
+```bash
 BLOCKED_TELEGRAM_IDS=123456789,987654321
 WHITELISTED_TELEGRAM_IDS=111111111,222222222
 ```
 
 ## Конфигурация БД
 
-```env
+```bash
 POSTGRES_USER=remnawave
 POSTGRES_PASSWORD=secure_password
 POSTGRES_DB=remnawave
@@ -105,7 +105,7 @@ POSTGRES_DB=remnawave
 
 ## Конфигурация сервера
 
-```env
+```bash
 HEALTH_CHECK_PORT=8080
 REMNAWAVE_MODE=remote
 ```

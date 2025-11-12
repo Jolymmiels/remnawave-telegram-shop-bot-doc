@@ -51,19 +51,21 @@
 	color: black !important;
 }
 
-/* Block scroll on splash page (homepage with hero) */
-html[data-has-hero] {
-	overflow-y: hidden;
-}
+/* Block scroll on splash page (homepage with hero) - desktop only */
+@media (min-width: 1024px) {
+	html[data-has-hero] {
+		overflow-y: hidden;
+	}
 
-html[data-has-hero] body {
-	overflow-y: hidden;
-	max-height: 100vh;
-}
+	html[data-has-hero] body {
+		overflow-y: hidden;
+		max-height: 100vh;
+	}
 
-html[data-has-hero] .page {
-	max-height: 100vh;
-	overflow-y: hidden;
+	html[data-has-hero] .page {
+		max-height: 100vh;
+		overflow-y: hidden;
+	}
 }
 
 /* iOS/Mobile specific fixes */

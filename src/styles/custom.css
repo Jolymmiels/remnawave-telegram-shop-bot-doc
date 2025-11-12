@@ -122,4 +122,51 @@ body {
 		width: 0.9rem !important;
 		height: 0.9rem !important;
 	}
+
+	/* Scale down splash page hero content on mobile */
+	html[data-has-hero] {
+		overflow-y: hidden;
+	}
+
+	html[data-has-hero] body {
+		max-height: 100vh;
+		overflow-y: hidden;
+	}
+
+	html[data-has-hero] .page {
+		max-height: 100vh;
+		overflow-y: hidden;
+	}
+
+	/* Reduce hero content size to fit viewport */
+	[data-has-hero] .hero {
+		padding: 1rem 0.75rem !important;
+	}
+
+	[data-has-hero] .hero h1 {
+		font-size: 1.3rem !important;
+		margin: 0.5rem 0 !important;
+	}
+
+	[data-has-hero] .hero p {
+		font-size: 0.8rem !important;
+		margin: 0.5rem 0 !important;
+	}
+
+	[data-has-hero] .hero svg,
+	[data-has-hero] .hero img {
+		max-width: 120px !important;
+		height: auto !important;
+		margin: 0.5rem auto !important;
+	}
+
+	[data-has-hero] .actions {
+		gap: 0.4rem !important;
+		margin-top: 0.5rem !important;
+	}
+
+	[data-has-hero] .action {
+		padding: 0.4rem 0.6rem !important;
+		font-size: 0.75rem !important;
+	}
 }

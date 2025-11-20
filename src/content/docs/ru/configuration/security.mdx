@@ -59,6 +59,38 @@ BLOCKED_TELEGRAM_IDS=123456789,987654321
 WHITELISTED_TELEGRAM_IDS=111111111,222222222,333333333
 ```
 
+## Безопасность API
+
+### Заголовки API Remnawave
+
+Защитите своё соединение с API Remnawave с помощью пользовательских заголовков:
+
+```bash
+REMNAWAVE_HEADERS=X-Api-Key:your_api_key;Authorization:Bearer token123
+```
+
+**Рекомендации по безопасности:**
+
+- **Защита API ключа**: Используйте надёжные, случайно сгенерированные API ключи
+- **Шифрование заголовков**: Всегда передавайте через HTTPS
+- **Ротация**: Регулярно обновляйте API ключи в настройках безопасности
+- **Аудит**: Логируйте весь доступ к API для мониторинга безопасности
+
+**Распространённые заголовки:**
+
+```bash
+# Базовая аутентификация с API ключом
+REMNAWAVE_HEADERS=X-Api-Key:your_secret_key
+
+# Аутентификация с Bearer token
+REMNAWAVE_HEADERS=Authorization:Bearer your_token
+
+# Множество слоёв аутентификации
+REMNAWAVE_HEADERS=X-Api-Key:api_key123;X-Request-Signature:signature_hash
+```
+
+Подробнее см. [Конфигурация заголовков Remnawave](../variables/#заголовки-api-remnawave).
+
 ## Устранение неполадок
 
 ### Легитимные пользователи заблокированы
@@ -73,4 +105,3 @@ WHITELISTED_TELEGRAM_IDS=111111111,222222222,333333333
 - Перезагрузите бота: `docker compose down && docker compose up -d`
 - Проверьте формат переменной окружения
 - Проверьте на опечатки в ID
-Troubleshooting

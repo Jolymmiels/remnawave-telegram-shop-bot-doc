@@ -11,7 +11,6 @@ description: Complete reference for all configuration variables
 | `DATABASE_URL` | PostgreSQL connection string | `postgresql://user:pass@postgres:5432/remnawave` |
 | `REMNAWAVE_URL` | Remnawave panel API URL | `https://panel.example.com` |
 | `REMNAWAVE_TOKEN` | Remnawave API token | `your_token` |
-| `X_API_KEY` | tinyauth login:pass in base64| `your_key` |
 | `ADMIN_TELEGRAM_ID` | Admin's Telegram ID | `123456789` |
 
 ## Pricing Configuration
@@ -108,4 +107,46 @@ POSTGRES_DB=remnawave
 ```bash
 HEALTH_CHECK_PORT=8080
 REMNAWAVE_MODE=remote
+```
+
+## Remnawave API Headers
+
+Configure custom headers for all requests to the Remnawave API:
+
+```bash
+REMNAWAVE_HEADERS=X-Api-Key:your_api_key;X-Custom-Header:value
+```
+
+**Format:** `key1:value1;key2:value2;key3:value3`
+
+**Examples:**
+
+```bash
+# With API Key
+REMNAWAVE_HEADERS=X-Api-Key:your_secret_key
+
+# Multiple headers
+REMNAWAVE_HEADERS=X-Api-Key:secret123;X-Custom-Header:custom_value
+
+# With authorization
+REMNAWAVE_HEADERS=Authorization:Bearer token123;X-Request-ID:12345
+```
+
+**Features:**
+- Supports unlimited custom headers
+- Headers are applied to all Remnawave API requests
+- Whitespace around keys and values is automatically trimmed
+- Invalid headers are silently skipped
+- Loaded headers count is logged at startup
+
+**Migration from X_API_KEY:**
+
+If you were previously using the `X_API_KEY` variable, migrate to `REMNAWAVE_HEADERS`:
+
+```bash
+# Old configuration
+X_API_KEY=your_key
+
+# New configuration
+REMNAWAVE_HEADERS=X-Api-Key:your_key
 ```

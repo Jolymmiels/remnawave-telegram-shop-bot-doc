@@ -62,6 +62,38 @@ BLOCKED_TELEGRAM_IDS=123456789,987654321
 WHITELISTED_TELEGRAM_IDS=111111111,222222222,333333333
 ```
 
+## API Security
+
+### Remnawave API Headers
+
+Secure your Remnawave API connection with custom headers:
+
+```bash
+REMNAWAVE_HEADERS=X-Api-Key:your_api_key;Authorization:Bearer token123
+```
+
+**Security Considerations:**
+
+- **API Key Protection**: Use strong, randomly generated API keys
+- **Header Encryption**: Always transmit over HTTPS
+- **Rotation**: Regularly rotate API keys in your security settings
+- **Audit**: Log all API access for security monitoring
+
+**Common Headers:**
+
+```bash
+# Basic API Key authentication
+REMNAWAVE_HEADERS=X-Api-Key:your_secret_key
+
+# Bearer token authentication
+REMNAWAVE_HEADERS=Authorization:Bearer your_token
+
+# Multiple authentication layers
+REMNAWAVE_HEADERS=X-Api-Key:api_key123;X-Request-Signature:signature_hash
+```
+
+For more details, see [Remnawave Headers Configuration](../variables/#remnawave-api-headers).
+
 ## Troubleshooting
 
 ### Legitimate users blocked

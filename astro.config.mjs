@@ -117,6 +117,13 @@ export default defineConfig({
                         { label: 'Logs & Debugging', slug: 'troubleshooting/logs', translations: { ru: 'Логи и отладка' } },
                     ],
                 },
+                {
+                    label: 'Private Version',
+                    translations: { ru: 'Приватная версия' },
+                    items: [
+                        { label: 'Overview', slug: 'private/overview', translations: { ru: 'Обзор' } },
+                    ],
+                },
             ],
             customCss: ['./src/styles/custom.css'],
         }),

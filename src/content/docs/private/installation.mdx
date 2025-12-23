@@ -358,6 +358,37 @@ docker compose logs -f bot
 
 ---
 
+## Update
+
+To update to a new version:
+
+<Steps>
+
+1. **Download new image**
+   
+   Download the new image file from the private channel.
+
+2. **Load new image**
+   ```bash
+   docker load -i private-remnawave-telegram-shop-bot-<VERSION>.tar
+   ```
+
+3. **Update version in compose.yaml**
+   
+   Change the image version:
+   ```yaml
+   image: private-remnawave-telegram-shop-bot:<VERSION>
+   ```
+
+4. **Restart the bot**
+   ```bash
+   docker compose up -d
+   ```
+
+</Steps>
+
+---
+
 ## Upgrade from Public Version
 
 If you already have the public version installed:

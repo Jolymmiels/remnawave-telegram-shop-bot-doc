@@ -1,0 +1,473 @@
+---
+title: Installation
+description: Step-by-step guide to install the Private Version of Remnawave Telegram Shop Bot
+---
+
+import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
+
+:::caution[Backup Required]
+Before any actions below, make sure to **backup your database and configuration files**.
+:::
+
+## Prerequisites
+
+- Linux server or VPS
+- Docker and Docker Compose installed
+- Domain name with SSL certificate
+- Reverse proxy (Caddy or Nginx)
+- Remnawave panel installed and configured
+- Private version Docker image file (`.tar`)
+
+---
+
+## Installation Options
+
+Choose the installation method based on your setup:
+
+<Tabs>
+  <TabItem label="Same Server as Remnawave">
+    
+### Installation Alongside Remnawave Panel
+
+Use this method if the bot will run on the **same server** as your Remnawave panel. The bot connects to Remnawave via Docker's internal network.
+
+<Steps>
+
+1. **Create project directory**
+   ```bash
+   mkdir -p /opt/private-remnawave-telegram-shop-bot
+   cd /opt/private-remnawave-telegram-shop-bot
+   ```
+
+2. **Load Docker image**
+   
+   Download the image file from the private channel.
+   
+   ```bash
+   docker load -i private-remnawave-telegram-shop-bot-<VERSION>.tar
+   ```
+
+3. **Create required directories**
+   ```bash
+   mkdir -p uploads translations
+   sudo chmod -R 777 uploads translations
+   ```
+
+4. **Download translation files**
+   
+   Download `en.json` and `ru.json` from the private channel and place them in the `translations` folder:
+   ```bash
+   # Copy downloaded files to translations directory
+   cp en.json ru.json ./translations/
+   ```
+
+5. **Create Docker Compose configuration**
+   ```bash
+   nano compose.yaml
+   ```
+   
+   ```yaml
+   services:
+     bot:
+       image: private-remnawave-telegram-shop-bot:<VERSION>
+       env_file:
+         - .env
+       ports:
+         - "127.0.0.1:9912:8080"
+       depends_on:
+         db:
+           condition: service_healthy
+       volumes:
+         - ./translations:/translations
+         - ./uploads:/uploads
+       restart: unless-stopped
+       networks:
+         - remnawave-network
+
+     db:
+       image: postgres:17-alpine
+       container_name: remnawave-telegram-shop-db
+       hostname: remnawave-telegram-shop-db
+       restart: unless-stopped
+       env_file:
+         - .env
+       environment:
+         - POSTGRES_USER=${POSTGRES_USER}
+         - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+         - POSTGRES_DB=${POSTGRES_DB}
+         - TZ=UTC
+       ports:
+         - "127.0.0.1:9911:5432"
+       volumes:
+         - remnawave-telegram-shop-db-data:/var/lib/postgresql/data
+       healthcheck:
+         test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+         interval: 3s
+         timeout: 10s
+         retries: 3
+       networks:
+         - remnawave-network
+
+   volumes:
+     remnawave-telegram-shop-db-data:
+       driver: local
+       external: false
+       name: remnawave-telegram-shop-db-data
+
+   networks:
+     remnawave-network:
+       name: remnawave-network
+       driver: bridge
+       external: true
+   ```
+   
+   :::note
+   The `remnawave-network` is created by the Remnawave panel. Setting `external: true` connects to this existing network.
+   :::
+
+6. **Create environment file**
+   ```bash
+   nano .env
+   ```
+   
+   ```bash
+   # Remnawave Connection (internal Docker network)
+   REMNAWAVE_URL=http://remnawave:3000
+   REMNAWAVE_TOKEN=your_remnawave_api_token
+
+   # Telegram
+   TELEGRAM_TOKEN=your_telegram_bot_token
+   ADMIN_TELEGRAM_ID=123456789,987654321
+
+   # Database
+   DATABASE_URL=postgres://postgres:postgres@db:5432/postgres?sslmode=disable
+   POSTGRES_USER=postgres
+   POSTGRES_PASSWORD=postgres
+   POSTGRES_DB=postgres
+
+   # Admin Panel URL (HTTPS required)
+   BOT_ADMIN_URL=https://bot.example.com
+   ```
+   
+   :::tip
+   `REMNAWAVE_URL=http://remnawave:3000` uses the container name from Remnawave's Docker network.
+   :::
+
+7. **Start the bot**
+   ```bash
+   docker compose up -d
+   ```
+
+</Steps>
+
+  </TabItem>
+  <TabItem label="Separate Server">
+
+### Installation on Separate Server
+
+Use this method if the bot will run on a **different server** from your Remnawave panel. The bot connects to Remnawave via external HTTPS URL.
+
+<Steps>
+
+1. **Create project directory**
+   ```bash
+   mkdir -p /opt/private-remnawave-telegram-shop-bot
+   cd /opt/private-remnawave-telegram-shop-bot
+   ```
+
+2. **Load Docker image**
+   
+   Download the image file from the private channel.
+   
+   ```bash
+   docker load -i private-remnawave-telegram-shop-bot-<VERSION>.tar
+   ```
+
+3. **Create required directories**
+   ```bash
+   mkdir -p uploads translations
+   sudo chmod -R 777 uploads translations
+   ```
+
+4. **Download translation files**
+   
+   Download `en.json` and `ru.json` from the private channel and place them in the `translations` folder:
+   ```bash
+   # Copy downloaded files to translations directory
+   cp en.json ru.json ./translations/
+   ```
+
+5. **Create Docker Compose configuration**
+   ```bash
+   nano compose.yaml
+   ```
+   
+   ```yaml
+   services:
+     bot:
+       image: private-remnawave-telegram-shop-bot:<VERSION>
+       env_file:
+         - .env
+       ports:
+         - "127.0.0.1:9912:8080"
+       depends_on:
+         db:
+           condition: service_healthy
+       volumes:
+         - ./translations:/translations
+         - ./uploads:/uploads
+       restart: unless-stopped
+
+     db:
+       image: postgres:17-alpine
+       container_name: remnawave-telegram-shop-db
+       hostname: remnawave-telegram-shop-db
+       restart: unless-stopped
+       env_file:
+         - .env
+       environment:
+         - POSTGRES_USER=${POSTGRES_USER}
+         - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+         - POSTGRES_DB=${POSTGRES_DB}
+         - TZ=UTC
+       ports:
+         - "127.0.0.1:9911:5432"
+       volumes:
+         - remnawave-telegram-shop-db-data:/var/lib/postgresql/data
+       healthcheck:
+         test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+         interval: 3s
+         timeout: 10s
+         retries: 3
+
+   volumes:
+     remnawave-telegram-shop-db-data:
+       driver: local
+       external: false
+       name: remnawave-telegram-shop-db-data
+   ```
+
+6. **Create environment file**
+   ```bash
+   nano .env
+   ```
+   
+   ```bash
+   # Remnawave Connection (external HTTPS URL)
+   REMNAWAVE_URL=https://panel.example.com
+   REMNAWAVE_TOKEN=your_remnawave_api_token
+
+   # Telegram
+   TELEGRAM_TOKEN=your_telegram_bot_token
+   ADMIN_TELEGRAM_ID=123456789,987654321
+
+   # Database
+   DATABASE_URL=postgres://postgres:postgres@db:5432/postgres?sslmode=disable
+   POSTGRES_USER=postgres
+   POSTGRES_PASSWORD=postgres
+   POSTGRES_DB=postgres
+
+   # Admin Panel URL (HTTPS required)
+   BOT_ADMIN_URL=https://bot.example.com
+   ```
+   
+   :::caution
+   `REMNAWAVE_URL` must be the **external HTTPS URL** of your Remnawave panel (e.g., `https://panel.example.com`).
+   :::
+
+7. **Start the bot**
+   ```bash
+   docker compose up -d
+   ```
+
+</Steps>
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Configure Reverse Proxy
+
+<Tabs>
+  <TabItem label="Caddy">
+    Add to your Caddyfile:
+    ```caddy
+    bot.example.com {
+        reverse_proxy 127.0.0.1:9912
+    }
+    ```
+    
+    Restart Caddy:
+    ```bash
+    sudo systemctl reload caddy
+    ```
+  </TabItem>
+  <TabItem label="Nginx">
+    Create config file:
+    ```bash
+    sudo nano /etc/nginx/sites-available/bot.example.com
+    ```
+    
+    ```nginx
+    server {
+        listen 80;
+        server_name bot.example.com;
+        return 301 https://$server_name$request_uri;
+    }
+
+    server {
+        listen 443 ssl http2;
+        server_name bot.example.com;
+
+        ssl_certificate /etc/letsencrypt/live/bot.example.com/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/bot.example.com/privkey.pem;
+
+        location / {
+            proxy_pass http://127.0.0.1:9912;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            
+            # File upload settings
+            client_max_body_size 50M;
+        }
+    }
+    ```
+    
+    Enable and restart:
+    ```bash
+    sudo ln -s /etc/nginx/sites-available/bot.example.com /etc/nginx/sites-enabled/
+    sudo nginx -t
+    sudo systemctl reload nginx
+    ```
+  </TabItem>
+</Tabs>
+
+---
+
+## Verify Installation
+
+```bash
+docker compose logs -f bot
+```
+
+---
+
+## Upgrade from Public Version
+
+If you already have the public version installed:
+
+<Steps>
+
+1. **Go to bot directory**
+   ```bash
+   cd /opt/remnawave-telegram-shop
+   ```
+   :::note
+   Replace with your actual bot installation path if different.
+   :::
+
+2. **Backup database**
+   ```bash
+   docker compose exec db pg_dump -U postgres postgres > backup.sql
+   ```
+
+3. **Stop current bot**
+   ```bash
+   docker compose down
+   ```
+
+4. **Load new image**
+   ```bash
+   docker load -i private-remnawave-telegram-shop-bot-<VERSION>.tar
+   ```
+
+5. **Create uploads directory**
+   ```bash
+   mkdir -p uploads
+   sudo chmod -R 777 uploads
+   ```
+
+6. **Update docker-compose.yaml**
+   
+   Change the image and add ports:
+   ```yaml
+   services:
+     bot:
+       image: private-remnawave-telegram-shop-bot:<VERSION>
+       env_file:
+         - .env
+       ports:
+         - "127.0.0.1:12345:8080"
+       depends_on:
+         db:
+           condition: service_healthy
+       volumes:
+         - ./translations:/translations
+         - ./uploads:/uploads
+   ```
+
+7. **Add admin URL to .env**
+   ```bash
+   echo "BOT_ADMIN_URL=https://bot.example.com" >> .env
+   ```
+
+8. **Configure reverse proxy**
+   
+   Point `bot.example.com` to `127.0.0.1:12345` (see examples above)
+
+9. **Start the bot**
+   ```bash
+   docker compose up -d
+   ```
+
+</Steps>
+
+---
+
+## Port Reference
+
+| Service | Internal Port | Recommended External |
+|---------|---------------|---------------------|
+| Bot HTTP | 8080 | 9912 or 12345 |
+| PostgreSQL | 5432 | 9911 |
+
+---
+
+## Post-Installation
+
+After installation:
+
+1. Open `https://bot.example.com` in Telegram Mini App
+2. Log in with your admin Telegram account
+3. Configure settings in the admin panel:
+   - Payment systems
+   - Subscription plans
+   - Branding
+   - Roles and permissions
+
+All other settings are managed through the **Admin Panel UI**.
+
+---
+
+## Troubleshooting
+
+### Admin panel not loading
+- Verify `BOT_ADMIN_URL` is set correctly in `.env`
+- Check reverse proxy configuration
+- Ensure SSL certificate is valid
+
+### Database connection failed
+- Verify PostgreSQL container is healthy: `docker compose ps`
+- Check `DATABASE_URL` format in `.env`
+- Ensure network connectivity between containers
+
+### Permission denied for uploads
+```bash
+sudo chmod -R 777 /opt/private-remnawave-telegram-shop-bot/uploads
+```

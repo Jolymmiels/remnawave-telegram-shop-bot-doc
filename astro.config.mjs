@@ -122,6 +122,7 @@ export default defineConfig({
                     translations: { ru: 'Приватная версия' },
                     items: [
                         { label: 'Overview', slug: 'private/overview', translations: { ru: 'Обзор' } },
+                        { label: 'Installation', slug: 'private/installation', translations: { ru: 'Установка' } },
                     ],
                 },
             ],

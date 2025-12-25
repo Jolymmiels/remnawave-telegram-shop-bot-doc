@@ -289,11 +289,23 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
 
 ## Настройка реверс-прокси
 
+:::note[Кеширование]
+Конфигурации ниже включают правила кеширования для защиты Mini App от ошибок загрузки после обновлений:
+- HTML-файлы не кешируются (всегда актуальная версия)
+- Статические ресурсы `/assets/` кешируются на год (имеют уникальные хеши)
+:::
+
 <Tabs>
   <TabItem label="Caddy">
     Добавьте в Caddyfile:
     ```txt
     bot.example.com {
+        @html path *.html
+        header @html Cache-Control "no-cache, no-store, must-revalidate"
+        
+        @assets path /assets/*
+        header @assets Cache-Control "public, max-age=31536000, immutable"
+        
         reverse_proxy 127.0.0.1:9912
     }
     ```
@@ -313,27 +325,32 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
     server {
         listen 80;
         server_name bot.example.com;
-        return 301 https://$server_name$request_uri;
-    }
 
-    server {
-        listen 443 ssl http2;
-        server_name bot.example.com;
+        location ~* \.html$ {
+            add_header Cache-Control "no-cache, no-store, must-revalidate" always;
+            proxy_pass http://127.0.0.1:9912;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
 
-        ssl_certificate /etc/letsencrypt/live/bot.example.com/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/bot.example.com/privkey.pem;
+        location /assets/ {
+            add_header Cache-Control "public, max-age=31536000, immutable" always;
+            proxy_pass http://127.0.0.1:9912;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
 
         location / {
             proxy_pass http://127.0.0.1:9912;
-            proxy_http_version 1.1;
-            proxy_set_header Upgrade $http_upgrade;
-            proxy_set_header Connection "upgrade";
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto $scheme;
             
-            # Настройки загрузки файлов
             client_max_body_size 50M;
         }
     }
@@ -483,72 +500,6 @@ docker compose logs -f bot
    - Роли и разрешения
 
 Все остальные настройки управляются через **UI админ-панели**.
-
----
-
-## Защита Mini App от ошибок загрузки
-
-При использовании SPA-приложений (например, Mini App) браузер может кешировать старые версии HTML-файлов. После обновления приложения пользователи могут увидеть ошибки загрузки, так как браузер пытается загрузить устаревшие ресурсы.
-
-Решение — настроить кеширование на реверс-прокси:
-- HTML-файлы: **отключить кеширование** (всегда загружать актуальную версию)
-- Статические ресурсы (`/assets/`): **включить долгосрочное кеширование** (файлы имеют уникальные хеши в именах)
-
-<Tabs>
-  <TabItem label="Caddy">
-    ```txt
-    @mini-app host mini-app.example.com
-
-    handle @mini-app {
-        @html path *.html
-        header @html Cache-Control "no-cache, no-store, must-revalidate"
-        
-        @assets path /assets/*
-        header @assets Cache-Control "public, max-age=31536000, immutable"
-        
-        reverse_proxy 127.0.0.1:9912
-    }
-    ```
-  </TabItem>
-  <TabItem label="Nginx">
-    ```nginx
-    server {
-        listen 80;
-        server_name mini-app.example.com;
-
-        location ~* \.html$ {
-            add_header Cache-Control "no-cache, no-store, must-revalidate" always;
-            proxy_pass http://127.0.0.1:9912;
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto $scheme;
-        }
-
-        location /assets/ {
-            add_header Cache-Control "public, max-age=31536000, immutable" always;
-            proxy_pass http://127.0.0.1:9912;
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto $scheme;
-        }
-
-        location / {
-            proxy_pass http://127.0.0.1:9912;
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto $scheme;
-        }
-    }
-    ```
-  </TabItem>
-</Tabs>
-
-:::tip
-Замените `mini-app.example.com` на ваш домен Mini App.
-:::
 
 ---
 

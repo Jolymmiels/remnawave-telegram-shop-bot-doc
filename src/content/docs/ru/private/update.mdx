@@ -1,0 +1,127 @@
+---
+title: Обновление
+description: Инструкция по обновлению приватной версии Remnawave Telegram Shop Bot
+---
+
+import { Steps } from '@astrojs/starlight/components';
+
+:::caution[Требуется бекап]
+Перед обновлением обязательно **[сделайте бекап базы данных](/ru/private/backup/)**.
+:::
+
+## Обновление до новой версии
+
+<Steps>
+
+1. **Скачайте новый образ**
+   
+   Скачайте новый файл образа из приватного канала.
+
+2. **Загрузите новый образ**
+   ```bash
+   docker load -i rw-shop-bot-<VERSION>.tar
+   ```
+
+3. **Обновите версию в compose.yaml**
+   
+   Измените версию образа:
+   ```yaml
+   image: rw-shop-bot:<VERSION>
+   ```
+
+4. **Перезапустите бота**
+   ```bash
+   docker compose up -d
+   ```
+
+</Steps>
+
+---
+
+## Обновление с публичной версии
+
+Если у вас уже установлена публичная версия:
+
+<Steps>
+
+1. **Перейдите в директорию бота**
+   ```bash
+   cd /opt/remnawave-telegram-shop
+   ```
+   :::note
+   Замените на ваш фактический путь установки бота, если он отличается.
+   :::
+
+2. **Остановите текущего бота**
+   ```bash
+   docker compose down
+   ```
+
+3. **Загрузите новый образ**
+   ```bash
+   docker load -i rw-shop-bot-<VERSION>.tar
+   ```
+
+4. **Создайте директорию uploads**
+   ```bash
+   mkdir -p uploads
+   sudo chmod -R 777 uploads
+   ```
+
+5. **Обновите docker-compose.yaml**
+   
+   Измените образ и добавьте порты:
+   ```yaml
+   name: rwp_shop
+
+   services:
+     bot:
+       image: rw-shop-bot:<VERSION>
+       container_name: rwp_shop
+       restart: unless-stopped
+       ports:
+         - "127.0.0.1:12345:8080"
+       depends_on:
+         db:
+           condition: service_healthy
+       volumes:
+         - ./translations:/translations
+         - ./uploads:/uploads
+   ```
+
+6. **Добавьте URL админки в .env**
+   ```bash
+   echo "BOT_ADMIN_URL=https://bot.example.com" >> .env
+   ```
+
+7. **Настройте реверс-прокси**
+   
+   Направьте `bot.example.com` на `127.0.0.1:12345` (см. [Настройка реверс-прокси](/ru/private/installation/#настройка-реверс-прокси))
+
+8. **Запустите бота**
+   ```bash
+   docker compose up -d
+   ```
+
+</Steps>
+
+---
+
+## Проверка обновления
+
+После обновления проверьте:
+
+```bash
+# Статус контейнеров
+docker compose ps
+
+# Логи бота
+docker compose logs -f bot
+
+# Версия образа
+docker images | grep rw-shop-bot
+```
+
+:::tip[Возникли проблемы?]
+Смотрите страницу [Устранение неполадок](/ru/private/troubleshooting/) для решения распространённых проблем.
+:::

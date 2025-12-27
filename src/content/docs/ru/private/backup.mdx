@@ -1,0 +1,137 @@
+---
+title: Резервное копирование
+description: Инструкция по созданию и восстановлению резервных копий базы данных
+---
+
+import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
+
+## Создание резервной копии
+
+<Steps>
+
+1. **Перейдите в директорию проекта**
+   ```bash
+   cd /opt/private-remnawave-telegram-shop-bot
+   ```
+
+2. **Создайте бекап базы данных**
+   ```bash
+   docker compose exec db pg_dump -U postgres postgres > backup_$(date +%Y%m%d_%H%M%S).sql
+   ```
+
+</Steps>
+
+:::tip[Имя файла]
+Команда автоматически добавляет дату и время в имя файла, например: `backup_20251227_141530.sql`
+:::
+
+---
+
+## Восстановление из резервной копии
+
+:::caution[Внимание]
+Восстановление полностью заменит текущие данные в базе. Убедитесь, что вы восстанавливаете правильный бекап.
+:::
+
+<Steps>
+
+1. **Остановите бота**
+   ```bash
+   docker compose stop bot
+   ```
+
+2. **Очистите текущую базу данных**
+   ```bash
+   docker compose exec db psql -U postgres -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+   ```
+
+3. **Восстановите данные из бекапа**
+   ```bash
+   docker compose exec -T db psql -U postgres postgres < backup_20251227_141530.sql
+   ```
+   
+   :::note
+   Замените `backup_20251227_141530.sql` на имя вашего файла бекапа.
+   :::
+
+4. **Запустите бота**
+   ```bash
+   docker compose up -d
+   ```
+
+</Steps>
+
+---
+
+## Автоматическое резервное копирование
+
+Для автоматического создания бекапов по расписанию:
+
+<Steps>
+
+1. **Создайте директорию для бекапов**
+   ```bash
+   mkdir -p /opt/private-remnawave-telegram-shop-bot/backups
+   ```
+
+2. **Создайте скрипт бекапа**
+   ```bash
+   nano /opt/private-remnawave-telegram-shop-bot/backup.sh
+   ```
+   
+   ```bash
+   #!/bin/bash
+   
+   BACKUP_DIR="/opt/private-remnawave-telegram-shop-bot/backups"
+   PROJECT_DIR="/opt/private-remnawave-telegram-shop-bot"
+   RETENTION_DAYS=14
+   
+   cd "$PROJECT_DIR"
+   
+   # Создание бекапа
+   docker compose exec -T db pg_dump -U postgres postgres > "$BACKUP_DIR/backup_$(date +%Y%m%d_%H%M%S).sql"
+   
+   # Удаление старых бекапов
+   find "$BACKUP_DIR" -name "backup_*.sql" -type f -mtime +$RETENTION_DAYS -delete
+   ```
+
+3. **Сделайте скрипт исполняемым**
+   ```bash
+   chmod +x /opt/private-remnawave-telegram-shop-bot/backup.sh
+   ```
+
+4. **Добавьте задачу в cron**
+   ```bash
+   crontab -e
+   ```
+   
+   Добавьте строку для ежедневного бекапа в 3:00:
+   ```txt
+   0 3 * * * /opt/private-remnawave-telegram-shop-bot/backup.sh
+   ```
+
+</Steps>
+
+| Параметр | Описание |
+|----------|----------|
+| `BACKUP_DIR` | Директория для хранения бекапов |
+| `PROJECT_DIR` | Директория проекта с compose.yaml |
+| `RETENTION_DAYS` | Количество дней хранения бекапов |
+
+---
+
+## Проверка бекапа
+
+Для проверки целостности бекапа без восстановления:
+
+```bash
+# Проверка синтаксиса SQL
+head -100 backup_20251227_141530.sql
+
+# Проверка размера файла
+ls -lh backup_20251227_141530.sql
+```
+
+:::tip
+Регулярно проверяйте, что бекапы создаются и имеют ненулевой размер.
+:::

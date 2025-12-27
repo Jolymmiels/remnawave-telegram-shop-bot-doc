@@ -123,6 +123,9 @@ export default defineConfig({
                     items: [
                         { label: 'Overview', slug: 'private/overview', translations: { ru: 'Обзор' } },
                         { label: 'Installation', slug: 'private/installation', translations: { ru: 'Установка' } },
+                        { label: 'Update', slug: 'private/update', translations: { ru: 'Обновление' } },
+                        { label: 'Backup', slug: 'private/backup', translations: { ru: 'Резервное копирование' } },
+                        { label: 'Troubleshooting', slug: 'private/troubleshooting', translations: { ru: 'Устранение неполадок' } },
                     ],
                 },
             ],

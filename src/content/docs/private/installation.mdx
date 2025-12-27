@@ -6,7 +6,7 @@ description: Step-by-step guide to install the Private Version of Remnawave Tele
 import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
 
 :::caution[Backup Required]
-Before any actions below, make sure to **backup your database and configuration files**.
+Before any actions below, make sure to **[backup your database](/private/backup/)** and configuration files.
 :::
 
 ## Prerequisites
@@ -44,7 +44,7 @@ Use this method if the bot will run on the **same server** as your Remnawave pan
    Download the image file from the private channel.
    
    ```bash
-   docker load -i private-remnawave-telegram-shop-bot-<VERSION>.tar
+   docker load -i rw-shop-bot-<VERSION>.tar
    ```
 
 3. **Create required directories**
@@ -67,11 +67,13 @@ Use this method if the bot will run on the **same server** as your Remnawave pan
    ```
    
    ```yaml
+   name: rwp_shop
+
    services:
      bot:
-       image: private-remnawave-telegram-shop-bot:<VERSION>
-       env_file:
-         - .env
+       image: rw-shop-bot:<VERSION>
+       container_name: rwp_shop
+       restart: unless-stopped
        ports:
          - "127.0.0.1:9912:8080"
        depends_on:
@@ -80,50 +82,54 @@ Use this method if the bot will run on the **same server** as your Remnawave pan
        volumes:
          - ./translations:/translations
          - ./uploads:/uploads
-       restart: unless-stopped
+       environment:
+         - REMNAWAVE_URL=${REMNAWAVE_URL}
+         - REMNAWAVE_TOKEN=${REMNAWAVE_TOKEN}
+         - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
+         - ADMIN_TELEGRAM_ID=${ADMIN_TELEGRAM_ID}
+         - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?sslmode=disable
+         - BOT_ADMIN_URL=${BOT_ADMIN_URL}
+         - LOG_LEVEL=${LOG_LEVEL:-info}
+         - ACCESS_LOG_ENABLED=${ACCESS_LOG_ENABLED:-true}
+         - ACCESS_LOG_PATH=${ACCESS_LOG_PATH:-}
        networks:
-         - remnawave-network
+         - remnawave_network
 
      db:
        image: postgres:17-alpine
-       container_name: remnawave-telegram-shop-db
-       hostname: remnawave-telegram-shop-db
+       container_name: rwp_shop_db
        restart: unless-stopped
-       env_file:
-         - .env
        environment:
          - POSTGRES_USER=${POSTGRES_USER}
          - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
          - POSTGRES_DB=${POSTGRES_DB}
          - TZ=UTC
        ports:
-         - "127.0.0.1:9911:5432"
+         - "127.0.0.1:5432"
        volumes:
-         - remnawave-telegram-shop-db-data:/var/lib/postgresql/data
+         - rwp_shop_db_data:/var/lib/postgresql/data
        healthcheck:
          test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
          interval: 3s
          timeout: 10s
          retries: 3
        networks:
-         - remnawave-network
+         - remnawave_network
 
    volumes:
-     remnawave-telegram-shop-db-data:
-       driver: local
-       external: false
-       name: remnawave-telegram-shop-db-data
+     rwp_shop_db_data:
 
    networks:
-     remnawave-network:
-       name: remnawave-network
-       driver: bridge
+     remnawave_network:
+       name: remnawave_network
        external: true
    ```
    
    :::note
-   The `remnawave-network` is created by the Remnawave panel. Setting `external: true` connects to this existing network.
+   The `remnawave_network` is created by the Remnawave panel. Setting `external: true` connects to this existing network.
    :::
+   
+
 
 6. **Create environment file**
    ```bash
@@ -140,7 +146,6 @@ Use this method if the bot will run on the **same server** as your Remnawave pan
    ADMIN_TELEGRAM_ID=123456789,987654321
 
    # Database
-   DATABASE_URL=postgres://postgres:postgres@db:5432/postgres?sslmode=disable
    POSTGRES_USER=postgres
    POSTGRES_PASSWORD=postgres
    POSTGRES_DB=postgres
@@ -149,9 +154,9 @@ Use this method if the bot will run on the **same server** as your Remnawave pan
    BOT_ADMIN_URL=https://bot.example.com
 
    # Logging (optional)
-   LOG_LEVEL=info
-   ACCESS_LOG_ENABLED=true
-   ACCESS_LOG_PATH=
+   # LOG_LEVEL=info
+   # ACCESS_LOG_ENABLED=true
+   # ACCESS_LOG_PATH=
    ```
    
    :::tip
@@ -191,7 +196,7 @@ Use this method if the bot will run on a **different server** from your Remnawav
    Download the image file from the private channel.
    
    ```bash
-   docker load -i private-remnawave-telegram-shop-bot-<VERSION>.tar
+   docker load -i rw-shop-bot-<VERSION>.tar
    ```
 
 3. **Create required directories**
@@ -214,11 +219,13 @@ Use this method if the bot will run on a **different server** from your Remnawav
    ```
    
    ```yaml
+   name: rwp_shop
+
    services:
      bot:
-       image: private-remnawave-telegram-shop-bot:<VERSION>
-       env_file:
-         - .env
+       image: rw-shop-bot:<VERSION>
+       container_name: rwp_shop
+       restart: unless-stopped
        ports:
          - "127.0.0.1:9912:8080"
        depends_on:
@@ -227,24 +234,30 @@ Use this method if the bot will run on a **different server** from your Remnawav
        volumes:
          - ./translations:/translations
          - ./uploads:/uploads
-       restart: unless-stopped
+       environment:
+         - REMNAWAVE_URL=${REMNAWAVE_URL}
+         - REMNAWAVE_TOKEN=${REMNAWAVE_TOKEN}
+         - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
+         - ADMIN_TELEGRAM_ID=${ADMIN_TELEGRAM_ID}
+         - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?sslmode=disable
+         - BOT_ADMIN_URL=${BOT_ADMIN_URL}
+         - LOG_LEVEL=${LOG_LEVEL:-info}
+         - ACCESS_LOG_ENABLED=${ACCESS_LOG_ENABLED:-true}
+         - ACCESS_LOG_PATH=${ACCESS_LOG_PATH:-}
 
      db:
        image: postgres:17-alpine
-       container_name: remnawave-telegram-shop-db
-       hostname: remnawave-telegram-shop-db
+       container_name: rwp_shop_db
        restart: unless-stopped
-       env_file:
-         - .env
        environment:
          - POSTGRES_USER=${POSTGRES_USER}
          - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
          - POSTGRES_DB=${POSTGRES_DB}
          - TZ=UTC
        ports:
-         - "127.0.0.1:9911:5432"
+         - "127.0.0.1:5432"
        volumes:
-         - remnawave-telegram-shop-db-data:/var/lib/postgresql/data
+         - rwp_shop_db_data:/var/lib/postgresql/data
        healthcheck:
          test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
          interval: 3s
@@ -252,11 +265,10 @@ Use this method if the bot will run on a **different server** from your Remnawav
          retries: 3
 
    volumes:
-     remnawave-telegram-shop-db-data:
-       driver: local
-       external: false
-       name: remnawave-telegram-shop-db-data
+     rwp_shop_db_data:
    ```
+   
+
 
 6. **Create environment file**
    ```bash
@@ -273,7 +285,6 @@ Use this method if the bot will run on a **different server** from your Remnawav
    ADMIN_TELEGRAM_ID=123456789,987654321
 
    # Database
-   DATABASE_URL=postgres://postgres:postgres@db:5432/postgres?sslmode=disable
    POSTGRES_USER=postgres
    POSTGRES_PASSWORD=postgres
    POSTGRES_DB=postgres
@@ -282,9 +293,9 @@ Use this method if the bot will run on a **different server** from your Remnawav
    BOT_ADMIN_URL=https://bot.example.com
 
    # Logging (optional)
-   LOG_LEVEL=info
-   ACCESS_LOG_ENABLED=true
-   ACCESS_LOG_PATH=
+   # LOG_LEVEL=info
+   # ACCESS_LOG_ENABLED=true
+   # ACCESS_LOG_PATH=
    ```
    
    :::caution
@@ -315,6 +326,10 @@ Use this method if the bot will run on a **different server** from your Remnawav
 The configurations below include caching rules to protect Mini App from loading errors after updates:
 - HTML files are not cached (always up-to-date version)
 - Static resources `/assets/` are cached for one year (have unique hashes)
+:::
+
+:::caution[For Separate Server]
+The examples below are for **system-wide installation** of Caddy/Nginx (via systemd). If you run Caddy/Nginx in a Docker container, you need to either put them in the same Docker network and hide the ports, or use `host.docker.internal` instead of `127.0.0.1`.
 :::
 
 <Tabs>
@@ -397,26 +412,31 @@ docker compose logs -f bot
 
 ---
 
-## Update
+## Access Logs with Rotation
 
-To update to a new version:
+To write access logs to a file with automatic rotation:
 
 <Steps>
 
-1. **Download new image**
-   
-   Download the new image file from the private channel.
-
-2. **Load new image**
+1. **Create logs directory**
    ```bash
-   docker load -i private-remnawave-telegram-shop-bot-<VERSION>.tar
+   mkdir -p logs
+   sudo chmod 777 logs
    ```
 
-3. **Update version in compose.yaml**
+2. **Add volume to compose.yaml**
    
-   Change the image version:
+   In the `bot` service section, add:
    ```yaml
-   image: private-remnawave-telegram-shop-bot:<VERSION>
+   volumes:
+     - ./translations:/translations
+     - ./uploads:/uploads
+     - ./logs:/logs
+   ```
+
+3. **Set log path in .env**
+   ```bash
+   ACCESS_LOG_PATH=/logs/access.log
    ```
 
 4. **Restart the bot**
@@ -424,79 +444,76 @@ To update to a new version:
    docker compose up -d
    ```
 
-</Steps>
-
----
-
-## Upgrade from Public Version
-
-If you already have the public version installed:
-
-<Steps>
-
-1. **Go to bot directory**
+5. **Install logrotate** (if not installed)
    ```bash
-   cd /opt/remnawave-telegram-shop
+   # Debian/Ubuntu
+   sudo apt update && sudo apt install -y logrotate
+   
+   # CentOS/RHEL/Fedora
+   sudo dnf install -y logrotate
    ```
+
+6. **Create logrotate config**
+   ```bash
+   sudo nano /etc/logrotate.d/rwp-shop
+   ```
+   
+   ```txt
+   /opt/private-remnawave-telegram-shop-bot/logs/access.log {
+       daily
+       rotate 14
+       compress
+       delaycompress
+       missingok
+       notifempty
+       copytruncate
+   }
+   ```
+   
    :::note
-   Replace with your actual bot installation path if different.
+   Replace `/opt/private-remnawave-telegram-shop-bot/logs/access.log` with your actual installation path.
    :::
 
-2. **Backup database**
+7. **Verify configuration**
    ```bash
-   docker compose exec db pg_dump -U postgres postgres > backup.sql
+   sudo logrotate -d /etc/logrotate.d/rwp-shop
    ```
-
-3. **Stop current bot**
-   ```bash
-   docker compose down
-   ```
-
-4. **Load new image**
-   ```bash
-   docker load -i private-remnawave-telegram-shop-bot-<VERSION>.tar
-   ```
-
-5. **Create uploads directory**
-   ```bash
-   mkdir -p uploads
-   sudo chmod -R 777 uploads
-   ```
-
-6. **Update docker-compose.yaml**
    
-   Change the image and add ports:
-   ```yaml
-   services:
-     bot:
-       image: private-remnawave-telegram-shop-bot:<VERSION>
-       env_file:
-         - .env
-       ports:
-         - "127.0.0.1:12345:8080"
-       depends_on:
-         db:
-           condition: service_healthy
-       volumes:
-         - ./translations:/translations
-         - ./uploads:/uploads
-   ```
+   The `-d` flag runs in debug mode without actual rotation.
 
-7. **Add admin URL to .env**
+8. **Test rotation**
    ```bash
-   echo "BOT_ADMIN_URL=https://bot.example.com" >> .env
+   sudo logrotate -f /etc/logrotate.d/rwp-shop
    ```
-
-8. **Configure reverse proxy**
    
-   Point `bot.example.com` to `127.0.0.1:12345` (see examples above)
-
-9. **Start the bot**
-   ```bash
-   docker compose up -d
-   ```
+   The `-f` flag forces rotation.
 
 </Steps>
+
+:::tip
+`copytruncate` allows rotating logs without restarting the container — the file is truncated in place after copying.
+:::
+
+:::note[Automatic Execution]
+Logrotate usually runs automatically via cron or systemd timer (daily). You can check:
+```bash
+# For systemd
+systemctl status logrotate.timer
+
+# For cron
+cat /etc/cron.daily/logrotate
+```
+:::
+
+| Parameter | Description |
+|-----------|-------------|
+| `daily` | Rotate daily |
+| `rotate 14` | Keep 14 archives |
+| `compress` | Compress archives with gzip |
+| `delaycompress` | Compress starting from second archive |
+| `missingok` | Don't error if file is missing |
+| `notifempty` | Don't rotate empty file |
+| `copytruncate` | Copy and truncate without restart |
 
 ---
 
@@ -505,7 +522,7 @@ If you already have the public version installed:
 | Service | Internal Port | Recommended External |
 |---------|---------------|---------------------|
 | Bot HTTP | 8080 | 9912 or 12345 |
-| PostgreSQL | 5432 | 9911 |
+| PostgreSQL | 5432 | - |
 
 ---
 
@@ -525,26 +542,11 @@ All other settings are managed through the **Admin Panel UI**.
 
 ---
 
-## Troubleshooting
-
-### Admin panel not loading
-- Verify `BOT_ADMIN_URL` is set correctly in `.env`
-- Check reverse proxy configuration
-- Ensure SSL certificate is valid
-
-### Database connection failed
-- Verify PostgreSQL container is healthy: `docker compose ps`
-- Check `DATABASE_URL` format in `.env`
-- Ensure network connectivity between containers
-
-### Permission denied for uploads
-```bash
-sudo chmod -R 777 /opt/private-remnawave-telegram-shop-bot/uploads
-```
-
----
-
 ## Tips
+
+:::tip[Having issues?]
+See the [Troubleshooting](/private/troubleshooting/) page for solutions to common problems.
+:::
 
 ### Add Menu Button in Telegram
 

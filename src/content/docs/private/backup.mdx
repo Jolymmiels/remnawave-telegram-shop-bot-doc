@@ -1,0 +1,137 @@
+---
+title: Backup
+description: Instructions for creating and restoring database backups
+---
+
+import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
+
+## Creating a Backup
+
+<Steps>
+
+1. **Go to project directory**
+   ```bash
+   cd /opt/private-remnawave-telegram-shop-bot
+   ```
+
+2. **Create database backup**
+   ```bash
+   docker compose exec db pg_dump -U postgres postgres > backup_$(date +%Y%m%d_%H%M%S).sql
+   ```
+
+</Steps>
+
+:::tip[Filename]
+The command automatically adds date and time to the filename, e.g.: `backup_20251227_141530.sql`
+:::
+
+---
+
+## Restoring from Backup
+
+:::caution[Warning]
+Restoring will completely replace current data in the database. Make sure you are restoring the correct backup.
+:::
+
+<Steps>
+
+1. **Stop the bot**
+   ```bash
+   docker compose stop bot
+   ```
+
+2. **Clear current database**
+   ```bash
+   docker compose exec db psql -U postgres -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+   ```
+
+3. **Restore data from backup**
+   ```bash
+   docker compose exec -T db psql -U postgres postgres < backup_20251227_141530.sql
+   ```
+   
+   :::note
+   Replace `backup_20251227_141530.sql` with your backup filename.
+   :::
+
+4. **Start the bot**
+   ```bash
+   docker compose up -d
+   ```
+
+</Steps>
+
+---
+
+## Automatic Backups
+
+To automatically create backups on a schedule:
+
+<Steps>
+
+1. **Create backups directory**
+   ```bash
+   mkdir -p /opt/private-remnawave-telegram-shop-bot/backups
+   ```
+
+2. **Create backup script**
+   ```bash
+   nano /opt/private-remnawave-telegram-shop-bot/backup.sh
+   ```
+   
+   ```bash
+   #!/bin/bash
+   
+   BACKUP_DIR="/opt/private-remnawave-telegram-shop-bot/backups"
+   PROJECT_DIR="/opt/private-remnawave-telegram-shop-bot"
+   RETENTION_DAYS=14
+   
+   cd "$PROJECT_DIR"
+   
+   # Create backup
+   docker compose exec -T db pg_dump -U postgres postgres > "$BACKUP_DIR/backup_$(date +%Y%m%d_%H%M%S).sql"
+   
+   # Delete old backups
+   find "$BACKUP_DIR" -name "backup_*.sql" -type f -mtime +$RETENTION_DAYS -delete
+   ```
+
+3. **Make script executable**
+   ```bash
+   chmod +x /opt/private-remnawave-telegram-shop-bot/backup.sh
+   ```
+
+4. **Add cron job**
+   ```bash
+   crontab -e
+   ```
+   
+   Add line for daily backup at 3:00 AM:
+   ```txt
+   0 3 * * * /opt/private-remnawave-telegram-shop-bot/backup.sh
+   ```
+
+</Steps>
+
+| Parameter | Description |
+|-----------|-------------|
+| `BACKUP_DIR` | Directory for storing backups |
+| `PROJECT_DIR` | Project directory with compose.yaml |
+| `RETENTION_DAYS` | Number of days to keep backups |
+
+---
+
+## Verifying Backup
+
+To verify backup integrity without restoring:
+
+```bash
+# Check SQL syntax
+head -100 backup_20251227_141530.sql
+
+# Check file size
+ls -lh backup_20251227_141530.sql
+```
+
+:::tip
+Regularly verify that backups are being created and have non-zero size.
+:::

@@ -1,0 +1,127 @@
+---
+title: Update
+description: Instructions for updating the Private Version of Remnawave Telegram Shop Bot
+---
+
+import { Steps } from '@astrojs/starlight/components';
+
+:::caution[Backup Required]
+Before updating, make sure to **[backup your database](/private/backup/)**.
+:::
+
+## Update to New Version
+
+<Steps>
+
+1. **Download new image**
+   
+   Download the new image file from the private channel.
+
+2. **Load new image**
+   ```bash
+   docker load -i rw-shop-bot-<VERSION>.tar
+   ```
+
+3. **Update version in compose.yaml**
+   
+   Change the image version:
+   ```yaml
+   image: rw-shop-bot:<VERSION>
+   ```
+
+4. **Restart the bot**
+   ```bash
+   docker compose up -d
+   ```
+
+</Steps>
+
+---
+
+## Upgrade from Public Version
+
+If you already have the public version installed:
+
+<Steps>
+
+1. **Go to bot directory**
+   ```bash
+   cd /opt/remnawave-telegram-shop
+   ```
+   :::note
+   Replace with your actual bot installation path if different.
+   :::
+
+2. **Stop current bot**
+   ```bash
+   docker compose down
+   ```
+
+3. **Load new image**
+   ```bash
+   docker load -i rw-shop-bot-<VERSION>.tar
+   ```
+
+4. **Create uploads directory**
+   ```bash
+   mkdir -p uploads
+   sudo chmod -R 777 uploads
+   ```
+
+5. **Update docker-compose.yaml**
+   
+   Change the image and add ports:
+   ```yaml
+   name: rwp_shop
+
+   services:
+     bot:
+       image: rw-shop-bot:<VERSION>
+       container_name: rwp_shop
+       restart: unless-stopped
+       ports:
+         - "127.0.0.1:12345:8080"
+       depends_on:
+         db:
+           condition: service_healthy
+       volumes:
+         - ./translations:/translations
+         - ./uploads:/uploads
+   ```
+
+6. **Add admin URL to .env**
+   ```bash
+   echo "BOT_ADMIN_URL=https://bot.example.com" >> .env
+   ```
+
+7. **Configure reverse proxy**
+   
+   Point `bot.example.com` to `127.0.0.1:12345` (see [Configure Reverse Proxy](/private/installation/#configure-reverse-proxy))
+
+8. **Start the bot**
+   ```bash
+   docker compose up -d
+   ```
+
+</Steps>
+
+---
+
+## Verify Update
+
+After updating, verify:
+
+```bash
+# Container status
+docker compose ps
+
+# Bot logs
+docker compose logs -f bot
+
+# Image version
+docker images | grep rw-shop-bot
+```
+
+:::tip[Having issues?]
+See the [Troubleshooting](/private/troubleshooting/) page for solutions to common problems.
+:::

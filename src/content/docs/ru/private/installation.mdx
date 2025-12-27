@@ -6,7 +6,7 @@ description: Пошаговая инструкция по установке п�
 import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
 
 :::caution[Требуется бекап]
-Перед любыми действиями ниже обязательно **сделайте бекап базы данных и конфигурационных файлов**.
+Перед любыми действиями ниже обязательно **[сделайте бекап базы данных](/ru/private/backup/)** и конфигурационных файлов.
 :::
 
 ## Требования
@@ -44,7 +44,7 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
    Скачайте файл образа из приватного канала.
    
    ```bash
-   docker load -i private-remnawave-telegram-shop-bot-<VERSION>.tar
+   docker load -i rw-shop-bot-<VERSION>.tar
    ```
 
 3. **Создайте необходимые директории**
@@ -67,11 +67,13 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
    ```
    
    ```yaml
+   name: rwp_shop
+
    services:
      bot:
-       image: private-remnawave-telegram-shop-bot:<VERSION>
-       env_file:
-         - .env
+       image: rw-shop-bot:<VERSION>
+       container_name: rwp_shop
+       restart: unless-stopped
        ports:
          - "127.0.0.1:9912:8080"
        depends_on:
@@ -80,50 +82,54 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
        volumes:
          - ./translations:/translations
          - ./uploads:/uploads
-       restart: unless-stopped
+       environment:
+         - REMNAWAVE_URL=${REMNAWAVE_URL}
+         - REMNAWAVE_TOKEN=${REMNAWAVE_TOKEN}
+         - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
+         - ADMIN_TELEGRAM_ID=${ADMIN_TELEGRAM_ID}
+         - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?sslmode=disable
+         - BOT_ADMIN_URL=${BOT_ADMIN_URL}
+         - LOG_LEVEL=${LOG_LEVEL:-info}
+         - ACCESS_LOG_ENABLED=${ACCESS_LOG_ENABLED:-true}
+         - ACCESS_LOG_PATH=${ACCESS_LOG_PATH:-}
        networks:
-         - remnawave-network
+         - remnawave_network
 
      db:
        image: postgres:17-alpine
-       container_name: remnawave-telegram-shop-db
-       hostname: remnawave-telegram-shop-db
+       container_name: rwp_shop_db
        restart: unless-stopped
-       env_file:
-         - .env
        environment:
          - POSTGRES_USER=${POSTGRES_USER}
          - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
          - POSTGRES_DB=${POSTGRES_DB}
          - TZ=UTC
        ports:
-         - "127.0.0.1:9911:5432"
+         - "127.0.0.1:5432"
        volumes:
-         - remnawave-telegram-shop-db-data:/var/lib/postgresql/data
+         - rwp_shop_db_data:/var/lib/postgresql/data
        healthcheck:
          test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
          interval: 3s
          timeout: 10s
          retries: 3
        networks:
-         - remnawave-network
+         - remnawave_network
 
    volumes:
-     remnawave-telegram-shop-db-data:
-       driver: local
-       external: false
-       name: remnawave-telegram-shop-db-data
+     rwp_shop_db_data:
 
    networks:
-     remnawave-network:
-       name: remnawave-network
-       driver: bridge
+     remnawave_network:
+       name: remnawave_network
        external: true
    ```
    
    :::note
-   Сеть `remnawave-network` создаётся панелью Remnawave. Параметр `external: true` подключает к существующей сети.
+   Сеть `remnawave_network` создаётся панелью Remnawave. Параметр `external: true` подключает к существующей сети.
    :::
+   
+
 
 6. **Создайте файл окружения**
    ```bash
@@ -140,7 +146,6 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
    ADMIN_TELEGRAM_ID=123456789,987654321
 
    # База данных
-   DATABASE_URL=postgres://postgres:postgres@db:5432/postgres?sslmode=disable
    POSTGRES_USER=postgres
    POSTGRES_PASSWORD=postgres
    POSTGRES_DB=postgres
@@ -149,9 +154,9 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
    BOT_ADMIN_URL=https://bot.example.com
 
    # Логирование (опционально)
-   LOG_LEVEL=info
-   ACCESS_LOG_ENABLED=true
-   ACCESS_LOG_PATH=
+   # LOG_LEVEL=info
+   # ACCESS_LOG_ENABLED=true
+   # ACCESS_LOG_PATH=
    ```
    
    :::tip
@@ -191,7 +196,7 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
    Скачайте файл образа из приватного канала.
    
    ```bash
-   docker load -i private-remnawave-telegram-shop-bot-<VERSION>.tar
+   docker load -i rw-shop-bot-<VERSION>.tar
    ```
 
 3. **Создайте необходимые директории**
@@ -214,11 +219,13 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
    ```
    
    ```yaml
+   name: rwp_shop
+
    services:
      bot:
-       image: private-remnawave-telegram-shop-bot:<VERSION>
-       env_file:
-         - .env
+       image: rw-shop-bot:<VERSION>
+       container_name: rwp_shop
+       restart: unless-stopped
        ports:
          - "127.0.0.1:9912:8080"
        depends_on:
@@ -227,24 +234,30 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
        volumes:
          - ./translations:/translations
          - ./uploads:/uploads
-       restart: unless-stopped
+       environment:
+         - REMNAWAVE_URL=${REMNAWAVE_URL}
+         - REMNAWAVE_TOKEN=${REMNAWAVE_TOKEN}
+         - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
+         - ADMIN_TELEGRAM_ID=${ADMIN_TELEGRAM_ID}
+         - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?sslmode=disable
+         - BOT_ADMIN_URL=${BOT_ADMIN_URL}
+         - LOG_LEVEL=${LOG_LEVEL:-info}
+         - ACCESS_LOG_ENABLED=${ACCESS_LOG_ENABLED:-true}
+         - ACCESS_LOG_PATH=${ACCESS_LOG_PATH:-}
 
      db:
        image: postgres:17-alpine
-       container_name: remnawave-telegram-shop-db
-       hostname: remnawave-telegram-shop-db
+       container_name: rwp_shop_db
        restart: unless-stopped
-       env_file:
-         - .env
        environment:
          - POSTGRES_USER=${POSTGRES_USER}
          - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
          - POSTGRES_DB=${POSTGRES_DB}
          - TZ=UTC
        ports:
-         - "127.0.0.1:9911:5432"
+         - "127.0.0.1:5432"
        volumes:
-         - remnawave-telegram-shop-db-data:/var/lib/postgresql/data
+         - rwp_shop_db_data:/var/lib/postgresql/data
        healthcheck:
          test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
          interval: 3s
@@ -252,11 +265,10 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
          retries: 3
 
    volumes:
-     remnawave-telegram-shop-db-data:
-       driver: local
-       external: false
-       name: remnawave-telegram-shop-db-data
+     rwp_shop_db_data:
    ```
+   
+
 
 6. **Создайте файл окружения**
    ```bash
@@ -273,7 +285,6 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
    ADMIN_TELEGRAM_ID=123456789,987654321
 
    # База данных
-   DATABASE_URL=postgres://postgres:postgres@db:5432/postgres?sslmode=disable
    POSTGRES_USER=postgres
    POSTGRES_PASSWORD=postgres
    POSTGRES_DB=postgres
@@ -282,9 +293,9 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
    BOT_ADMIN_URL=https://bot.example.com
 
    # Логирование (опционально)
-   LOG_LEVEL=info
-   ACCESS_LOG_ENABLED=true
-   ACCESS_LOG_PATH=
+   # LOG_LEVEL=info
+   # ACCESS_LOG_ENABLED=true
+   # ACCESS_LOG_PATH=
    ```
    
    :::caution
@@ -315,6 +326,10 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
 Конфигурации ниже включают правила кеширования для защиты Mini App от ошибок загрузки после обновлений:
 - HTML-файлы не кешируются (всегда актуальная версия)
 - Статические ресурсы `/assets/` кешируются на год (имеют уникальные хеши)
+:::
+
+:::caution[Для отдельного сервера]
+Примеры ниже предназначены для **системной установки** Caddy/Nginx (через systemd). Если вы используете Caddy/Nginx в Docker-контейнере, вам нужно либо объединить их в одну Docker-сеть и скрыть порты, либо использовать `host.docker.internal` вместо `127.0.0.1`.
 :::
 
 <Tabs>
@@ -397,26 +412,31 @@ docker compose logs -f bot
 
 ---
 
-## Обновление
+## Настройка access-логов с ротацией
 
-Для обновления до новой версии:
+Для записи access-логов в файл с автоматической ротацией:
 
 <Steps>
 
-1. **Скачайте новый образ**
-   
-   Скачайте новый файл образа из приватного канала.
-
-2. **Загрузите новый образ**
+1. **Создайте директорию для логов**
    ```bash
-   docker load -i private-remnawave-telegram-shop-bot-<VERSION>.tar
+   mkdir -p logs
+   sudo chmod 777 logs
    ```
 
-3. **Обновите версию в compose.yaml**
+2. **Добавьте volume в compose.yaml**
    
-   Измените версию образа:
+   В секции `bot` добавьте:
    ```yaml
-   image: private-remnawave-telegram-shop-bot:<VERSION>
+   volumes:
+     - ./translations:/translations
+     - ./uploads:/uploads
+     - ./logs:/logs
+   ```
+
+3. **Укажите путь к логам в .env**
+   ```bash
+   ACCESS_LOG_PATH=/logs/access.log
    ```
 
 4. **Перезапустите бота**
@@ -424,79 +444,76 @@ docker compose logs -f bot
    docker compose up -d
    ```
 
-</Steps>
-
----
-
-## Обновление с публичной версии
-
-Если у вас уже установлена публичная версия:
-
-<Steps>
-
-1. **Перейдите в директорию бота**
+5. **Установите logrotate** (если не установлен)
    ```bash
-   cd /opt/remnawave-telegram-shop
+   # Debian/Ubuntu
+   sudo apt update && sudo apt install -y logrotate
+   
+   # CentOS/RHEL/Fedora
+   sudo dnf install -y logrotate
    ```
+
+6. **Создайте конфиг logrotate**
+   ```bash
+   sudo nano /etc/logrotate.d/rwp-shop
+   ```
+   
+   ```txt
+   /opt/private-remnawave-telegram-shop-bot/logs/access.log {
+       daily
+       rotate 14
+       compress
+       delaycompress
+       missingok
+       notifempty
+       copytruncate
+   }
+   ```
+   
    :::note
-   Замените на ваш фактический путь установки бота, если он отличается.
+   Замените путь `/opt/private-remnawave-telegram-shop-bot/logs/access.log` на ваш фактический путь установки.
    :::
 
-2. **Сделайте бекап базы данных**
+7. **Проверьте конфигурацию**
    ```bash
-   docker compose exec db pg_dump -U postgres postgres > backup.sql
+   sudo logrotate -d /etc/logrotate.d/rwp-shop
    ```
-
-3. **Остановите текущего бота**
-   ```bash
-   docker compose down
-   ```
-
-4. **Загрузите новый образ**
-   ```bash
-   docker load -i private-remnawave-telegram-shop-bot-<VERSION>.tar
-   ```
-
-5. **Создайте директорию uploads**
-   ```bash
-   mkdir -p uploads
-   sudo chmod -R 777 uploads
-   ```
-
-6. **Обновите docker-compose.yaml**
    
-   Измените образ и добавьте порты:
-   ```yaml
-   services:
-     bot:
-       image: private-remnawave-telegram-shop-bot:<VERSION>
-       env_file:
-         - .env
-       ports:
-         - "127.0.0.1:12345:8080"
-       depends_on:
-         db:
-           condition: service_healthy
-       volumes:
-         - ./translations:/translations
-         - ./uploads:/uploads
-   ```
+   Флаг `-d` запускает в debug-режиме без реальной ротации.
 
-7. **Добавьте URL админки в .env**
+8. **Тестовый запуск ротации**
    ```bash
-   echo "BOT_ADMIN_URL=https://bot.example.com" >> .env
+   sudo logrotate -f /etc/logrotate.d/rwp-shop
    ```
-
-8. **Настройте реверс-прокси**
    
-   Направьте `bot.example.com` на `127.0.0.1:12345` (см. примеры выше)
-
-9. **Запустите бота**
-   ```bash
-   docker compose up -d
-   ```
+   Флаг `-f` принудительно выполняет ротацию.
 
 </Steps>
+
+:::tip
+`copytruncate` позволяет ротировать логи без перезапуска контейнера — файл обрезается на месте после копирования.
+:::
+
+:::note[Автоматический запуск]
+Logrotate обычно запускается автоматически через cron или systemd timer (ежедневно). Проверить можно:
+```bash
+# Для systemd
+systemctl status logrotate.timer
+
+# Для cron
+cat /etc/cron.daily/logrotate
+```
+:::
+
+| Параметр | Описание |
+|----------|----------|
+| `daily` | Ротация раз в день |
+| `rotate 14` | Хранить 14 архивов |
+| `compress` | Сжимать архивы gzip |
+| `delaycompress` | Сжимать со второго архива |
+| `missingok` | Не ругаться если файла нет |
+| `notifempty` | Не ротировать пустой файл |
+| `copytruncate` | Копировать и обрезать без перезапуска |
 
 ---
 
@@ -505,7 +522,7 @@ docker compose logs -f bot
 | Сервис | Внутренний порт | Рекомендуемый внешний |
 |--------|-----------------|----------------------|
 | Bot HTTP | 8080 | 9912 или 12345 |
-| PostgreSQL | 5432 | 9911 |
+| PostgreSQL | 5432 | - |
 
 ---
 
@@ -525,26 +542,11 @@ docker compose logs -f bot
 
 ---
 
-## Устранение неполадок
-
-### Админ-панель не загружается
-- Проверьте правильность `BOT_ADMIN_URL` в `.env`
-- Проверьте конфигурацию реверс-прокси
-- Убедитесь, что SSL-сертификат валиден
-
-### Ошибка подключения к базе данных
-- Проверьте статус PostgreSQL контейнера: `docker compose ps`
-- Проверьте формат `DATABASE_URL` в `.env`
-- Убедитесь в сетевой связности между контейнерами
-
-### Ошибка прав доступа для uploads
-```bash
-sudo chmod -R 777 /opt/private-remnawave-telegram-shop-bot/uploads
-```
-
----
-
 ## Полезные советы
+
+:::tip[Возникли проблемы?]
+Смотрите страницу [Устранение неполадок](/ru/private/troubleshooting/) для решения распространённых проблем.
+:::
 
 ### Добавление кнопки меню в Telegram
 

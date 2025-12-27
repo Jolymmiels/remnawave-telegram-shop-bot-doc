@@ -44,7 +44,7 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
    Скачайте файл образа из приватного канала.
    
    ```bash
-   docker load -i rw-shop-bot-<VERSION>.tar
+   docker load -i rwp_shop-<VERSION>.tar
    ```
 
 3. **Создайте необходимые директории**
@@ -71,7 +71,7 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
 
    services:
      bot:
-       image: rw-shop-bot:<VERSION>
+       image: rwp_shop:<VERSION>
        container_name: rwp_shop
        restart: unless-stopped
        ports:
@@ -196,7 +196,7 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
    Скачайте файл образа из приватного канала.
    
    ```bash
-   docker load -i rw-shop-bot-<VERSION>.tar
+   docker load -i rwp_shop-<VERSION>.tar
    ```
 
 3. **Создайте необходимые директории**
@@ -223,7 +223,7 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
 
    services:
      bot:
-       image: rw-shop-bot:<VERSION>
+       image: rwp_shop:<VERSION>
        container_name: rwp_shop
        restart: unless-stopped
        ports:

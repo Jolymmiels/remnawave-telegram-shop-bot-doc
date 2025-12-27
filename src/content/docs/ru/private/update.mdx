@@ -19,14 +19,14 @@ import { Steps } from '@astrojs/starlight/components';
 
 2. **Загрузите новый образ**
    ```bash
-   docker load -i rw-shop-bot-<VERSION>.tar
+   docker load -i rwp_shop-<VERSION>.tar
    ```
 
 3. **Обновите версию в compose.yaml**
    
    Измените версию образа:
    ```yaml
-   image: rw-shop-bot:<VERSION>
+   image: rwp_shop:<VERSION>
    ```
 
 4. **Перезапустите бота**
@@ -59,7 +59,7 @@ import { Steps } from '@astrojs/starlight/components';
 
 3. **Загрузите новый образ**
    ```bash
-   docker load -i rw-shop-bot-<VERSION>.tar
+   docker load -i rwp_shop-<VERSION>.tar
    ```
 
 4. **Создайте директорию uploads**
@@ -76,7 +76,7 @@ import { Steps } from '@astrojs/starlight/components';
 
    services:
      bot:
-       image: rw-shop-bot:<VERSION>
+       image: rwp_shop:<VERSION>
        container_name: rwp_shop
        restart: unless-stopped
        ports:
@@ -119,7 +119,7 @@ docker compose ps
 docker compose logs -f bot
 
 # Версия образа
-docker images | grep rw-shop-bot
+docker images | grep rwp_shop
 ```
 
 :::tip[Возникли проблемы?]

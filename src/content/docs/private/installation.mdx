@@ -44,7 +44,7 @@ Use this method if the bot will run on the **same server** as your Remnawave pan
    Download the image file from the private channel.
    
    ```bash
-   docker load -i rw-shop-bot-<VERSION>.tar
+   docker load -i rwp_shop-<VERSION>.tar
    ```
 
 3. **Create required directories**
@@ -71,7 +71,7 @@ Use this method if the bot will run on the **same server** as your Remnawave pan
 
    services:
      bot:
-       image: rw-shop-bot:<VERSION>
+       image: rwp_shop:<VERSION>
        container_name: rwp_shop
        restart: unless-stopped
        ports:
@@ -196,7 +196,7 @@ Use this method if the bot will run on a **different server** from your Remnawav
    Download the image file from the private channel.
    
    ```bash
-   docker load -i rw-shop-bot-<VERSION>.tar
+   docker load -i rwp_shop-<VERSION>.tar
    ```
 
 3. **Create required directories**
@@ -223,7 +223,7 @@ Use this method if the bot will run on a **different server** from your Remnawav
 
    services:
      bot:
-       image: rw-shop-bot:<VERSION>
+       image: rwp_shop:<VERSION>
        container_name: rwp_shop
        restart: unless-stopped
        ports:

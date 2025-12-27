@@ -19,14 +19,14 @@ Before updating, make sure to **[backup your database](/private/backup/)**.
 
 2. **Load new image**
    ```bash
-   docker load -i rw-shop-bot-<VERSION>.tar
+   docker load -i rwp_shop-<VERSION>.tar
    ```
 
 3. **Update version in compose.yaml**
    
    Change the image version:
    ```yaml
-   image: rw-shop-bot:<VERSION>
+   image: rwp_shop:<VERSION>
    ```
 
 4. **Restart the bot**
@@ -59,7 +59,7 @@ If you already have the public version installed:
 
 3. **Load new image**
    ```bash
-   docker load -i rw-shop-bot-<VERSION>.tar
+   docker load -i rwp_shop-<VERSION>.tar
    ```
 
 4. **Create uploads directory**
@@ -76,7 +76,7 @@ If you already have the public version installed:
 
    services:
      bot:
-       image: rw-shop-bot:<VERSION>
+       image: rwp_shop:<VERSION>
        container_name: rwp_shop
        restart: unless-stopped
        ports:
@@ -119,7 +119,7 @@ docker compose ps
 docker compose logs -f bot
 
 # Image version
-docker images | grep rw-shop-bot
+docker images | grep rwp_shop
 ```
 
 :::tip[Having issues?]

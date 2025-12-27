@@ -1,0 +1,80 @@
+---
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+}
+
+const { src, alt } = Astro.props;
+const id = `img-${Math.random().toString(36).slice(2, 11)}`;
+---
+
+<div class="clickable-image-wrapper">
+  <img 
+    src={src.src} 
+    alt={alt} 
+    class="clickable-image-thumb" 
+    onclick={`document.getElementById('${id}').showModal()`}
+    loading="lazy"
+  />
+  <dialog id={id} class="clickable-image-modal" onclick={`this.close()`}>
+    <img src={src.src} alt={alt} class="clickable-image-full" />
+  </dialog>
+</div>
+
+<style>
+  .clickable-image-wrapper {
+    margin: 1rem 0;
+  }
+
+  .clickable-image-thumb {
+    max-width: 400px;
+    max-height: 300px;
+    width: auto;
+    height: auto;
+    cursor: zoom-in;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .clickable-image-thumb:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  }
+
+  .clickable-image-modal {
+    padding: 0;
+    border: none;
+    background: transparent;
+    max-width: 95vw;
+    max-height: 95vh;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+  }
+
+  .clickable-image-modal::backdrop {
+    background: rgba(0, 0, 0, 0.85);
+    cursor: zoom-out;
+  }
+
+  .clickable-image-full {
+    max-width: 95vw;
+    max-height: 95vh;
+    width: auto;
+    height: auto;
+    border-radius: 8px;
+    cursor: zoom-out;
+  }
+
+  @media (max-width: 768px) {
+    .clickable-image-thumb {
+      max-width: 100%;
+      max-height: 200px;
+    }
+  }
+</style>

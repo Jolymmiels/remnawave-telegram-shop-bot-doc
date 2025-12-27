@@ -3,6 +3,24 @@ title: Private Version
 description: Overview of the private version features - Admin UI Panel
 ---
 
+import ClickableImage from '../../../components/ClickableImage.astro';
+import imgMainDashboard from '../../../assets/lk/SCR-20251221-sgok.png';
+import imgDevices from '../../../assets/lk/SCR-20251221-sgqz.png';
+import imgReferrals from '../../../assets/lk/SCR-20251221-sgso.png';
+import imgPromoCodes from '../../../assets/lk/SCR-20251221-sguq.png';
+import imgRenewal from '../../../assets/lk/SCR-20251221-sgwn.png';
+import imgPlanChange from '../../../assets/lk/SCR-20251221-sgxz.png';
+import imgBroadcast from '../../../assets/admin/broadcast/SCR-20251221-slcf.png';
+import imgPromoAdmin from '../../../assets/admin/promo/SCR-20251221-smcl.png';
+import imgSupportTickets from '../../../assets/admin/support/SCR-20251221-snhh.png';
+import imgNewTicket from '../../../assets/client/support/SCR-20251221-soqw.png';
+import imgTicketChat from '../../../assets/client/support/SCR-20251221-spnt.png';
+import imgFAQ from '../../../assets/admin/faq/SCR-20251221-sogj.png';
+import imgPartnersDashboard from '../../../assets/admin/partner/SCR-20251221-sjyy.png';
+import imgApplicationDetails from '../../../assets/admin/partner/SCR-20251221-shvo.png';
+import imgApplyPartnership from '../../../assets/lk/SCR-20251221-shlm.png';
+import imgPartnerDashboard from '../../../assets/lk/SCR-20251221-shyg.png';
+
 # Private Version
 
 The private version includes a full-featured **Admin UI Panel** and **User Dashboard** built as a Telegram Mini App. Below is an overview of all available features.
@@ -27,32 +45,32 @@ Personal account for users with the following features:
 #### Main Dashboard
 Subscription status, traffic usage, devices count, payment options, autopay toggle, and saved cards.
 
-![Main Dashboard](../../../assets/lk/SCR-20251221-sgok.png)
+<ClickableImage src={imgMainDashboard} alt="Main Dashboard" />
 
 #### Device Management
 List of connected devices with OS info, connection date, and delete option.
 
-![Devices](../../../assets/lk/SCR-20251221-sgqz.png)
+<ClickableImage src={imgDevices} alt="Devices" />
 
 #### Referral System
 Referral statistics (invited, active, bonus days) and referral link copy button.
 
-![Referrals](../../../assets/lk/SCR-20251221-sgso.png)
+<ClickableImage src={imgReferrals} alt="Referrals" />
 
 #### Promo Codes
 Apply promo codes and view history of applied codes with bonuses.
 
-![Promo Codes](../../../assets/lk/SCR-20251221-sguq.png)
+<ClickableImage src={imgPromoCodes} alt="Promo Codes" />
 
 #### Subscription Renewal
 Choose subscription period (1/3/6/12 months) and plan details.
 
-![Renewal](../../../assets/lk/SCR-20251221-sgwn.png)
+<ClickableImage src={imgRenewal} alt="Renewal" />
 
 #### Plan Change
 Upgrade/downgrade options with three modes: surcharge, conversion, and downgrade.
 
-![Plan Change](../../../assets/lk/SCR-20251221-sgxz.png)
+<ClickableImage src={imgPlanChange} alt="Plan Change" />
 
 ---
 
@@ -98,7 +116,7 @@ Upgrade/downgrade options with three modes: surcharge, conversion, and downgrade
 #### Broadcast Editor
 HTML-formatted message editor with recipient filters (active/expired/no subscription/all), language filter, inline buttons, preview, and broadcast history with progress.
 
-![Broadcast Editor](../../../assets/admin/broadcast/SCR-20251221-slcf.png)
+<ClickableImage src={imgBroadcast} alt="Broadcast Editor" />
 
 ## Promo Codes
 
@@ -113,7 +131,7 @@ HTML-formatted message editor with recipient filters (active/expired/no subscrip
 #### Promo Code Manager
 Create promo codes (bonus days or discount %), filter by status (all/active/inactive), view usage stats, copy/share/toggle/delete codes.
 
-![Promo Codes](../../../assets/admin/promo/SCR-20251221-smcl.png)
+<ClickableImage src={imgPromoAdmin} alt="Promo Codes" />
 
 ## Support System
 
@@ -130,7 +148,7 @@ Create promo codes (bonus days or discount %), filter by status (all/active/inac
 ##### Ticket List
 Filter tickets by status (open/closed/all), view message count per ticket.
 
-![Support Tickets](../../../assets/admin/support/SCR-20251221-snhh.png)
+<ClickableImage src={imgSupportTickets} alt="Support Tickets" />
 
 ### User Features (Mini App)
 - View own tickets
@@ -143,12 +161,12 @@ Filter tickets by status (open/closed/all), view message count per ticket.
 ##### New Ticket
 FAQ section with expandable answers, ticket creation form with subject and message.
 
-![New Ticket](../../../assets/client/support/SCR-20251221-soqw.png)
+<ClickableImage src={imgNewTicket} alt="New Ticket" />
 
 ##### Ticket Chat
 Real-time chat with ticket status, message history, file attachments support.
 
-![Ticket Chat](../../../assets/client/support/SCR-20251221-spnt.png)
+<ClickableImage src={imgTicketChat} alt="Ticket Chat" />
 
 ## FAQ Management
 
@@ -163,7 +181,7 @@ Real-time chat with ticket status, message history, file attachments support.
 #### FAQ Editor
 Manage FAQ items shown before support ticket creation. Drag to reorder, toggle visibility, edit content with HTML support.
 
-![FAQ Manager](../../../assets/admin/faq/SCR-20251221-sogj.png)
+<ClickableImage src={imgFAQ} alt="FAQ Manager" />
 
 ## Partner Program
 
@@ -184,12 +202,12 @@ Manage FAQ items shown before support ticket creation. Drag to reorder, toggle v
 ##### Partners Dashboard
 Overview with statistics (partners, clients, commissions, withdrawn), applications, withdrawals, and partner list.
 
-![Partners Dashboard](../../../assets/admin/partner/SCR-20251221-sjyy.png)
+<ClickableImage src={imgPartnersDashboard} alt="Partners Dashboard" />
 
 ##### Application Details
 Review application with user info, set commission rate, approve or reject with reason.
 
-![Application Details](../../../assets/admin/partner/SCR-20251221-shvo.png)
+<ClickableImage src={imgApplicationDetails} alt="Application Details" />
 
 ### User Features (Mini App)
 - View partner status
@@ -204,12 +222,12 @@ Review application with user info, set commission rate, approve or reject with r
 #### Apply for Partnership
 Page for submitting a partnership application.
 
-![Apply for Partnership](../../../assets/lk/SCR-20251221-shlm.png)
+<ClickableImage src={imgApplyPartnership} alt="Apply for Partnership" />
 
 #### Partner Dashboard
 Partner statistics: commission rate, clients, earnings, available balance, withdrawal button, and tabs for clients/commissions/withdrawals.
 
-![Partner Dashboard](../../../assets/lk/SCR-20251221-shyg.png)
+<ClickableImage src={imgPartnerDashboard} alt="Partner Dashboard" />
 
 ## Plans Management
 

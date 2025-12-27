@@ -147,10 +147,21 @@ Use this method if the bot will run on the **same server** as your Remnawave pan
 
    # Admin Panel URL (HTTPS required)
    BOT_ADMIN_URL=https://bot.example.com
+
+   # Logging (optional)
+   LOG_LEVEL=info
+   ACCESS_LOG_ENABLED=true
+   ACCESS_LOG_PATH=
    ```
    
    :::tip
    `REMNAWAVE_URL=http://remnawave:3000` uses the container name from Remnawave's Docker network.
+   :::
+
+   :::note[Logging Variables]
+   - `LOG_LEVEL` — logging level (debug, info, warn, error)
+   - `ACCESS_LOG_ENABLED` — enable/disable access logs (true/false)
+   - `ACCESS_LOG_PATH` — path to log file; if not set, logs are written to console
    :::
 
 7. **Start the bot**
@@ -269,10 +280,21 @@ Use this method if the bot will run on a **different server** from your Remnawav
 
    # Admin Panel URL (HTTPS required)
    BOT_ADMIN_URL=https://bot.example.com
+
+   # Logging (optional)
+   LOG_LEVEL=info
+   ACCESS_LOG_ENABLED=true
+   ACCESS_LOG_PATH=
    ```
    
    :::caution
    `REMNAWAVE_URL` must be the **external HTTPS URL** of your Remnawave panel (e.g., `https://panel.example.com`).
+   :::
+
+   :::note[Logging Variables]
+   - `LOG_LEVEL` — logging level (debug, info, warn, error)
+   - `ACCESS_LOG_ENABLED` — enable/disable access logs (true/false)
+   - `ACCESS_LOG_PATH` — path to log file; if not set, logs are written to console
    :::
 
 7. **Start the bot**

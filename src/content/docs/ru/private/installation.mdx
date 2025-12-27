@@ -147,10 +147,21 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
 
    # URL админ-панели (требуется HTTPS)
    BOT_ADMIN_URL=https://bot.example.com
+
+   # Логирование (опционально)
+   LOG_LEVEL=info
+   ACCESS_LOG_ENABLED=true
+   ACCESS_LOG_PATH=
    ```
    
    :::tip
    `REMNAWAVE_URL=http://remnawave:3000` использует имя контейнера из Docker-сети Remnawave.
+   :::
+
+   :::note[Переменные логирования]
+   - `LOG_LEVEL` — уровень логирования (debug, info, warn, error)
+   - `ACCESS_LOG_ENABLED` — включить/выключить access-логи (true/false)
+   - `ACCESS_LOG_PATH` — путь к файлу логов; если не указан, логи выводятся в консоль
    :::
 
 7. **Запустите бота**
@@ -269,10 +280,21 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
 
    # URL админ-панели (требуется HTTPS)
    BOT_ADMIN_URL=https://bot.example.com
+
+   # Логирование (опционально)
+   LOG_LEVEL=info
+   ACCESS_LOG_ENABLED=true
+   ACCESS_LOG_PATH=
    ```
    
    :::caution
    `REMNAWAVE_URL` должен быть **внешним HTTPS URL** вашей панели Remnawave (например, `https://panel.example.com`).
+   :::
+
+   :::note[Переменные логирования]
+   - `LOG_LEVEL` — уровень логирования (debug, info, warn, error)
+   - `ACCESS_LOG_ENABLED` — включить/выключить access-логи (true/false)
+   - `ACCESS_LOG_PATH` — путь к файлу логов; если не указан, логи выводятся в консоль
    :::
 
 7. **Запустите бота**

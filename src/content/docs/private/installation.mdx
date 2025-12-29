@@ -105,7 +105,7 @@ Use this method if the bot will run on the **same server** as your Remnawave pan
          - POSTGRES_DB=${POSTGRES_DB}
          - TZ=UTC
        ports:
-         - "127.0.0.1:5432"
+         - "127.0.0.1:9999:5432"
        volumes:
          - rwp_shop_db_data:/var/lib/postgresql/data
        healthcheck:
@@ -255,7 +255,7 @@ Use this method if the bot will run on a **different server** from your Remnawav
          - POSTGRES_DB=${POSTGRES_DB}
          - TZ=UTC
        ports:
-         - "127.0.0.1:5432"
+         - "127.0.0.1:9999:5432"
        volumes:
          - rwp_shop_db_data:/var/lib/postgresql/data
        healthcheck:

@@ -93,7 +93,7 @@ Use this method if the bot will run on the **same server** as your Remnawave pan
          - ACCESS_LOG_ENABLED=${ACCESS_LOG_ENABLED:-true}
          - ACCESS_LOG_PATH=${ACCESS_LOG_PATH:-}
        networks:
-         - remnawave_network
+         - remnawave-network
 
      db:
        image: postgres:17-alpine
@@ -114,19 +114,19 @@ Use this method if the bot will run on the **same server** as your Remnawave pan
          timeout: 10s
          retries: 3
        networks:
-         - remnawave_network
+         - remnawave-network
 
    volumes:
      rwp_shop_db_data:
 
    networks:
-     remnawave_network:
-       name: remnawave_network
+     remnawave-network:
+       name: remnawave-network
        external: true
    ```
    
    :::note
-   The `remnawave_network` is created by the Remnawave panel. Setting `external: true` connects to this existing network.
+   The `remnawave-network` is created by the Remnawave panel. Setting `external: true` connects to this existing network.
    :::
    
 

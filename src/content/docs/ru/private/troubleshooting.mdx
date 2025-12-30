@@ -50,7 +50,7 @@ sudo chmod 777 /opt/private-remnawave-telegram-shop-bot/logs
 
 ### На том же сервере (внутренняя сеть)
 - Проверьте, что `REMNAWAVE_URL=http://remnawave:3000` указывает на имя контейнера
-- Убедитесь, что бот и панель в одной Docker-сети (`remnawave_network`)
+- Убедитесь, что бот и панель в одной Docker-сети (`remnawave-network`)
 - Проверьте, что сеть существует: `docker network ls | grep remnawave`
 
 ### На отдельном сервере
@@ -120,7 +120,7 @@ docker compose ps
 docker stats
 
 # Проверка сети
-docker network inspect remnawave_network
+docker network inspect remnawave-network
 
 # Перезапуск бота
 docker compose restart bot

@@ -93,7 +93,7 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
          - ACCESS_LOG_ENABLED=${ACCESS_LOG_ENABLED:-true}
          - ACCESS_LOG_PATH=${ACCESS_LOG_PATH:-}
        networks:
-         - remnawave_network
+         - remnawave-network
 
      db:
        image: postgres:17-alpine
@@ -114,19 +114,19 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
          timeout: 10s
          retries: 3
        networks:
-         - remnawave_network
+         - remnawave-network
 
    volumes:
      rwp_shop_db_data:
 
    networks:
-     remnawave_network:
-       name: remnawave_network
+     remnawave-network:
+       name: remnawave-network
        external: true
    ```
    
    :::note
-   Сеть `remnawave_network` создаётся панелью Remnawave. Параметр `external: true` подключает к существующей сети.
+   Сеть `remnawave-network` создаётся панелью Remnawave. Параметр `external: true` подключает к существующей сети.
    :::
    
 

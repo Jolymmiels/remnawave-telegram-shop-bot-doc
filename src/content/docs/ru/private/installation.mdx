@@ -381,11 +381,17 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
     Добавьте в Caddyfile:
     ```txt
     bot.example.com {
-        @html path *.html
+        @html path_regexp \.html$|^/$
         header @html Cache-Control "no-cache, no-store, must-revalidate"
         
-        @assets path /assets/*
-        header @assets Cache-Control "public, max-age=31536000, immutable"
+        @assets_js path /assets/*.js
+        header @assets_js Cache-Control "no-cache, no-store, must-revalidate"
+        
+        @immutable {
+            path /assets/*
+            not path *.js
+        }
+        header @immutable Cache-Control "public, max-age=31536000, immutable"
         
         reverse_proxy 127.0.0.1:9912
     }
@@ -408,6 +414,15 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
         server_name bot.example.com;
 
         location ~* \.html$ {
+            add_header Cache-Control "no-cache, no-store, must-revalidate" always;
+            proxy_pass http://127.0.0.1:9912;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+
+        location ~* ^/assets/.*\.js$ {
             add_header Cache-Control "no-cache, no-store, must-revalidate" always;
             proxy_pass http://127.0.0.1:9912;
             proxy_set_header Host $host;

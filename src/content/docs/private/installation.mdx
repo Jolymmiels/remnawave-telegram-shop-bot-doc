@@ -92,6 +92,7 @@ Use this method if the bot will run on the **same server** as your Remnawave pan
          - LOG_LEVEL=${LOG_LEVEL:-info}
          - ACCESS_LOG_ENABLED=${ACCESS_LOG_ENABLED:-true}
          - ACCESS_LOG_PATH=${ACCESS_LOG_PATH:-}
+         - LICENSE_KEY=${LICENSE_KEY:-}
        networks:
          - remnawave-network
 
@@ -157,6 +158,9 @@ Use this method if the bot will run on the **same server** as your Remnawave pan
    # LOG_LEVEL=info
    # ACCESS_LOG_ENABLED=true
    # ACCESS_LOG_PATH=
+
+   LICENSE_KEY=
+
    ```
    
    :::tip
@@ -244,6 +248,7 @@ Use this method if the bot will run on a **different server** from your Remnawav
          - LOG_LEVEL=${LOG_LEVEL:-info}
          - ACCESS_LOG_ENABLED=${ACCESS_LOG_ENABLED:-true}
          - ACCESS_LOG_PATH=${ACCESS_LOG_PATH:-}
+         - LICENSE_KEY=${LICENSE_KEY:-}
 
      db:
        image: postgres:17-alpine
@@ -296,6 +301,8 @@ Use this method if the bot will run on a **different server** from your Remnawav
    # LOG_LEVEL=info
    # ACCESS_LOG_ENABLED=true
    # ACCESS_LOG_PATH=
+
+   LICENSE_KEY=
    ```
    
    :::caution

@@ -92,7 +92,8 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
          - LOG_LEVEL=${LOG_LEVEL:-info}
          - ACCESS_LOG_ENABLED=${ACCESS_LOG_ENABLED:-true}
          - ACCESS_LOG_PATH=${ACCESS_LOG_PATH:-}
-       networks:
+         - LICENSE_KEY=${LICENSE_KEY:-}
+        networks:
          - remnawave-network
 
      db:
@@ -157,7 +158,9 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
    # LOG_LEVEL=info
    # ACCESS_LOG_ENABLED=true
    # ACCESS_LOG_PATH=
-   ```
+
+   LICENSE_KEY=
+        ```
    
    :::tip
    `REMNAWAVE_URL=http://remnawave:3000` использует имя контейнера из Docker-сети Remnawave.
@@ -244,6 +247,7 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
          - LOG_LEVEL=${LOG_LEVEL:-info}
          - ACCESS_LOG_ENABLED=${ACCESS_LOG_ENABLED:-true}
          - ACCESS_LOG_PATH=${ACCESS_LOG_PATH:-}
+         - LICENSE_KEY=${LICENSE_KEY:-}
 
      db:
        image: postgres:17-alpine
@@ -296,6 +300,8 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
    # LOG_LEVEL=info
    # ACCESS_LOG_ENABLED=true
    # ACCESS_LOG_PATH=
+
+   LICENSE_KEY=
    ```
    
    :::caution

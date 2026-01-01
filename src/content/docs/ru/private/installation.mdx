@@ -172,7 +172,25 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
    - `ACCESS_LOG_PATH` — путь к файлу логов; если не указан, логи выводятся в консоль
    :::
 
-7. **Запустите бота**
+   :::caution[Лицензионный ключ]
+   `LICENSE_KEY` обязателен для работы бота. Вы можете получить его в личном кабинете на сервере лицензий после покупки подписки.
+   :::
+
+7. **Добавьте volume machine-id для лицензии**
+
+   Лицензия привязана к уникальному идентификатору вашего сервера. Добавьте этот volume в `compose.yaml` в секцию `bot`:
+   ```yaml
+   volumes:
+     - ./translations:/translations
+     - ./uploads:/uploads
+     - /etc/machine-id:/etc/machine-id:ro
+   ```
+   
+   :::note
+   Это гарантирует, что лицензия останется действительной даже при пересоздании контейнера.
+   :::
+
+8. **Запустите бота**
    ```bash
    docker compose up -d
    ```
@@ -314,7 +332,25 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
    - `ACCESS_LOG_PATH` — путь к файлу логов; если не указан, логи выводятся в консоль
    :::
 
-7. **Запустите бота**
+   :::caution[Лицензионный ключ]
+   `LICENSE_KEY` обязателен для работы бота. Вы можете получить его в личном кабинете на сервере лицензий после покупки подписки.
+   :::
+
+7. **Добавьте volume machine-id для лицензии**
+
+   Лицензия привязана к уникальному идентификатору вашего сервера. Добавьте этот volume в `compose.yaml` в секцию `bot`:
+   ```yaml
+   volumes:
+     - ./translations:/translations
+     - ./uploads:/uploads
+     - /etc/machine-id:/etc/machine-id:ro
+   ```
+   
+   :::note
+   Это гарантирует, что лицензия останется действительной даже при пересоздании контейнера.
+   :::
+
+8. **Запустите бота**
    ```bash
    docker compose up -d
    ```

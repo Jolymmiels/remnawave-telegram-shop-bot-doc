@@ -173,7 +173,25 @@ Use this method if the bot will run on the **same server** as your Remnawave pan
    - `ACCESS_LOG_PATH` — path to log file; if not set, logs are written to console
    :::
 
-7. **Start the bot**
+   :::caution[License Key]
+   `LICENSE_KEY` is required for the bot to work. You can get it from your personal dashboard at the license server after purchasing a subscription.
+   :::
+
+7. **Add machine-id volume for license**
+
+   The license is bound to your server's unique identifier. Add this volume to `compose.yaml` in the `bot` service:
+   ```yaml
+   volumes:
+     - ./translations:/translations
+     - ./uploads:/uploads
+     - /etc/machine-id:/etc/machine-id:ro
+   ```
+   
+   :::note
+   This ensures the license remains valid even when the container is recreated.
+   :::
+
+8. **Start the bot**
    ```bash
    docker compose up -d
    ```
@@ -315,7 +333,25 @@ Use this method if the bot will run on a **different server** from your Remnawav
    - `ACCESS_LOG_PATH` — path to log file; if not set, logs are written to console
    :::
 
-7. **Start the bot**
+   :::caution[License Key]
+   `LICENSE_KEY` is required for the bot to work. You can get it from your personal dashboard at the license server after purchasing a subscription.
+   :::
+
+7. **Add machine-id volume for license**
+
+   The license is bound to your server's unique identifier. Add this volume to `compose.yaml` in the `bot` service:
+   ```yaml
+   volumes:
+     - ./translations:/translations
+     - ./uploads:/uploads
+     - /etc/machine-id:/etc/machine-id:ro
+   ```
+   
+   :::note
+   This ensures the license remains valid even when the container is recreated.
+   :::
+
+8. **Start the bot**
    ```bash
    docker compose up -d
    ```

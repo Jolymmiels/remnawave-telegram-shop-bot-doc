@@ -82,6 +82,7 @@ Use this method if the bot will run on the **same server** as your Remnawave pan
        volumes:
          - ./translations:/translations
          - ./uploads:/uploads
+         - /etc/machine-id:/etc/machine-id:ro
        environment:
          - REMNAWAVE_URL=${REMNAWAVE_URL}
          - REMNAWAVE_TOKEN=${REMNAWAVE_TOKEN}
@@ -256,6 +257,7 @@ Use this method if the bot will run on a **different server** from your Remnawav
        volumes:
          - ./translations:/translations
          - ./uploads:/uploads
+         - /etc/machine-id:/etc/machine-id:ro
        environment:
          - REMNAWAVE_URL=${REMNAWAVE_URL}
          - REMNAWAVE_TOKEN=${REMNAWAVE_TOKEN}

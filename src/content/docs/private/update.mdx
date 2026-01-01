@@ -87,12 +87,22 @@ If you already have the public version installed:
        volumes:
          - ./translations:/translations
          - ./uploads:/uploads
+         - /etc/machine-id:/etc/machine-id:ro
    ```
+   
+   :::note
+   The `/etc/machine-id` volume is required for license binding. It ensures the license remains valid when the container is recreated.
+   :::
 
-6. **Add admin URL to .env**
+6. **Add license key and admin URL to .env**
    ```bash
+   echo "LICENSE_KEY=your-license-key" >> .env
    echo "BOT_ADMIN_URL=https://bot.example.com" >> .env
    ```
+   
+   :::caution[License Key]
+   `LICENSE_KEY` is required for the bot to work. You can get it from your personal dashboard at the license server after purchasing a subscription.
+   :::
 
 7. **Configure reverse proxy**
    

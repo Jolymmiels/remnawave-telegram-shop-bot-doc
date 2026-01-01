@@ -87,12 +87,22 @@ import { Steps } from '@astrojs/starlight/components';
        volumes:
          - ./translations:/translations
          - ./uploads:/uploads
+         - /etc/machine-id:/etc/machine-id:ro
    ```
+   
+   :::note
+   Volume `/etc/machine-id` необходим для привязки лицензии. Он гарантирует, что лицензия останется действительной при пересоздании контейнера.
+   :::
 
-6. **Добавьте URL админки в .env**
+6. **Добавьте лицензионный ключ и URL админки в .env**
    ```bash
+   echo "LICENSE_KEY=your-license-key" >> .env
    echo "BOT_ADMIN_URL=https://bot.example.com" >> .env
    ```
+   
+   :::caution[Лицензионный ключ]
+   `LICENSE_KEY` обязателен для работы бота. Вы можете получить его в личном кабинете на сервере лицензий после покупки подписки.
+   :::
 
 7. **Настройте реверс-прокси**
    

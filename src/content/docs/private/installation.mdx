@@ -577,6 +577,98 @@ cat /etc/cron.daily/logrotate
 
 ---
 
+## S3 Storage (Optional)
+
+By default, uploaded files (support attachments, FAQ images, partner files) are stored locally in the `./uploads` directory. You can optionally use S3-compatible storage (MinIO, RustFS, AWS S3, etc.) for better scalability and reliability.
+
+<Steps>
+
+1. **Add S3 environment variables to .env**
+   ```bash
+   # S3 Storage (optional)
+   S3_ENABLED=true
+   S3_ENDPOINT=http://rustfs:9000
+   S3_ACCESS_KEY=your_access_key
+   S3_SECRET_KEY=your_secret_key
+   S3_PUBLIC_URL=https://s3.example.com
+   ```
+
+2. **Add S3 service to compose.yaml** (if using RustFS)
+   ```yaml
+   rustfs:
+     image: ghcr.io/rustfs/rustfs:latest
+     container_name: rwp_shop_rustfs
+     restart: unless-stopped
+     command: server /data --console-address ":9001"
+     environment:
+       - RUSTFS_ROOT_USER=your_access_key
+       - RUSTFS_ROOT_PASSWORD=your_secret_key
+     volumes:
+       - rustfs_data:/data
+     ports:
+       - "127.0.0.1:9001:9001"
+     networks:
+       - remnawave-network
+   ```
+   
+   Add volume:
+   ```yaml
+   volumes:
+     rwp_shop_db_data:
+     rustfs_data:
+   ```
+
+3. **Configure reverse proxy for S3**
+   
+   Add subdomain for S3 public access (required for presigned URLs):
+   
+   <Tabs>
+     <TabItem label="Caddy">
+       ```
+       s3.example.com {
+           reverse_proxy rustfs:9000
+       }
+       ```
+     </TabItem>
+     <TabItem label="Nginx">
+       ```nginx
+       server {
+           listen 443 ssl http2;
+           server_name s3.example.com;
+           
+           location / {
+               proxy_pass http://127.0.0.1:9000;
+               proxy_set_header Host $host;
+               client_max_body_size 100M;
+           }
+       }
+       ```
+     </TabItem>
+   </Tabs>
+
+4. **Restart the bot**
+   ```bash
+   docker compose up -d
+   ```
+
+</Steps>
+
+:::note[Environment Variables]
+| Variable | Description |
+|----------|-------------|
+| `S3_ENABLED` | Enable S3 storage (`true`/`false`) |
+| `S3_ENDPOINT` | Internal S3 endpoint (for Docker: `http://rustfs:9000`) |
+| `S3_ACCESS_KEY` | S3 access key |
+| `S3_SECRET_KEY` | S3 secret key |
+| `S3_PUBLIC_URL` | Public HTTPS URL for presigned URLs |
+:::
+
+:::caution[S3_PUBLIC_URL Required]
+`S3_PUBLIC_URL` must be set to a publicly accessible HTTPS URL. This is used for generating presigned URLs that allow direct file downloads from S3.
+:::
+
+---
+
 ## Port Reference
 
 | Service | Internal Port | Recommended External |

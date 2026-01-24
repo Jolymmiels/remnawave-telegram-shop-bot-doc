@@ -462,6 +462,52 @@ The examples below are for **system-wide installation** of Caddy/Nginx (via syst
   </TabItem>
 </Tabs>
 
+### Windows URL Scheme Redirect (Optional)
+
+For Windows users, custom URL schemes (like `happ://`, `v2ray://`, `clash://`) may not open directly from Telegram. Add a `/redir` endpoint to handle these redirects:
+
+<Tabs>
+  <TabItem label="Caddy">
+    Add inside your domain block, **before** `reverse_proxy`:
+    ```txt
+    @redir {
+        path /redir
+        expression {query.url} != ""
+    }
+    redir @redir {query.url} 302
+    ```
+    
+    Full example:
+    ```txt
+    bot.example.com {
+        @redir {
+            path /redir
+            expression {query.url} != ""
+        }
+        redir @redir {query.url} 302
+        
+        # ... rest of configuration
+        reverse_proxy 127.0.0.1:9912
+    }
+    ```
+  </TabItem>
+  <TabItem label="Nginx">
+    Add inside `server` block:
+    ```nginx
+    location = /redir {
+        if ($arg_url) {
+            return 302 $arg_url;
+        }
+        return 400;
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+:::note
+This allows the Mini App to redirect Windows users through `https://bot.example.com/redir?url=happ://...` which then performs a 302 redirect to the custom URL scheme.
+:::
+
 ---
 
 ## Verify Installation

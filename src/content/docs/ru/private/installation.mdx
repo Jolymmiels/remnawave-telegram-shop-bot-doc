@@ -461,6 +461,52 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
   </TabItem>
 </Tabs>
 
+### Редирект URL-схем для Windows (опционально)
+
+Для пользователей Windows кастомные URL-схемы (такие как `happ://`, `v2ray://`, `clash://`) могут не открываться напрямую из Telegram. Добавьте endpoint `/redir` для обработки таких редиректов:
+
+<Tabs>
+  <TabItem label="Caddy">
+    Добавьте внутри блока домена **перед** `reverse_proxy`:
+    ```txt
+    @redir {
+        path /redir
+        expression {query.url} != ""
+    }
+    redir @redir {query.url} 302
+    ```
+    
+    Полный пример:
+    ```txt
+    bot.example.com {
+        @redir {
+            path /redir
+            expression {query.url} != ""
+        }
+        redir @redir {query.url} 302
+        
+        # ... остальная конфигурация
+        reverse_proxy 127.0.0.1:9912
+    }
+    ```
+  </TabItem>
+  <TabItem label="Nginx">
+    Добавьте внутри блока `server`:
+    ```nginx
+    location = /redir {
+        if ($arg_url) {
+            return 302 $arg_url;
+        }
+        return 400;
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+:::note
+Это позволяет Mini App перенаправлять пользователей Windows через `https://bot.example.com/redir?url=happ://...`, который затем выполняет 302 редирект на кастомную URL-схему.
+:::
+
 ---
 
 ## Проверка установки

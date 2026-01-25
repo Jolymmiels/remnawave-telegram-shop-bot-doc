@@ -470,21 +470,30 @@ For Windows users, custom URL schemes (like `happ://`, `v2ray://`, `clash://`) m
   <TabItem label="Caddy">
     Add inside your domain block, **before** `reverse_proxy`:
     ```txt
-    @redir {
-        path /redir
-        expression {query.url} != ""
-    }
-    redir @redir {query.url} 302
-    ```
+@redir {
+    path /redir
+    expression {http.request.uri.query} != ""
+}
+
+route @redir {
+    uri replace + %2B
+
+    redir {query.url} 302
+}    ```
     
     Full example:
     ```txt
     bot.example.com {
-        @redir {
-            path /redir
-            expression {query.url} != ""
-        }
-        redir @redir {query.url} 302
+@redir {
+    path /redir
+    expression {http.request.uri.query} != ""
+}
+
+route @redir {
+    uri replace + %2B
+
+    redir {query.url} 302
+}
         
         # ... rest of configuration
         reverse_proxy 127.0.0.1:9912

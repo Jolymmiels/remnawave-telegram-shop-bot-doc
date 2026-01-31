@@ -94,6 +94,7 @@ Use this method if the bot will run on the **same server** as your Remnawave pan
          - ACCESS_LOG_ENABLED=${ACCESS_LOG_ENABLED:-true}
          - ACCESS_LOG_PATH=${ACCESS_LOG_PATH:-}
          - LICENSE_KEY=${LICENSE_KEY:-}
+         - REMNAWAVE_HEADERS=${REMNAWAVE_HEADERS:-}
        networks:
          - remnawave-network
 
@@ -162,10 +163,20 @@ Use this method if the bot will run on the **same server** as your Remnawave pan
 
    LICENSE_KEY=
 
+   # Custom headers for Remnawave API (optional)
+   # REMNAWAVE_HEADERS=
    ```
    
    :::tip
    `REMNAWAVE_URL=http://remnawave:3000` uses the container name from Remnawave's Docker network.
+   :::
+
+   :::tip[Remnawave Reverse-Proxy (egames)]
+   If you use [Remnawave Reverse-Proxy by egames](https://wiki.egam.es/), add a cookie for authentication:
+   ```bash
+   REMNAWAVE_HEADERS=Cookie:rEmnaprx=aBCDefgh
+   ```
+   How to get the cookie: [instructions](https://wiki.egam.es/ru/troubleshooting/common-issues/#утерянный-cookie-пути-к-панели)
    :::
 
    :::note[Logging Variables]
@@ -269,6 +280,7 @@ Use this method if the bot will run on a **different server** from your Remnawav
          - ACCESS_LOG_ENABLED=${ACCESS_LOG_ENABLED:-true}
          - ACCESS_LOG_PATH=${ACCESS_LOG_PATH:-}
          - LICENSE_KEY=${LICENSE_KEY:-}
+         - REMNAWAVE_HEADERS=${REMNAWAVE_HEADERS:-}
 
      db:
        image: postgres:17-alpine
@@ -323,10 +335,21 @@ Use this method if the bot will run on a **different server** from your Remnawav
    # ACCESS_LOG_PATH=
 
    LICENSE_KEY=
+
+   # Custom headers for Remnawave API (optional)
+   # REMNAWAVE_HEADERS=
    ```
    
    :::caution
    `REMNAWAVE_URL` must be the **external HTTPS URL** of your Remnawave panel (e.g., `https://panel.example.com`).
+   :::
+
+   :::tip[Remnawave Reverse-Proxy (egames)]
+   If you use [Remnawave Reverse-Proxy by egames](https://wiki.egam.es/), add a cookie for authentication:
+   ```bash
+   REMNAWAVE_HEADERS=Cookie:rEmnaprx=aBCDefgh
+   ```
+   How to get the cookie: [instructions](https://wiki.egam.es/ru/troubleshooting/common-issues/#утерянный-cookie-пути-к-панели)
    :::
 
    :::note[Logging Variables]

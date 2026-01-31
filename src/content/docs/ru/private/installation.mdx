@@ -94,6 +94,7 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
          - ACCESS_LOG_ENABLED=${ACCESS_LOG_ENABLED:-true}
          - ACCESS_LOG_PATH=${ACCESS_LOG_PATH:-}
          - LICENSE_KEY=${LICENSE_KEY:-}
+         - REMNAWAVE_HEADERS=${REMNAWAVE_HEADERS:-}
        networks:
          - remnawave-network
 
@@ -161,10 +162,21 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
    # ACCESS_LOG_PATH=
 
    LICENSE_KEY=
+
+   # Пользовательские заголовки для Remnawave API (опционально)
+   # REMNAWAVE_HEADERS=
         ```
    
    :::tip
    `REMNAWAVE_URL=http://remnawave:3000` использует имя контейнера из Docker-сети Remnawave.
+   :::
+
+   :::tip[Remnawave Reverse-Proxy (egames)]
+   Если вы используете [Remnawave Reverse-Proxy от egames](https://wiki.egam.es/), добавьте cookie для авторизации:
+   ```bash
+   REMNAWAVE_HEADERS=Cookie:rEmnaprx=aBCDefgh
+   ```
+   Как получить cookie: [инструкция](https://wiki.egam.es/ru/troubleshooting/common-issues/#утерянный-cookie-пути-к-панели)
    :::
 
    :::note[Переменные логирования]
@@ -268,6 +280,7 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
          - ACCESS_LOG_ENABLED=${ACCESS_LOG_ENABLED:-true}
          - ACCESS_LOG_PATH=${ACCESS_LOG_PATH:-}
          - LICENSE_KEY=${LICENSE_KEY:-}
+         - REMNAWAVE_HEADERS=${REMNAWAVE_HEADERS:-}
 
      db:
        image: postgres:17-alpine
@@ -322,10 +335,21 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
    # ACCESS_LOG_PATH=
 
    LICENSE_KEY=
+
+   # Пользовательские заголовки для Remnawave API (опционально)
+   # REMNAWAVE_HEADERS=
    ```
    
    :::caution
    `REMNAWAVE_URL` должен быть **внешним HTTPS URL** вашей панели Remnawave (например, `https://panel.example.com`).
+   :::
+
+   :::tip[Remnawave Reverse-Proxy (egames)]
+   Если вы используете [Remnawave Reverse-Proxy от egames](https://wiki.egam.es/), добавьте cookie для авторизации:
+   ```bash
+   REMNAWAVE_HEADERS=Cookie:rEmnaprx=aBCDefgh
+   ```
+   Как получить cookie: [инструкция](https://wiki.egam.es/ru/troubleshooting/common-issues/#утерянный-cookie-пути-к-панели)
    :::
 
    :::note[Переменные логирования]

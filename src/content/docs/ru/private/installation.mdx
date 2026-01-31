@@ -380,7 +380,21 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
   <TabItem label="Caddy">
     Добавьте в Caddyfile:
     ```txt
+    (security_headers) {
+        header * {
+            Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+            X-Content-Type-Options "nosniff"
+            X-Frame-Options "SAMEORIGIN"
+            X-XSS-Protection "1; mode=block"
+            -Server
+            Referrer-Policy strict-origin-when-cross-origin
+            X-Robots-Tag "noindex, nofollow"
+        }
+    }
+
     bot.example.com {
+        import security_headers
+
         @html path_regexp \.html$|^/$
         header @html Cache-Control "no-cache, no-store, must-revalidate"
         
@@ -484,16 +498,18 @@ route @redir {
     Полный пример:
     ```txt
     bot.example.com {
-@redir {
-    path /redir
-    expression {http.request.uri.query} != ""
-}
+        import security_headers
 
-route @redir {
-    uri replace + %2B
+        @redir {
+            path /redir
+            expression {http.request.uri.query} != ""
+        }
 
-    redir {query.url} 302
-}
+        route @redir {
+            uri replace + %2B
+
+            redir {query.url} 302
+        }
         
         # ... остальная конфигурация
         reverse_proxy 127.0.0.1:9912
@@ -681,6 +697,7 @@ cat /etc/cron.daily/logrotate
      <TabItem label="Caddy">
        ```
        s3.example.com {
+           import security_headers
            reverse_proxy rustfs:9000
        }
        ```

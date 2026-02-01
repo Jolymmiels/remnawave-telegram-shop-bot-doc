@@ -808,3 +808,37 @@ To add an "Open" button in Telegram that opens the user dashboard instead of typ
    ```
 
 This will add a button in the Telegram chat that opens the Mini App with the user's personal dashboard.
+
+### Configure Mini App Button
+
+To add your Mini App as a button that appears when users tap the menu icon or type `/start`:
+
+1. Open [@BotFather](https://t.me/BotFather)
+2. Send the command `/newapp`
+3. Select your bot from the list
+4. Follow the prompts:
+   - **Title**: Enter the app name (e.g., "Dashboard")
+   - **Description**: Brief description of the app
+   - **Photo**: Upload a 640x360 image for the app preview
+   - **GIF** (optional): Upload a demo animation
+   - **Web App URL**: Enter your dashboard URL (e.g., `https://bot.example.com`)
+5. After creation, send `/myapps` to manage your Mini Apps
+
+:::tip
+You can also use `/setmenubutton` to configure the menu button directly without creating a full Mini App entry.
+:::
+
+### Configure Web Login (Direct Links)
+
+To allow users to open your Mini App directly in a browser via `t.me` links (without using Telegram's in-app browser), you need to configure the domain in BotFather:
+
+1. Open [@BotFather](https://t.me/BotFather)
+2. Send the command `/setdomain`
+3. Select your bot from the list
+4. Enter the domain from your admin panel (e.g., `bot.example.com`)
+
+:::note
+The domain must match the `BOT_ADMIN_URL` value (without the `https://` prefix).
+:::
+
+After this configuration, users can access the Mini App via direct browser links.
